@@ -1,3 +1,14 @@
 /**
  * WARNING: Do not change this file. Your changes will be lost.
- * 2015-12-16 13:43:16 */
+ * 2016-08-05 18:02:02 */
+body.boxed {
+}
+@media (min-width: 768px) {
+    .page-layout-1column .product-info-main, .page-layout-2columns-left .product-info-main, .page-layout-2columns-right .product-info-main, .page-layout-3columns .product-info-main {
+        width: 49%;
+    }
+    .page-layout-1column .product.media, .page-layout-2columns-left .product.media, .page-layout-2columns-right .product.media, .page-layout-3columns .product.media {
+        width: 49%;
+    }
+}
+

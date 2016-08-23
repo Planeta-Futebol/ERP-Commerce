@@ -9,7 +9,8 @@
     ],
     "require": {
         "magento/product-community-edition": "2.1.0",
-        "composer/composer": "@alpha"
+        "composer/composer": "@alpha",
+        "phpoffice/phpexcel": "^1.8"
     },
     "require-dev": {
         "phpunit/phpunit": "4.1.0",
