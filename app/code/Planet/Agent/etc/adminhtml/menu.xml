@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Planet_Agent::agent"
+             resource="Magento_Backend::content"
+             title="Agent"
+             module="Planet_Agent"
+             sortOrder="10"
+        />
+
+        <add id="Planet_Agent::sales"
+             resource="Magento_Backend::content"
+             title="Sales"
+             module="Planet_Agent"
+             sortOrder="0"
+
+             parent="Planet_Agent::agent"
+        />
+
+        <add id="Planet_Agent::import_sales"
+             resource="Magento_Backend::content"
+             title="Import Sales"
+             module="Planet_Agent"
+             sortOrder="0"
+
+             parent="Planet_Agent::sales"
+        />
+
+        <add id="Planet_Agent::export_sales"
+             resource="Magento_Backend::content"
+             title="Export Sales"
+             module="Planet_Agent"
+             sortOrder="1"
+
+             parent="Planet_Agent::sales"
+        />
+    </menu>
+</config>
