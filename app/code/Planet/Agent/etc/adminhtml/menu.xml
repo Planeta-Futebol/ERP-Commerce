@@ -3,8 +3,8 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Planet_Agent::agent"
-             resource="Magento_Backend::content"
              title="Agent"
+             resource="Magento_Backend::content"
              module="Planet_Agent"
              sortOrder="10"
         />
@@ -18,22 +18,24 @@
              parent="Planet_Agent::agent"
         />
 
-        <add id="Planet_Agent::import_sales"
+        <add id="Planet_Agent::sales_import"
              resource="Magento_Backend::content"
-             title="Import Sales"
+             title="Sales Import"
              module="Planet_Agent"
              sortOrder="0"
 
              parent="Planet_Agent::sales"
+             action="agent/sales/import"
         />
 
-        <add id="Planet_Agent::export_sales"
+        <add id="Planet_Agent::sales_export"
              resource="Magento_Backend::content"
-             title="Export Sales"
+             title="Sales Export"
              module="Planet_Agent"
              sortOrder="1"
 
              parent="Planet_Agent::sales"
+             action="agent/sales/export"
         />
     </menu>
 </config>
