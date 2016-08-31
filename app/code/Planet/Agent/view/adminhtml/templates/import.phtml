@@ -1,0 +1,50 @@
+<div class="admin__fieldset-wrapper-content">
+    <fieldset class="admin__fieldset">
+        <form action="<?php echo $this->getUrl("agent/*/process") ?>"
+              class="admin__fieldset"
+              enctype="multipart/form-data"
+              method="post"
+        >
+            <div class="admin__field">
+                <div class="admin__field-label">
+                    <label for="xlsx_file" class="action-default primary">
+                        <span>Import exel file</span>
+                    </label>
+                </div>
+                <div class="admin__field-control">
+                    <input
+                        id="xlsx_file"
+                        type="file"
+                        class="admin__control-file"
+                        name="xlsx_file"
+                    />
+                </div>
+            </div>
+            <div class="admin__field">
+                <div class="admin__field-label">
+                    <label for="name">
+                        <span>Name</span>
+                    </label>
+                </div>
+                <div class="admin__field-control">
+                    <input
+                        id="name"
+                        type="text"
+                        class="admin__control-file"
+                        name="name"
+                    />
+                </div>
+            </div>
+            <div class="admin__field">
+                <button type="submit" class="action-secondary" data-index="create_configurable_products_button">
+                    <span data-bind="text: title">Import</span>
+                </button>
+            </div>
+            <input type="hidden" name="form_key" value="<?php echo $this->getFormKey(); ?>" />
+        </form>
+    </fieldset>
+
+    <fildset class="admin__fieldset">
+        <?php echo $this->getGridHtml() ?>
+    </fildset>
+</div>
