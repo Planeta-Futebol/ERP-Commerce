@@ -1,17 +1,12 @@
 <?php
 namespace Planet\Agent\Block\Adminhtml\Import;
+
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Grid\Extended;
 use Magento\Backend\Helper\Data;
 use Magento\Framework\Module\Manager;
-use Planet\Agent\Model\ResourceModel\Import\Collection;
+use Planet\Agent\Helper\Data as ImportData;
 
-/**
- * Created by PhpStorm.
- * User: ziru
- * Date: 29/08/16
- * Time: 17:05
- */
 class Grid extends Extended
 {
     /**
@@ -19,18 +14,17 @@ class Grid extends Extended
      */
     protected $moduleManager;
 
-
-    protected $_importFactory;
+    protected $_helper;
 
     public function __construct(
         Context $context,
         Data $backendHelper,
-        Collection $importCollectionFactory,
         Manager $moduleManager,
+        ImportData $helper,
         array $data = []
     ) {
-        $this->_importFactory = $importCollectionFactory;
         $this->moduleManager = $moduleManager;
+        $this->_helper = $helper;
         parent::__construct($context, $backendHelper, $data);
     }
 
@@ -40,10 +34,10 @@ class Grid extends Extended
     protected function _construct()
     {
         parent::_construct();
-        $this->setId('listsGrid');
+        $this->setId('importGrid');
         $this->setDefaultSort('id');
         $this->setDefaultDir('DESC');
-        $this->setVarNameFilter('lists_filter');
+        $this->setVarNameFilter('import_filter');
     }
 
     /**
@@ -51,27 +45,7 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
-        $collection = $this->_importFactory;
-
-        $collection->_init([
-            [
-                'id' => 1,
-                'title' => '123',
-                'created_at' => 213414
-            ],
-            [
-                'id' => 3,
-                'title' => 'lalal',
-                'created_at' => 213414
-            ],
-            [
-                'id' => 4,
-                'title' => 'ttt',
-                'created_at' => 213414
-            ],
-        ]);
-
-        $this->setCollection($collection);
+        $this->setCollection($this->_helper->getCollection());
 
         parent::_prepareCollection();
         return $this;

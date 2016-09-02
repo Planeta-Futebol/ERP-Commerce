@@ -2,7 +2,7 @@
 namespace Planet\Agent\Block\Adminhtml;
 
 use Magento\Backend\Block\Widget\Context;
-use Magento\Framework\Registry;
+use Magento\Framework\RegistryFactory as Registry;
 use Magento\Backend\Block\Widget\Container;
 
 class Import extends Container
@@ -24,15 +24,10 @@ class Import extends Container
         Registry $registry,
         array $data = []
     ){
-        $this->_coreRegistry = $registry;
+        $this->_coreRegistry = $registry->create();
         parent::__construct($context, $data);
     }
 
-    /**
-     * Department edit block
-     *
-     * @return void
-     */
     protected function _construct()
     {
         $this->_objectId = 'entity_id';
@@ -45,6 +40,8 @@ class Import extends Container
 
     protected function _prepareLayout()
     {
+        echo $this->getData('user');
+
         $this->setChild(
             'grid',
             $this->getLayout()->createBlock(
