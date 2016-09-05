@@ -58,35 +58,66 @@ class Grid extends Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'id',
+            'sku',
             [
-                'header' => __('ID'),
-                'type' => 'number',
-                'index' => 'id',
+                'header' => __('sku'),
+                'index'  => 'sku',
+                'name'   => 'sku',
+
+                'filter'   => false,
+                'sortable' => false,
+
                 'header_css_class' => 'col-id',
-                'column_css_class' => 'col-id',
-                'name'=>'id'
-            ]
-        );
-        $this->addColumn(
-            'title',
-            [
-                'header' => __('Title'),
-                'index' => 'title',
-                'class' => 'xxx',
-                'name'=>'title'
+                'column_css_class' => 'col-id'
             ]
         );
 
         $this->addColumn(
-            'created_at',
+            'product_name',
             [
-                'header' => __('Created Date'),
-                'index' => 'created_at',
-                'name'=>'created_at'
+                'header' => __('Product Name'),
+                'index'  => 'product_name',
+                'name'   => 'Product Name',
+
+                'filter'   => false,
+                'sortable' => false
+            ]
+        );
+
+        $this->addColumn(
+            'quantity',
+            [
+                'header' => __('Quantity'),
+                'index'  => 'quantity',
+                'name'   => 'quantity',
+
+
+                'filter'   => false,
+                'sortable' => false,
+
+//                'editable'  => true,
+//                'edit_only' => true,
+            ]
+        );
+
+        $this->addColumn(
+            'stock',
+            [
+                'header' => __('Stock'),
+                'index'  => 'stock',
+                'name'   => 'stock',
+
+                'filter'   => false,
+                'sortable' => false
             ]
         );
 
         return parent::_prepareColumns();
     }
+
+    public function getRowUrl($item)
+    {
+        return false;
+    }
+
 }
