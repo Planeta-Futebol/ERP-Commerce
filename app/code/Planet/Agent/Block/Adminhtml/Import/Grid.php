@@ -34,6 +34,7 @@ class Grid extends Extended
     protected function _construct()
     {
         parent::_construct();
+
         $this->setId('importGrid');
         $this->setDefaultSort('id');
         $this->setDefaultDir('DESC');
@@ -119,5 +120,4 @@ class Grid extends Extended
     {
         return false;
     }
-
 }
