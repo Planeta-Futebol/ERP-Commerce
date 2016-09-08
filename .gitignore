@@ -42,6 +42,7 @@ atlassian*
 /pub/media/tmp/*
 !/pub/media/tmp/.htaccess
 /pub/media/captcha/*
+/pub/media/xlsx_imported_files/
 /pub/static/*
 !/pub/static/.htaccess
 
@@ -49,3 +50,5 @@ atlassian*
 !/var/.htaccess
 /vendor/*
 !/vendor/.htaccess
+
+/pestle.phar

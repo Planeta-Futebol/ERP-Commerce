@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="styles"/>
+    <update handle="formkey"/>
+
+    <head>
+        <css src="Planet_Agent::css/import.css"/>
+        <script src="Planet_Agent::js/import.js"/>
+    </head>
+
+    <body>
+        <referenceBlock name="content">
+            <block template="Planet_Agent::import.phtml"
+                   class="Planet\Agent\Block\Adminhtml\Import"
+                   name="agent_sales_import" />
+        </referenceBlock>
+    </body>
+
+</page>
