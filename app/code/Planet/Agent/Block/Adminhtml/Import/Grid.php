@@ -39,6 +39,9 @@ class Grid extends Extended
         $this->setDefaultSort('id');
         $this->setDefaultDir('DESC');
         $this->setVarNameFilter('import_filter');
+
+        $this->setFilterVisibility(false);
+        $this->setDefaultLimit(100);
     }
 
     /**
@@ -46,7 +49,8 @@ class Grid extends Extended
      */
     protected function _prepareCollection()
     {
-        $this->setCollection($this->_helper->getCollection());
+        $collection = $this->_helper->getCollection();
+        $this->setCollection($collection);
 
         parent::_prepareCollection();
         return $this;
@@ -107,6 +111,19 @@ class Grid extends Extended
                 'header' => __('Stock'),
                 'index'  => 'stock',
                 'name'   => 'stock',
+
+                'filter'   => false,
+                'sortable' => false
+            ]
+        );
+
+        $this->addColumn(
+            'price',
+            [
+                'header' => __('Price'),
+                'index'  => 'price',
+                'name'   => 'price',
+//                'renderer' => '\Magento\Framework\Pricing\Render',
 
                 'filter'   => false,
                 'sortable' => false

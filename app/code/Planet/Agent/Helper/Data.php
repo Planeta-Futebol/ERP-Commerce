@@ -2,6 +2,8 @@
 
 namespace Planet\Agent\Helper;
 
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\CatalogInventory\Api\StockStateInterface;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Filesystem\DirectoryList;
@@ -15,6 +17,10 @@ class Data extends AbstractHelper
     protected $_collection;
 
     protected $_mediaDirectory;
+
+    protected $_productRepository;
+
+    protected $_stockState;
 
     const INI_COLLECTION_INDEX = 18;
 
@@ -44,13 +50,16 @@ class Data extends AbstractHelper
     public function __construct(
         Context $context,
         CollectionFactory $collectionFactory,
+        ProductRepositoryInterface $productRepository,
+        StockStateInterface $stockState,
         Filesystem $filesystem
     )
     {
 
         $this->_collection = $collectionFactory->create();
         $this->_mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
-
+        $this->_productRepository = $productRepository;
+        $this->_stockState = $stockState;
 
         parent::__construct($context);
     }
@@ -73,7 +82,6 @@ class Data extends AbstractHelper
 
             if($rowNumber >= self::INI_COLLECTION_INDEX ) {
 
-                $productCollection = null;
                 $parentSku = null;
 
                 foreach ($cellIterator as $cell) {
@@ -87,72 +95,71 @@ class Data extends AbstractHelper
                             switch ($cell->getCoordinate()){
 
                                 case self::PARENT_SKU . $rowNumber:
+
                                     $parentSku = $cell->getValue();
 
                                     break;
 
                                 case self::SIZE_P . $rowNumber:
 
-                                    $rowDataCollection['sku'] = $parentSku . '-' . $this->sizeProducts[self::SIZE_P];
-                                    $rowDataCollection['quantity'] = $cell->getValue();
-                                    $productCollection[] = $rowDataCollection;
+                                    $sku = $parentSku . '-' . $this->sizeProducts[self::SIZE_P];
+                                    $qty = $cell->getValue();
+
+                                    $data['collection'][] = $this->getProductData($sku, $qty);
 
                                     break;
 
                                 case self::SIZE_M . $rowNumber:
 
-                                    $rowDataCollection['sku'] = $parentSku . '-' . $this->sizeProducts[self::SIZE_M];
-                                    $rowDataCollection['quantity'] = $cell->getValue();
-                                    $productCollection[] = $rowDataCollection;
+                                    $sku = $parentSku . '-' . $this->sizeProducts[self::SIZE_M];
+                                    $qty = $cell->getValue();
+
+                                    $data['collection'][] = $this->getProductData($sku, $qty);
 
                                     break;
 
                                 case self::SIZE_G . $rowNumber:
 
-                                    $rowDataCollection['sku'] = $parentSku . '-' . $this->sizeProducts[self::SIZE_G];
-                                    $rowDataCollection['quantity'] = $cell->getValue();
-                                    $productCollection[] = $rowDataCollection;
+                                    $sku = $parentSku . '-' . $this->sizeProducts[self::SIZE_G];
+                                    $qty = $cell->getValue();
+
+                                    $data['collection'][] = $this->getProductData($sku, $qty);
 
                                     break;
 
                                 case self::SIZE_GG . $rowNumber:
 
-                                    $rowDataCollection['sku'] = $parentSku . '-' . $this->sizeProducts[self::SIZE_GG];
-                                    $rowDataCollection['quantity'] = $cell->getValue();
-                                    $productCollection[] = $rowDataCollection;
+                                    $sku = $parentSku . '-' . $this->sizeProducts[self::SIZE_GG];
+                                    $qty = $cell->getValue();
+
+                                    $data['collection'][] = $this->getProductData($sku, $qty);
 
                                     break;
 
                                 case self::SIZE_EXG . $rowNumber:
 
-                                    $rowDataCollection['sku'] = $parentSku . '-' . $this->sizeProducts[self::SIZE_EXG];
-                                    $rowDataCollection['quantity'] = $cell->getValue();
-                                    $productCollection[] = $rowDataCollection;
+                                    $sku = $parentSku . '-' . $this->sizeProducts[self::SIZE_EXG];
+                                    $qty = $cell->getValue();
+
+                                    $data['collection'][] = $this->getProductData($sku, $qty);
 
                                     break;
 
                                 case self::SIZE_EXGG . $rowNumber:
 
-                                    $rowDataCollection['sku'] = $parentSku . '-' . self::SIZE_EXGG;
-                                    $rowDataCollection['quantity'] = $cell->getValue();
-                                    $productCollection[] = $rowDataCollection;
+                                    $sku = $parentSku . '-' . $this->sizeProducts[self::SIZE_EXGG];
+                                    $qty = $cell->getValue();
+
+                                    $data['collection'][] = $this->getProductData($sku, $qty);
 
                                     break;
-
                             }
 
                         }
 
-                        if(!is_null($productCollection)) {
+                    } catch (\PHPExcel_Calculation_Exception $c){
 
-                            foreach ($productCollection as $c){
-                                $data['collection'][] = $c;
-                            }
-
-                            $productCollection = null;
-                        }
-
-                    } catch (\PHPExcel_Calculation_Exception $c){}
+                    }
                 }
             }
         }
@@ -161,14 +168,50 @@ class Data extends AbstractHelper
 
     }
 
+    private function getProductData( $sku, $qty )
+    {
+
+        $rowDataCollection['sku']      = $sku;
+
+        try{
+
+            $product = $this->getProductBySku($sku);
+
+            $rowDataCollection['quantity'] = $qty;
+            $rowDataCollection['product_name'] = $product->getName();
+            $rowDataCollection['stock'] =
+                $this->_stockState->getStockQty($product->getId());
+
+            $rowDataCollection['price'] =$product->getPrice();
+
+        }catch (\Exception $e){
+
+        }
+
+        return $rowDataCollection;
+    }
 
     public function _initCollection(array $arr)
     {
         $this->_collection->_init($arr);
+
+        $i = $this->getCollection()->count() -1;
+
+        $limit = $i - count($this->sizeProducts);
+
+        for($i; $i > $limit; $i-- ){
+            $this->getCollection()->removeItemByKey($i);
+        }
     }
 
     public function getCollection()
     {
         return $this->_collection;
     }
+
+    public function getProductBySku($sku)
+    {
+        return $this->_productRepository->get($sku);
+    }
+
 }
