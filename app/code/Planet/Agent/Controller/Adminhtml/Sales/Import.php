@@ -40,6 +40,7 @@ class Import extends Action
         try{
 
             $this->_helper->processXlsxFile($this->_session->getXlsxFilePath());
+            echo($this->_session->getSessionId());
 
         }catch (\PHPExcel_Reader_Exception $e){
 

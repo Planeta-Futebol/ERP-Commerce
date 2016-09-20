@@ -68,10 +68,8 @@ class Grid extends Extended
                 'header' => __('sku'),
                 'index'  => 'sku',
                 'name'   => 'sku',
-
                 'filter'   => false,
                 'sortable' => false,
-
                 'header_css_class' => 'col-id',
                 'column_css_class' => 'col-id'
             ]
@@ -83,7 +81,6 @@ class Grid extends Extended
                 'header' => __('Product Name'),
                 'index'  => 'product_name',
                 'name'   => 'Product Name',
-
                 'filter'   => false,
                 'sortable' => false
             ]

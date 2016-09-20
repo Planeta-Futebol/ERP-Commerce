@@ -8,7 +8,6 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\File\UploaderFactory;
 use Magento\Framework\Filesystem;
-use PHPExcel_IOFactory;
 use Planet\Agent\Helper\Data as ImportData;
 
 
