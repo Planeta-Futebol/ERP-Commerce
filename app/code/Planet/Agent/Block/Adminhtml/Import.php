@@ -66,4 +66,21 @@ class Import extends Container
     {
         return $this->getChildHtml('customer');
     }
+
+    public function getNewOrderHtml()
+    {
+        if($this->getChildBlock('customer')){
+            return <<< "CUSTOMER_HTML_BUTTOM"
+                    <button id="save" title="Create New Order" type="button"
+                            class="action- scalable save primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                            aria-disabled="false">
+                        <span class="ui-button-text">
+                            <span>Create New Order</span></span>
+                    </button>
+CUSTOMER_HTML_BUTTOM;
+
+        }
+
+        return null;
+    }
 }

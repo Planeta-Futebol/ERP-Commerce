@@ -68,10 +68,6 @@ class Process extends Action
 
             $xlsxFilePath = $target . $result['file'];
 
-            if ($result['file']) {
-                $this->messageManager->addSuccessMessage(__('File has been successfully uploaded'));
-            }
-
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
