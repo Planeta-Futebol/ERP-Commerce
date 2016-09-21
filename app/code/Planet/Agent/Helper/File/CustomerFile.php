@@ -5,7 +5,7 @@ namespace Planet\Agent\Helper\File;
 class CustomerFile extends AbstractFile
 {
     private $customerFactory;
-    private $customer;
+
     public function __construct(
         \Magento\Customer\Model\CustomerFactory $customerFactory
     )
@@ -13,6 +13,9 @@ class CustomerFile extends AbstractFile
         $this->customerFactory = $customerFactory->create();
     }
 
+    /**
+     * @return \Magento\Customer\Model\Customer
+     */
     public function getCustomer()
     {
         return $this->isCustomer();

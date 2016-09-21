@@ -6,40 +6,20 @@
         <table class="admin__table-secondary">
             <tbody>
             <tr>
-                <td>Last Logged In: Never (Offline)</td>
-                <td>Last Logged In: Never (Offline)</td>
-                <td>Last Logged In: Never (Offline)</td>
+                <td>Full Name: <?= $this->getName(); ?></td>
+                <td>Tax/VAT Number: <?= $this->getTaxVat(); ?></td>
+                <td>Email: <?= $this->getEmail(); ?></td>
             </tr>
             <tr>
-                <td>Account Lock: Unlocked</td>
-                <td>Account Lock: Unlocked</td>
-                <td>Account Lock: Unlocked</td>
-            </tr>
-            <tr>
-                <td>Confirmed email: Confirmation Not Required</td>
-                <td>Confirmed email: Confirmation Not Required</td>
-                <td>Confirmed email: Confirmation Not Required</td>
-            </tr>
-            <tr>
-                <td>Account Created: Oct 21, 2014, 1:30:21 AM</td>
-                <td>Account Created: Oct 21, 2014, 1:30:21 AM</td>
-                <td>Account Created: Oct 21, 2014, 1:30:21 AM</td>
-            </tr>
-            <tr>
-                <td>Account Created in: Planeta Futebol Store View</td>
-                <td>Account Created in: Planeta Futebol Store View</td>
-                <td>Account Created in: Planeta Futebol Store View</td>
-            </tr>
-            <tr>
-                <td>Customer Group: Cliente Varejo</td>
-                <td>Customer Group: Cliente Varejo</td>
-                <td>Customer Group: Cliente Varejo</td>
+                <td>Account Lock: <?= $this->getStatus(); ?></td>
+                <td>Group Customer: traditional trade</td>
+                <td>% Discount: 5</td>
             </tr>
             <tr>
                 <td colspan="3">
                     <address>
-                        <strong>Billing Address</strong>
-                        Renato Rios; Rua joao simoes de souza; 430; ap 153 bloco A; Parque rebouças; São Paulo ,  Sao Paulo, 05734140; Brazil; T: 11 5195-1335
+                        <strong>Default Billing Address</strong>
+                       Rua joao simoes de souza; 430; ap 153 bloco A; Parque rebouças; São Paulo ,  Sao Paulo, 05734140; Brazil; T: 11 5195-1335
                     </address>
                 </td>
             </tr>

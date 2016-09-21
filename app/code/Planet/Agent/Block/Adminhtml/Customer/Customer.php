@@ -13,10 +13,16 @@ class Customer extends Template
      */
     protected $_customer;
 
+    private $customerRepository;
+
+
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context
+        \Magento\Framework\View\Element\Template\Context $context,
+        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
     )
     {
+        $this->customerRepository = $customerRepository;
+
         parent::__construct($context);
     }
 
@@ -26,14 +32,37 @@ class Customer extends Template
         return parent::_prepareLayout();
     }
 
+    public function _beforeToHtml()
+    {
+        $this->_customer = $this->getData('customer');
+        return parent::_beforeToHtml();
+    }
+
     public function getName()
     {
         return $this->_customer->getName();
     }
 
-    public function _beforeToHtml()
+    public function getTaxVat()
     {
-        $this->_customer = $this->getData('customer');
-        return parent::_beforeToHtml();
+        return '11.136.790/0001-53';
+    }
+
+    public function getStatus()
+    {
+        return 'Unlocked';
+    }
+
+    public function getAddress()
+    {
+        $address = $this->_customer->getDefaultBillingAddress();
+//
+//        $addressHtml = $address->ge
+        $this->_customer->getDefaultBillingAddress();
+    }
+
+    public function getEmail()
+    {
+        return $this->_customer->getEmail();
     }
 }
