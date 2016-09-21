@@ -14,13 +14,9 @@ class Customer extends Template
     protected $_customer;
 
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Planet\Agent\Helper\Data $helper
+        \Magento\Framework\View\Element\Template\Context $context
     )
     {
-        $this->_helper   = $helper;
-        $this->_customer = $helper->getCustomer();
-
         parent::__construct($context);
     }
 
@@ -32,6 +28,12 @@ class Customer extends Template
 
     public function getName()
     {
-        //return $this->_customer->getName();
+        return $this->_customer->getName();
+    }
+
+    public function _beforeToHtml()
+    {
+        $this->_customer = $this->getData('customer');
+        return parent::_beforeToHtml();
     }
 }

@@ -40,21 +40,11 @@ class Import extends Container
 
     protected function _prepareLayout()
     {
-        //die($this->_session->getXlsxFilePath());
-        die($this->_session->getSessionId());
         $this->setChild(
             'grid',
             $this->getLayout()->createBlock(
                 'Planet\Agent\Block\Adminhtml\Import\Grid',
                 'agent.import.grid'
-            )
-        );
-
-        $this->setChild(
-            'customer',
-            $this->getLayout()->createBlock(
-                'Planet\Agent\Block\Adminhtml\Customer\Customer',
-                'agent.import.customer'
             )
         );
 
