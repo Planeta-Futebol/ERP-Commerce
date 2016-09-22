@@ -13,7 +13,7 @@ class Customer extends Template
      */
     protected $_customer;
 
-    private $customerRepository;
+    private $_customerRepository;
 
 
     public function __construct(
@@ -21,7 +21,7 @@ class Customer extends Template
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
     )
     {
-        $this->customerRepository = $customerRepository;
+        $this->_customerRepository = $customerRepository;
 
         parent::__construct($context);
     }
@@ -45,7 +45,7 @@ class Customer extends Template
 
     public function getTaxVat()
     {
-        return '11.136.790/0001-53';
+        return $this->_customerRepository->getById($this->_customer->getId())->getTaxvat();
     }
 
     public function getStatus()
@@ -56,13 +56,25 @@ class Customer extends Template
     public function getAddress()
     {
         $address = $this->_customer->getDefaultBillingAddress();
-//
-//        $addressHtml = $address->ge
-        $this->_customer->getDefaultBillingAddress();
+
+        $addressHtml = sprintf(
+            "%s; %s; %s",
+            $address->getStreetFull(),
+            $address->getCity(),
+            $address->getCountryModel()->getName()
+
+        );
+
+        return $addressHtml;
     }
 
     public function getEmail()
     {
         return $this->_customer->getEmail();
+    }
+
+    public function getGroup()
+    {
+        return 'Traditional Trade';
     }
 }

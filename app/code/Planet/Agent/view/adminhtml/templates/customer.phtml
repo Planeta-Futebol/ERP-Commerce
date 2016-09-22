@@ -12,14 +12,14 @@
             </tr>
             <tr>
                 <td>Account Lock: <?= $this->getStatus(); ?></td>
-                <td>Group Customer: traditional trade</td>
+                <td>Group Customer: <?= $this->getGroup(); ?></td>
                 <td>% Discount: 5</td>
             </tr>
             <tr>
                 <td colspan="3">
                     <address>
                         <strong>Default Billing Address</strong>
-                       Rua joao simoes de souza; 430; ap 153 bloco A; Parque rebouças; São Paulo ,  Sao Paulo, 05734140; Brazil; T: 11 5195-1335
+                        <?= $this->getAddress(); ?>
                     </address>
                 </td>
             </tr>
