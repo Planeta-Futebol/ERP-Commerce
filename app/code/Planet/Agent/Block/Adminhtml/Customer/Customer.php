@@ -50,22 +50,12 @@ class Customer extends Template
 
     public function getStatus()
     {
-        return 'Unlocked';
+        return ($this->_customer->isCustomerLocked()) ? 'Locked' : 'Unlocked';
     }
 
     public function getAddress()
     {
-        $address = $this->_customer->getDefaultBillingAddress();
-
-        $addressHtml = sprintf(
-            "%s; %s; %s",
-            $address->getStreetFull(),
-            $address->getCity(),
-            $address->getCountryModel()->getName()
-
-        );
-
-        return $addressHtml;
+        return $this->_customer->getAddress();
     }
 
     public function getEmail()
@@ -75,6 +65,6 @@ class Customer extends Template
 
     public function getGroup()
     {
-        return 'Traditional Trade';
+        //return $this->_customer->getAddress();
     }
 }

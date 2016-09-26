@@ -73,7 +73,9 @@ class Import extends Container
             return <<< "CUSTOMER_HTML_BUTTOM"
                     <button id="save" title="Create New Order" type="button"
                             class="action- scalable save primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
-                            aria-disabled="false">
+                            aria-disabled="false"
+                            onclick="location.href = '{$this->getUrl('agent/*/neworder')}'";
+                            >
                         <span class="ui-button-text">
                             <span>Create New Order</span></span>
                     </button>
