@@ -42,6 +42,7 @@ class Import extends Action
             $this->_helper->processXlsxFile($this->_session->getXlsxFilePath());
 
             $block = $resultPage->getLayout()->getBlock('agent_sales_import');
+            $block->setData('collection', $this->_helper->getCollection());
             $block->setChild(
                 'customer',
                 $resultPage->getLayout()->createBlock(

@@ -65,6 +65,46 @@ class Customer extends Template
 
     public function getGroup()
     {
-        //return $this->_customer->getAddress();
+        // TODO get name of group customer
+    }
+
+    public function getStreet()
+    {
+        return $this->_customer->getStreet();
+    }
+
+    public function getCity()
+    {
+        return $this->_customer->getCity();
+    }
+
+    public function getCountyId()
+    {
+        return $this->_customer->getCounty();
+    }
+
+    public function getRegion()
+    {
+        return $this->_customer->getRegion();
+    }
+
+    public function getPostcode()
+    {
+        return $this->_customer->getPostcode();
+    }
+
+    public function getTelephone()
+    {
+        return $this->_customer->getTelephone();
+    }
+
+    public function getFirstName()
+    {
+        return $this->_customerRepository->getById($this->_customer->getEntityId())->getFirstname();
+    }
+
+    public function getLastName()
+    {
+        return $this->_customerRepository->getById($this->_customer->getEntityId())->getLastname();
     }
 }

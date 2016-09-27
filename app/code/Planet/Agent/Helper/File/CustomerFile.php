@@ -34,7 +34,15 @@ class CustomerFile extends AbstractFile
     public function getCustomer()
     {
         $customer = $this->isCustomer();
-        $customer->addData(['address' => $this->getImportedAddress()]);
+        $customer->addData([
+            'address'   => $this->getImportedAddress(),
+            'street'    => $this->getCell(self::STREET),
+            'city'      => $this->getCell(self::CITY),
+            'county'    => self::COUNTY_ID,
+            'region'    => $this->getCell(self::REGION),
+            'postcode'  => $this->getCell(self::POSTCODE),
+            'telephone' =>$this->getCell(self::TELEPHONE)
+        ]);
 
         return $customer;
     }

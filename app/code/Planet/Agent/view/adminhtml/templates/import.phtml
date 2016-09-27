@@ -51,9 +51,10 @@
             </div>
             <input type="hidden" name="form_key" value="<?= $this->getFormKey(); ?>"/>
         </form>
+        <?= $this->getOrderForm(); ?>
     </fieldset>
 
     <fieldset class="admin__fieldset">
-        <?= $this->getGridHtml() ?>
+        <?= $this->getGridHtml(); ?>
     </fieldset>
 </div>

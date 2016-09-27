@@ -191,8 +191,8 @@ class Data extends AbstractHelper
             $rowDataCollection['product_name'] = $product->getName();
             $rowDataCollection['stock'] =
                 $this->_stockState->getStockQty($product->getId());
-
-            $rowDataCollection['price'] =$product->getPrice();
+            $rowDataCollection['price'] = $product->getPrice();
+            $rowDataCollection['id'] = $product->getId();
 
         }catch (\Exception $e){
 

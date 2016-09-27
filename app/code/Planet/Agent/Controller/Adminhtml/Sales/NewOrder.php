@@ -28,30 +28,42 @@ class NewOrder extends Action
      */
     public function execute()
     {
+
+        $params = $this->getRequest()->getParams();
+
+        $items = array();
+
+        foreach ($params['items'] as $item) {
+            $arr = explode('-', $item);
+            $items[] = [
+                'product_id' => $arr[0],
+                'qty'        => $arr[1]
+            ];
+        }
+
         $data = [
             'currency_id'  => 'USD',
-            'email'        => 'outrocoaara@webkul.com', //buyer email id
+            'email'        => $params['email'], //buyer email id
             'shipping_address' =>[
-                'firstname'    => 'Outro', //address Details
-                'lastname'     => 'Cara de novo',
-                'street' => 'xxxxx',
-                'city' => 'xxxxx',
-                'country_id' => 'IN',
-                'region' => 'xxx',
-                'postcode' => '43244',
-                'telephone' => '52332',
-                'fax' => '32423',
+                'firstname'    => $params['firstname'], //address Details
+                'lastname'     => $params['lastname'],
+                'street'       => $params['street'],
+                'city'         => $params['city'],
+                'country_id'   => $params['country_id'],
+                'region'       => $params['region'],
+                'postcode'     => $params['postcode'],
+                'telephone'    => $params['telephone'],
                 'save_in_address_book' => 1
             ],
-            'items'=> [ //array of product which order you want to create
-                ['product_id'=>'14766','qty' => 4 ],
-                ['product_id'=>'14768','qty' => 20 ],
-            ]
+
+            'items' => $items
         ];
 
-        $arr = $this->_helper->createMageOrder($data);
-
-        $this->messageManager->addSuccessMessage($arr['msg']);
+        try{
+            $arr = $this->_helper->createMageOrder($data);
+        }catch (\Magento\Framework\Exception\NoSuchEntityException $e){
+            $this->messageManager->addSuccessMessage('O pedido foi craido com sucesso!');
+        }
 
         return $this->resultRedirectFactory->create()->setPath(
             'agent/*/import', [
