@@ -8,7 +8,6 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\File\UploaderFactory;
 use Magento\Framework\Filesystem;
-use PHPExcel_IOFactory;
 use Planet\Agent\Helper\Data as ImportData;
 
 
@@ -68,10 +67,6 @@ class Process extends Action
             $result = $uploader->save($target);
 
             $xlsxFilePath = $target . $result['file'];
-
-            if ($result['file']) {
-                $this->messageManager->addSuccessMessage(__('File has been successfully uploaded'));
-            }
 
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());

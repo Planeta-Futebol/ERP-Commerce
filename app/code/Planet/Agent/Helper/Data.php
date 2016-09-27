@@ -10,6 +10,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
 
 use PHPExcel_IOFactory;
+use Planet\Agent\Helper\File\CustomerFile;
 use Planet\Agent\Model\ResourceModel\Import\CollectionFactory;
 
 class Data extends AbstractHelper
@@ -21,6 +22,10 @@ class Data extends AbstractHelper
     protected $_productRepository;
 
     protected $_stockState;
+
+    protected $_customerFile;
+
+    protected $_customer;
 
     const INI_COLLECTION_INDEX = 18;
 
@@ -52,7 +57,8 @@ class Data extends AbstractHelper
         CollectionFactory $collectionFactory,
         ProductRepositoryInterface $productRepository,
         StockStateInterface $stockState,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        CustomerFile $customerFile
     )
     {
 
@@ -60,6 +66,7 @@ class Data extends AbstractHelper
         $this->_mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
         $this->_productRepository = $productRepository;
         $this->_stockState = $stockState;
+        $this->_customerFile = $customerFile;
 
         parent::__construct($context);
     }
@@ -70,6 +77,9 @@ class Data extends AbstractHelper
 
         $objPHPExcel = PHPExcel_IOFactory::load($file);
         $worksheet = $objPHPExcel->getActiveSheet();
+
+        $this->_customerFile->load($file);
+        $this->_customer = $this->_customerFile->getCustomer();
 
         $data = array();
 
@@ -181,8 +191,8 @@ class Data extends AbstractHelper
             $rowDataCollection['product_name'] = $product->getName();
             $rowDataCollection['stock'] =
                 $this->_stockState->getStockQty($product->getId());
-
-            $rowDataCollection['price'] =$product->getPrice();
+            $rowDataCollection['price'] = $product->getPrice();
+            $rowDataCollection['id'] = $product->getId();
 
         }catch (\Exception $e){
 
@@ -196,9 +206,7 @@ class Data extends AbstractHelper
         $this->_collection->_init($arr);
 
         $i = $this->getCollection()->count() -1;
-
         $limit = $i - count($this->sizeProducts);
-
         for($i; $i > $limit; $i-- ){
             $this->getCollection()->removeItemByKey($i);
         }
@@ -212,6 +220,14 @@ class Data extends AbstractHelper
     public function getProductBySku($sku)
     {
         return $this->_productRepository->get($sku);
+    }
+
+    /**
+     * @return \Magento\Customer\Model\Customer
+     */
+    public function getCustomer()
+    {
+        return $this->_customer;
     }
 
 }

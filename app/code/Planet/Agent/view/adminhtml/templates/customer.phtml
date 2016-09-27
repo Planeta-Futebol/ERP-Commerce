@@ -1,0 +1,29 @@
+<div class="admin__scope-old">
+    <div class="fieldset-wrapper customer-information">
+        <div class="fieldset-wrapper-title">
+            <span class="title">Personal Information</span>
+        </div>
+        <table class="admin__table-secondary">
+            <tbody>
+            <tr>
+                <td>Full Name: <?= $this->getName(); ?></td>
+                <td>Tax/VAT Number: <?= $this->getTaxVat(); ?></td>
+                <td>Email: <?= $this->getEmail(); ?></td>
+            </tr>
+            <tr>
+                <td>Account Lock: <?= $this->getStatus(); ?></td>
+                <td>Group Customer: <?= $this->getGroup(); ?></td>
+                <td>% Discount: 5</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <address>
+                        <strong>Default Billing Address</strong>
+                        <?= $this->getAddress(); ?>
+                    </address>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

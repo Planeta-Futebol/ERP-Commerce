@@ -41,6 +41,16 @@ class Import extends Action
 
             $this->_helper->processXlsxFile($this->_session->getXlsxFilePath());
 
+            $block = $resultPage->getLayout()->getBlock('agent_sales_import');
+            $block->setData('collection', $this->_helper->getCollection());
+            $block->setChild(
+                'customer',
+                $resultPage->getLayout()->createBlock(
+                    'Planet\Agent\Block\Adminhtml\Customer\Customer',
+                    'agent.import.customer'
+                )->setData('customer', $this->_helper->getCustomer())
+            );
+
         }catch (\PHPExcel_Reader_Exception $e){
 
         }
