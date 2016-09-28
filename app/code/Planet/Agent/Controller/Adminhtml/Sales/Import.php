@@ -1,26 +1,36 @@
 <?php
-
+/**
+ * Copyright © 2016 Planeta Futebol. All rights reserved.
+ *
+ */
 namespace Planet\Agent\Controller\Adminhtml\Sales;
 
-use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
-use Magento\Framework\View\Result\PageFactory;
-use Planet\Agent\Helper\Data as ImportData;
 
 class Import extends Action
 {
-    protected $resultPageFactory = false;
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory
+     *
+     */
+    protected $resultPageFactory;
+
+    /**
+     * @var \Planet\Agent\Helper\Data
+     *
+     */
+    protected $helper;
 
     public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory,
-        ImportData $helper
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        \Planet\Agent\Helper\Data $helper
 
     ) {
-        parent::__construct($context);
-
         $this->resultPageFactory = $resultPageFactory;
-        $this->_helper = $helper;
+        $this->helper = $helper;
+
+        parent::__construct($context);
     }
 
     /**
@@ -39,20 +49,25 @@ class Import extends Action
 
         try{
 
-            $this->_helper->processXlsxFile($this->_session->getXlsxFilePath());
+            // Try process xls file by path in session.
+            $this->helper->processXlsxFile($this->_session->getXlsxFilePath());
 
             $block = $resultPage->getLayout()->getBlock('agent_sales_import');
-            $block->setData('collection', $this->_helper->getCollection());
+
+            // Set explicite product follection to Import Block.
+            $block->setData('collection', $this->helper->getCollection());
+
+            // And difme customer child with data imported
             $block->setChild(
                 'customer',
                 $resultPage->getLayout()->createBlock(
                     'Planet\Agent\Block\Adminhtml\Customer\Customer',
                     'agent.import.customer'
-                )->setData('customer', $this->_helper->getCustomer())
+                )->setData('customer', $this->helper->getCustomer())
             );
 
         }catch (\PHPExcel_Reader_Exception $e){
-
+            // It does nothing if there is no file.
         }
 
         return $resultPage;
