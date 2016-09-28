@@ -1,23 +1,31 @@
 <?php
+/**
+ * Copyright © 2016 Planeta Futebol. All rights reserved.
+ *
+ */
 
 namespace Planet\Agent\Controller\Adminhtml\Sales;
 
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
-use Planet\Agent\Helper\OrderHelper;
 
 class NewOrder extends Action
 {
+    /**
+     * @var \Planet\Agent\Helper\OrderHelper
+     *
+     */
+    protected $helper;
+
     public function __construct(
-        OrderHelper $helper,
+        \Planet\Agent\Helper\OrderHelper $helper,
         Action\Context $context
     )
-
     {
         parent::__construct($context);
 
-        $this->_helper = $helper;
+        $this->helper = $helper;
     }
 
     /**
@@ -33,6 +41,7 @@ class NewOrder extends Action
 
         $items = array();
 
+        // Prepare an array items to use in new order.
         foreach ($params['items'] as $item) {
             $arr = explode('-', $item);
             $items[] = [
@@ -59,8 +68,9 @@ class NewOrder extends Action
             'items' => $items
         ];
 
+        // TODO need urgent corretion, this execption is wrong.
         try{
-            $arr = $this->_helper->createMageOrder($data);
+            $arr = $this->helper->createMageOrder($data);
         }catch (\Magento\Framework\Exception\NoSuchEntityException $e){
             $this->messageManager->addSuccessMessage('O pedido foi craido com sucesso!');
         }

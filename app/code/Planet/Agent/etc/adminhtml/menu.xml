@@ -27,15 +27,5 @@
              parent="Planet_Agent::sales"
              action="agent/sales/import"
         />
-
-        <add id="Planet_Agent::sales_export"
-             resource="Magento_Backend::content"
-             title="Sales Export"
-             module="Planet_Agent"
-             sortOrder="1"
-
-             parent="Planet_Agent::sales"
-             action="agent/sales/export"
-        />
     </menu>
 </config>

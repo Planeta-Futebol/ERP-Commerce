@@ -1,35 +1,53 @@
 <?php
+/**
+ * Copyright © 2016 Planeta Futebol. All rights reserved.
+ *
+ */
 
 namespace Planet\Agent\Controller\Adminhtml\Sales;
 
-use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\File\UploaderFactory;
-use Magento\Framework\Filesystem;
-use Planet\Agent\Helper\Data as ImportData;
-
 
 class Process extends Action
 {
-
+    /**
+     * Directory na to save xls imported files.
+     *
+     * @var string
+     *
+     */
     const XLSX_DIR = 'xlsx_imported_files';
 
-    const  XLSX_ALLOWED = [
+    /**
+     * Type files allowed
+     *
+     * @var array
+     *
+     */
+    const XLSX_ALLOWED = [
         'xlsx', 'xlsm', 'xltx', 'xltm',
         'xlt' , 'ods' , 'ots' , 'xls'
     ];
 
+    /**
+     * @var \Magento\Framework\Filesystem\Directory\WriteInterface
+     *
+     */
     protected $_mediaDirectory;
 
+    /**
+     * @var \Magento\Framework\File\UploaderFactory
+     *
+     */
     protected $_fileUploaderFactory;
 
     public function __construct(
-        Context $context,
-        Filesystem $filesystem,
-        UploaderFactory $fileUploaderFactory,
-        ImportData  $helper
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\Filesystem $filesystem,
+        \Magento\Framework\File\UploaderFactory $fileUploaderFactory,
+        \Planet\Agent\Helper\Data $helper
     ) {
         parent::__construct($context);
 
@@ -45,8 +63,10 @@ class Process extends Action
      */
     public function execute()
     {
+        // get path to pub/media
         $target = $this->_mediaDirectory->getAbsolutePath();
 
+        // if dont have our directory, creates it with 777 permission.
         if(!$this->_mediaDirectory->isExist(self::XLSX_DIR)){
             mkdir($target . self::XLSX_DIR, 0777, true);
         }
@@ -58,21 +78,22 @@ class Process extends Action
             /** @var $uploader \Magento\MediaStorage\Model\File\Uploader */
             $uploader = $this->_fileUploaderFactory->create(['fileId' => 'xlsx_file']);
 
-            /** Allowed extension types */
+            // Allowed extension types.
             $uploader->setAllowedExtensions(self::XLSX_ALLOWED);
 
-            /** rename file name if already exists */
+            // Rename file name if already exists.
             $uploader->setAllowRenameFiles(true);
 
             $result = $uploader->save($target);
 
             $xlsxFilePath = $target . $result['file'];
 
+            // Set in session the current path to uploaded file.
+            $this->_session->setXlsxFilePath($xlsxFilePath);
+
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
-
-        $this->_session->setXlsxFilePath($xlsxFilePath);
 
         return $this->resultRedirectFactory->create()->setPath(
             'agent/*/import', [
