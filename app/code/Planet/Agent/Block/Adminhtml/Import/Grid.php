@@ -1,4 +1,8 @@
 <?php
+/**
+ * Copyright © 2016 Planeta Futebol. All rights reserved.
+ *
+ */
 namespace Planet\Agent\Block\Adminhtml\Import;
 
 use Magento\Backend\Block\Template\Context;
@@ -10,10 +14,15 @@ use Planet\Agent\Helper\Data as ImportData;
 class Grid extends Extended
 {
     /**
-     * @var Manager
+     * @var \Magento\Framework\Module\Manager
+     *
      */
     protected $moduleManager;
 
+    /**
+     * @var \Planet\Agent\Helper\Data
+     *
+     */
     protected $_helper;
 
     public function __construct(
@@ -28,9 +37,6 @@ class Grid extends Extended
         parent::__construct($context, $backendHelper, $data);
     }
 
-    /**
-     * @return void
-     */
     protected function _construct()
     {
         parent::_construct();
@@ -44,11 +50,9 @@ class Grid extends Extended
         $this->setDefaultLimit(100);
     }
 
-    /**
-     * @return $this
-     */
     protected function _prepareCollection()
     {
+        // products collection
         $collection = $this->_helper->getCollection();
         $this->setCollection($collection);
 
@@ -56,10 +60,6 @@ class Grid extends Extended
         return $this;
     }
 
-    /**
-     * @return $this
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     */
     protected function _prepareColumns()
     {
         $this->addColumn(
@@ -92,13 +92,8 @@ class Grid extends Extended
                 'header' => __('Quantity'),
                 'index'  => 'quantity',
                 'name'   => 'quantity',
-
-
                 'filter'   => false,
                 'sortable' => false,
-
-//                'editable'  => true,
-//                'edit_only' => true,
             ]
         );
 
@@ -108,7 +103,6 @@ class Grid extends Extended
                 'header' => __('Stock'),
                 'index'  => 'stock',
                 'name'   => 'stock',
-
                 'filter'   => false,
                 'sortable' => false
             ]
@@ -120,8 +114,6 @@ class Grid extends Extended
                 'header' => __('Price'),
                 'index'  => 'price',
                 'name'   => 'price',
-//                'renderer' => '\Magento\Framework\Pricing\Render',
-
                 'filter'   => false,
                 'sortable' => false
             ]
@@ -130,6 +122,12 @@ class Grid extends Extended
         return parent::_prepareColumns();
     }
 
+    /**
+     * Define current action for lines of grid.
+     *
+     * @param \Magento\Catalog\Model\Product|\Magento\Framework\DataObject $item
+     * @return bool
+     */
     public function getRowUrl($item)
     {
         return false;
