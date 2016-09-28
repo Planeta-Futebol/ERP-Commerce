@@ -1,30 +1,21 @@
 <?php
+/**
+ * Copyright © 2016 Planeta Futebol. All rights reserved.
+ *
+ */
+
 namespace Planet\Agent\Block\Adminhtml;
 
 use Magento\Backend\Block\Widget\Context;
-use Magento\Framework\RegistryFactory as Registry;
 use Magento\Backend\Block\Widget\Container;
 
 class Import extends Container
 {
-    /**
-     * Core registry
-     *
-     * @var Registry
-     */
-    protected $_coreRegistry = null;
 
-    /**
-     * @param Context $context
-     * @param Registry $registry
-     * @param array $data
-     */
     public function __construct(
         Context $context,
-        Registry $registry,
         array $data = []
     ){
-        $this->_coreRegistry = $registry->create();
         parent::__construct($context, $data);
     }
 
@@ -35,7 +26,6 @@ class Import extends Container
         $this->_controller = 'adminhtml_import';
 
         parent::_construct();
-
     }
 
     protected function _prepareLayout()
@@ -51,12 +41,6 @@ class Import extends Container
         return parent::_prepareLayout();
     }
 
-
-    /**
-     * Render grid
-     *
-     * @return string
-     */
     public function getGridHtml()
     {
         return $this->getChildHtml('grid');
@@ -67,6 +51,12 @@ class Import extends Container
         return $this->getChildHtml('customer');
     }
 
+    /**
+     * Prepare a dynamic button html to be included in the header of a customer starts.
+     * This process occurs after the import of XLSX spreadsheet
+     *
+     * @return null|string
+     */
     public function getNewOrderHtml()
     {
         if($this->getChildBlock('customer')){
@@ -87,14 +77,20 @@ CUSTOMER_HTML_BUTTOM;
         return null;
     }
 
+    /**
+     * Prepare a dynamic form html to be included in the header of a customer starts.
+     * This process occurs after the import of XLSX spreadsheet
+     *
+     * @return null|string
+     */
     public function getOrderForm()
     {
-        //return null;
-
         if($this->getChildBlock('customer')){
 
+            // gets block
             $customerBlock = $this->getChildBlock('customer');
 
+            // gets properties defined in block
             $mail      = $customerBlock->getEmail();
             $street    = $customerBlock->getStreet();
             $city      = $customerBlock->getCity();
@@ -105,6 +101,7 @@ CUSTOMER_HTML_BUTTOM;
             $firstname = $customerBlock->getFirstName();
             $lastname  = $customerBlock->getlastName();
 
+            // product collection received by setData() in current block.
             $collection = $this->getCollection();
 
             $itemsHtml = null;
@@ -118,30 +115,30 @@ ITEM;
                 }
             }
 
+            // return a new form with imported data by xlsx file.
             return <<< "ORDER_HTML_FORM"
             <form action="{$this->getUrl("agent/*/neworder")}"
               class="admin__fieldset form-submit hidden"
               method="post"
-        >
-            <input type="hidden" name="form_key"   value="{$this->getFormKey()}"/>
-            <input type="hidden" name="email"      value="{$mail}"/>
-            <input type="hidden" name="street"     value="{$street}"/>
-            <input type="hidden" name="city"       value="{$city}"/>
-            <input type="hidden" name="country_id" value="{$countryId}"/>
-            <input type="hidden" name="postcode"   value="{$postcode}"/>
-            <input type="hidden" name="telephone"  value="{$telephone}"/>
-            <input type="hidden" name="region"     value="{$region}"/>
-            <input type="hidden" name="firstname"  value="{$firstname}"/>
-            <input type="hidden" name="lastname"   value="{$lastname}"/>
-            {$itemsHtml}
-            
-            <div class="admin__field hidden">
-                <button type="submit" class="action-secondary submit-order"
-                        data-index="create_configurable_products_button">
-                    <span>create order</span>
-                </button>
-            </div>
-        </form>
+            >
+                <input type="hidden" name="form_key"   value="{$this->getFormKey()}"/>
+                <input type="hidden" name="email"      value="{$mail}"/>
+                <input type="hidden" name="street"     value="{$street}"/>
+                <input type="hidden" name="city"       value="{$city}"/>
+                <input type="hidden" name="country_id" value="{$countryId}"/>
+                <input type="hidden" name="postcode"   value="{$postcode}"/>
+                <input type="hidden" name="telephone"  value="{$telephone}"/>
+                <input type="hidden" name="region"     value="{$region}"/>
+                <input type="hidden" name="firstname"  value="{$firstname}"/>
+                <input type="hidden" name="lastname"   value="{$lastname}"/>
+                {$itemsHtml}
+                <div class="admin__field hidden">
+                    <button type="submit" class="action-secondary submit-order"
+                            data-index="create_configurable_products_button">
+                        <span>create order</span>
+                    </button>
+                </div>
+            </form>
 ORDER_HTML_FORM;
 
         }
