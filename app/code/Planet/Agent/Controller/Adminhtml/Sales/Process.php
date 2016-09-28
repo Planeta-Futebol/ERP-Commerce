@@ -43,11 +43,6 @@ class Process extends Action
      */
     protected $_fileUploaderFactory;
 
-    /**
-     * @var \Planet\Agent\Helper\Data
-     */
-    protected $helper;
-
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Filesystem $filesystem,
@@ -58,7 +53,6 @@ class Process extends Action
 
         $this->_mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
         $this->_fileUploaderFactory = $fileUploaderFactory;
-        $this->helper = $helper;
     }
 
     /**
