@@ -16,7 +16,19 @@ class Index extends \Magento\Backend\App\Action
 
     public function execute()
     {
-        return $this->resultPageFactory->create();
+
+        $resultPage = $this->resultPageFactory->create();
+
+        $resultPage->setActiveMenu('Planet_Product::import_product');
+
+        $resultPage->getConfig()->getTitle()->prepend(__('Product - Import'));
+
+        $resultPage->addBreadcrumb(__('Product'), __('Product'));
+        $resultPage->addBreadcrumb(__('Import'), __('Import'));
+
+
+        return $resultPage;
+
     }
 
     protected function _isAllowed()
