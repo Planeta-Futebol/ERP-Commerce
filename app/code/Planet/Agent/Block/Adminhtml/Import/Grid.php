@@ -61,6 +61,12 @@ class Grid extends Extended
         return $this;
     }
 
+    public function _prepareLayout()
+    {
+        $this->setTemplate('Planet_Agent::widget/grid/extended.phtml');
+        return parent::_prepareLayout();
+    }
+
     protected function _prepareColumns()
     {
         $this->addColumn(
