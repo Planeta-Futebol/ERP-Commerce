@@ -5,6 +5,11 @@
     <update handle="styles"/>
     <update handle="formkey"/>
 
+    <head>
+        <css src="Planet_Product::css/product.css"/>
+        <script src="Planet_Product::js/product.js"/>
+    </head>
+
     <referenceBlock name="content">
         <block template="content.phtml"
                class="Planet\Product\Block\Adminhtml\Main"
