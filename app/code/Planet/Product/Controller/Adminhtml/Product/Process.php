@@ -43,15 +43,20 @@ class Process extends Action
      */
     protected $_fileUploaderFactory;
 
+    protected $helper;
+
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Filesystem $filesystem,
-        \Magento\Framework\File\UploaderFactory $fileUploaderFactory
+        \Magento\Framework\File\UploaderFactory $fileUploaderFactory,
+        \Planet\Product\Helper\Data $helper
     ) {
         parent::__construct($context);
 
         $this->_mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
         $this->_fileUploaderFactory = $fileUploaderFactory;
+
+        $this->helper = $helper;
     }
 
     /**
@@ -87,7 +92,13 @@ class Process extends Action
 
             $xlsxFilePath = $target . $result['file'];
 
+            $products = $this->helper->processFile($xlsxFilePath);
+
+            $this->helper->create($products);
+
+            //$this->helper->create();
             // Set in session the current path to uploaded file.
+            /** @noinspection PhpUndefinedMethodInspection */
             $this->_session->setProdcutsFilePath($xlsxFilePath);
 
         } catch (\Exception $e) {

@@ -26,6 +26,9 @@ class Index extends \Magento\Backend\App\Action
         $resultPage->addBreadcrumb(__('Product'), __('Product'));
         $resultPage->addBreadcrumb(__('Import'), __('Import'));
 
+        if ($this->_session->hasProdcutsFilePath()) {
+
+        }
 
         return $resultPage;
 
@@ -33,6 +36,7 @@ class Index extends \Magento\Backend\App\Action
 
     protected function _isAllowed()
     {
+        // TODO Define acl rules here
         return $this->_authorization->isAllowed('ACL RULE HERE');
     }
 
