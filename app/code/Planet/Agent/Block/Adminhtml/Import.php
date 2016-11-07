@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright © 2016 Planeta Futebol. All rights reserved.
- *
- */
 
 namespace Planet\Agent\Block\Adminhtml;
 

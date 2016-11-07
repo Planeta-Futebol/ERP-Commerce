@@ -1,0 +1,58 @@
+<div class="admin__fieldset-wrapper-content">
+    <fieldset class="admin__fieldset">
+        <form action="<?= $this->getUrl("product_import/*/process");?>"
+              class="admin__fieldset form-submit"
+              enctype="multipart/form-data"
+              method="post"
+        >
+            <div class="page-main-actions">
+                <div class="page-actions-placeholder" style=""></div>
+                <div class="page-actions" data-ui-id="page-actions-toolbar-content-header">
+                    <div class="page-actions-inner">
+                        <div class="page-actions-buttons">
+                            <button id="import_file"
+                                    title="Save and Continue Edit"
+                                    type="button"
+                                    class="action-
+                                    scalable save ui-button
+                                    ui-widget ui-state-default
+                                    ui-corner-all ui-button-text-only ui-button-text"
+                            >
+                                <span class="admin__field">
+                                    <span class="admin__field-label xlsx_file">
+                                        <label for="xlsx_file" class="file-input">
+                                            <span>Import excel file</span>
+                                        </label>
+                                    </span>
+                                    <span class="admin__field-control hidden">
+                                        <input
+                                            id="xlsx_file"
+                                            type="file"
+                                            class="admin__control-file"
+                                            name="xlsx_file"
+                                        />
+                                    </span>
+                                </span>
+                            </button>
+
+                            <button
+                                id="save"
+                                title="Create Products"
+                                type="submit"
+                                class="action- scalable
+                                 save primary ui-button
+                                 ui-widget ui-state-default ui-corner-all
+                                 ui-button-text-only order-button"
+                                aria-disabled="false"
+                            >
+                        <span class="ui-button-text">
+                            <span>Create Products</span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="form_key" value="<?= $this->getFormKey(); ?>"/>
+        </form>
+    </fieldset>
+</div>

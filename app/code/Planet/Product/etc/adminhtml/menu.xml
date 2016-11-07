@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add
+                id="Planet_Product::import"
+                resource="Magento_Backend::content"
+                title="Import"
+                module="Planet_Product"
+                sortOrder="10"
+                parent="Magento_Catalog::catalog"
+        />
+
+        <add id="Planet_Product::import_product"
+             resource="Magento_Backend::content"
+             title="Product Import"
+             module="Planet_Product"
+             sortOrder="0"
+
+             parent="Planet_Product::import"
+             action="product_import/product"
+        />
+    </menu>
+</config>
+
