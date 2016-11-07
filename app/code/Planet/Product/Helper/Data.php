@@ -2,13 +2,21 @@
 
 namespace Planet\Product\Helper;
 
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
+use Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Model\Product\Visibility;
+use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\Framework\App\Helper\AbstractHelper;
 use PHPExcel_IOFactory;
 
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+class Data extends AbstractHelper
 {
     protected $_productRepository;
     protected $_productFactory;
     protected $_attribute;
+    protected $_optionFactory;
+    protected $_stock;
 
     const INIT_PRODUCT_COLLECTION_INDEX = 2;
 
@@ -43,12 +51,17 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function __construct(
         \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Catalog\Api\ProductAttributeRepositoryInterface $attribute,
-        \Magento\Catalog\Model\ProductFactory $product
+        \Magento\Catalog\Model\ProductFactory $product,
+        Factory $optionFactory,
+        \Magento\CatalogInventory\Model\Stock\Item $stock
     )
     {
         $this->_productRepository = $productRepository;
         $this->_productFactory = $product;
         $this->_attribute =  $attribute;
+        $this->_optionFactory = $optionFactory;
+        $this->_stock = $stock;
+
     }
 
     public function processFile( $path )
@@ -182,6 +195,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     private function getChildProduct($parentProduct, $sku, $stock )
     {
+
+        $size = explode('-', $sku);
         return [
             'sku'          => $sku,
             'gender'       => $parentProduct['gender'],
@@ -192,6 +207,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             'cost'         => $parentProduct['cost'],
             'stock'        => $stock,
             'retail_price' => $parentProduct['retail_price'],
+            'size'         => $size[1]
         ];
     }
 
@@ -209,8 +225,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
         foreach ( $ttrCategory->getOptions() as $option) {
             $option->getValue(); // codigo
-            $option->getLabel(); // nome
+//            echo $option->getLabel(); // nome
         }
+
 
         $ttrStyle = $this->_attribute->get('style');
 
@@ -226,32 +243,88 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $option->getLabel(); // nome
         }
 
+
+
         foreach ($products as $productConfigurables){
-            foreach ($productConfigurables['childrens'] as $productChild){
-                //$product = $this->_productFactory->create();
+
+            $arrProductChild = $productConfigurables['childrens'];
+            
+            $attributeValues = [];
+            $associatedProductIds = [];
+
+            foreach ($arrProductChild as $productChild){
+
+                $product = $this->_productFactory->create();
+
+                $ttrSize = $this->_attribute->get('tamanho_camisetas');
+
+                $optionSizeValue = null;
+                foreach ( $ttrSize->getOptions() as $option) {
+                    $option->getValue();
+                    if($option->getLabel() == $productChild['size']){
+                        $optionSizeValue = $option->getValue();
+                    }
+                }
+
+                $product->setTypeId(Type::TYPE_SIMPLE)
+                    ->setAttributeSetId(4)
+                    ->setWebsiteIds([1])
+                    ->setName($productChild['product_name'])
+                    ->setSku($productChild['sku'])
+                    ->setPrice($productChild['retail_price'])
+                    ->setTamanho_camisetas($optionSizeValue)
+                    ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE)
+                    ->setStatus(Status::STATUS_ENABLED)
+                    ->setStockData([
+                        'use_config_manage_stock' => 1,
+                        'qty' => $productChild['stock'],
+                        'is_qty_decimal' => 0,
+                        'is_in_stock' => 1
+                    ]);
+
+                $this->_productRepository->save($product);
+
+                $attributeValues[] = [
+                    'label' => 'Tamanho',
+                    'attribute_id' => $ttrSize->getId(),
+                    'value_index' => $optionSizeValue,
+                ];
+
+                if(! $product->getEntityId()){
+                    $savedProduct = $this->_productRepository->get($productChild['sku']);
+                    $associatedProductIds[] = $savedProduct->getId();
+                }
             }
 
             $product = $this->_productFactory->create();
 
-            $product->setName($productConfigurables['product_name']);
-            $product->setSku($productConfigurables['sku']);
-            $product->setAttributeSetId(4);
+            $configurableAttributesData = [
+                [
+                    'attribute_id' => $ttrSize->getId(),
+                    'code' => $ttrSize->getAttributeCode(),
+                    'label' => $ttrSize->getStoreLabel(),
+                    'position' => '0',
+                    'values' => $attributeValues,
+                ],
+            ];
 
-            $product->setStatus(1); // Status on product enabled/ disabled 1/0
-            $product->setWeight(10); // weight of product
-            $product->setVisibility(4); // visibilty of product (catalog / search / catalog, search / Not visible individually)
-            //$product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE); // type of product (simple/virtual/downloadable/configurable)
-            $product->setTypeId(\Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE); // type of product (simple/virtual/downloadable/configurable)
-            $product->setPrice($productConfigurables['retail_price']); // price of product
+            $configurableOptions = $this->_optionFactory->create($configurableAttributesData);
+            $extensionConfigurableAttributes = $product->getExtensionAttributes();
+            $extensionConfigurableAttributes->setConfigurableProductOptions($configurableOptions);
+            $extensionConfigurableAttributes->setConfigurableProductLinks($associatedProductIds);
 
-//            $product->setStockData([
-//                'use_config_manage_stock' => 1,
-//                'qty' => 100,
-//                'is_qty_decimal' => 0,
-//                'is_in_stock' => 1
-//            ]);
+            $product->setExtensionAttributes($extensionConfigurableAttributes);
 
-            //$product->setCustomAttribute($attr->getAttributeCode(), 62);
+            $product->setTypeId(Configurable::TYPE_CODE)
+                ->setAttributeSetId(4)
+                ->setName($productConfigurables['product_name'])
+                ->setSku($productConfigurables['sku'])
+                ->setVisibility(Visibility::VISIBILITY_BOTH)
+                ->setStatus(Status::STATUS_ENABLED)
+                ->setStockData([
+                    'use_config_manage_stock' => 1,
+                    'is_in_stock' => 1]
+                );
 
             $this->_productRepository->save($product);
         }

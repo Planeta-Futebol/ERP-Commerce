@@ -96,7 +96,6 @@ class Process extends Action
 
             $this->helper->create($products);
 
-            //$this->helper->create();
             // Set in session the current path to uploaded file.
             /** @noinspection PhpUndefinedMethodInspection */
             $this->_session->setProdcutsFilePath($xlsxFilePath);
