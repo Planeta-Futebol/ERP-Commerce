@@ -7,7 +7,6 @@
 
     <head>
         <css src="Planet_Product::css/product.css"/>
-        <script src="Planet_Product::js/product.js"/>
     </head>
 
     <referenceBlock name="content">

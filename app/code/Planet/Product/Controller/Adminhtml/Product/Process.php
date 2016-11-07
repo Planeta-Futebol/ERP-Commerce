@@ -94,11 +94,17 @@ class Process extends Action
 
             $products = $this->helper->processFile($xlsxFilePath);
 
-            $this->helper->create($products);
+            $qtyCreatedProducts = $this->helper->create($products);
 
-            // Set in session the current path to uploaded file.
-            /** @noinspection PhpUndefinedMethodInspection */
-            $this->_session->setProdcutsFilePath($xlsxFilePath);
+            $this->messageManager->addSuccessMessage(
+                "{$qtyCreatedProducts} products has been created with success."
+            );
+
+            return $this->resultRedirectFactory->create()->setPath(
+                'catalog/product/index', [
+                    '_secure' => $this->getRequest()->isSecure(),
+                ]
+            );
 
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());

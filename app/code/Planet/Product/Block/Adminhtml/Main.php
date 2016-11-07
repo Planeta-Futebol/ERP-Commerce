@@ -20,20 +20,6 @@ class Main extends \Magento\Backend\Block\Widget\Container
     }
 
     function _prepareLayout(){
-
-        $this->setChild(
-            'grid',
-            $this->getLayout()->createBlock(
-                'Planet\Product\Block\Adminhtml\Import\Grid',
-                'agent.import.grid'
-            )
-        );
-
         return parent::_prepareLayout();
-    }
-
-    public function getGridHtml()
-    {
-        return $this->getChildHtml('grid');
     }
 }

@@ -5,7 +5,6 @@ namespace Planet\Product\Helper;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
-use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Helper\AbstractHelper;
 use PHPExcel_IOFactory;
@@ -52,7 +51,7 @@ class Data extends AbstractHelper
         \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Catalog\Api\ProductAttributeRepositoryInterface $attribute,
         \Magento\Catalog\Model\ProductFactory $product,
-        Factory $optionFactory,
+        \Magento\ConfigurableProduct\Helper\Product\Options\Factory $optionFactory,
         \Magento\CatalogInventory\Model\Stock\Item $stock
     )
     {
@@ -214,41 +213,42 @@ class Data extends AbstractHelper
     public function create( $products )
     {
 
-        $attrGender = $this->_attribute->get('genero');
+//        $attrGender = $this->_attribute->get('genero');
+//
+//        foreach ( $attrGender->getOptions() as $option) {
+//            $option->getValue(); // codigo
+//            $option->getLabel(); // nome
+//        }
+//
+//        $ttrCategory = $this->_attribute->get('categoria');
+//
+//        foreach ( $ttrCategory->getOptions() as $option) {
+//            $option->getValue(); // codigo
+//            $option->getLabel(); // nome
+//        }
+//
+//
+//        $ttrStyle = $this->_attribute->get('style');
+//
+//        foreach ( $ttrStyle->getOptions() as $option) {
+//            $option->getValue(); // codigo
+//            $option->getLabel(); // nome
+//        }
+//
+//        $ttrClothing = $this->_attribute->get('vestuario');
+//
+//        foreach ( $ttrClothing->getOptions() as $option) {
+//            $option->getValue(); // codigo
+//            $option->getLabel(); // nome
+//        }
 
-        foreach ( $attrGender->getOptions() as $option) {
-            $option->getValue(); // codigo
-            $option->getLabel(); // nome
-        }
 
-        $ttrCategory = $this->_attribute->get('categoria');
-
-        foreach ( $ttrCategory->getOptions() as $option) {
-            $option->getValue(); // codigo
-//            echo $option->getLabel(); // nome
-        }
-
-
-        $ttrStyle = $this->_attribute->get('style');
-
-        foreach ( $ttrStyle->getOptions() as $option) {
-            $option->getValue(); // codigo
-            $option->getLabel(); // nome
-        }
-
-        $ttrClothing = $this->_attribute->get('vestuario');
-
-        foreach ( $ttrClothing->getOptions() as $option) {
-            $option->getValue(); // codigo
-            $option->getLabel(); // nome
-        }
-
-
+        $qtyCreatedProducts = count($products);
 
         foreach ($products as $productConfigurables){
 
             $arrProductChild = $productConfigurables['childrens'];
-            
+            $qtyCreatedProducts += count($arrProductChild);
             $attributeValues = [];
             $associatedProductIds = [];
 
@@ -323,10 +323,12 @@ class Data extends AbstractHelper
                 ->setStatus(Status::STATUS_ENABLED)
                 ->setStockData([
                     'use_config_manage_stock' => 1,
-                    'is_in_stock' => 1]
-                );
+                    'is_in_stock' => 1
+                ]);
 
             $this->_productRepository->save($product);
         }
+
+        return $qtyCreatedProducts;
     }
 }
