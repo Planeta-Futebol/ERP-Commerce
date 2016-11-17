@@ -1,7 +1,7 @@
 <?php
     $header_type = $this->getConfig('porto_settings/header/header_type');
 ?>
-<header class="page-header type<?php echo $header_type; ?> fulano">
+<header class="page-header type<?php echo $header_type; ?>">
 <?php if($header_type == 3 || $header_type == 4 || $header_type == 9): ?>
     <div class="header content">
     <?php echo $this->getChildHtml("logo"); ?>
