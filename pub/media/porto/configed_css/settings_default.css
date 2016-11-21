@@ -1,6 +1,6 @@
 /**
  * WARNING: Do not change this file. Your changes will be lost.
- * 2016-08-05 18:02:02 */
+ * 2016-11-16 16:11:36 */
 body.boxed {
 }
 @media (min-width: 768px) {
@@ -12,3 +12,16 @@ body.boxed {
     }
 }
 
+@media (min-width: 768px) {
+    .page-header .navigation .level0 .submenu {
+        border: 0;
+    }
+}
+@media (max-width: 767px) {
+    .nav-toggle:before, .block-search .label:before, .nav-toggle:hover:before, .block-search .label:hover:before, .minicart-wrapper .action.showcart:before, .minicart-wrapper .action.showcart:hover:before, .minicart-wrapper .action.showcart:active:before, .minicart-wrapper .action.showcart.active:before, .minicart-wrapper .action.showcart.active:hover:before {
+        color: #fff;
+    }
+    .minicart-wrapper .action.showcart .counter.qty {
+        color: #000
+    }
+}
