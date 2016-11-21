@@ -66,7 +66,6 @@
     });
 </script>
 </div>
-
 <div class="row" style="margin:0;">
     <div class="col-md-6 col-md-offset-3" style="padding:0;">
         <div class="brand-container">
@@ -79,236 +78,95 @@
         </div>
     </div>
 </div>
-
 <div class="row row-margin" style="margin:0;background-color:#f9f9f9;">
     <div class="col-sm-6 sm-f-right" style="padding:0;">
-        <div id="half-image-1" style="background:url({{media url="wysiwyg/planet/porto_child/homepage/PLANETA FUTEBOL-2.jpg"}}) center left no-repeat;background-size:cover;width:100%;">
-        <img src="{{media url="wysiwyg/planet/porto_child/homepage/PLANETA FUTEBOL-2.jpg"}}" alt="" />
+        <div id="half-image-1" style="background:url({{media url="wysiwyg/planet/porto_child/homepage/PLANETA_FUTEBOL-2.jpg"}}) center left no-repeat;background-size:cover;width:100%;">
+            <img src="{{media url="wysiwyg/planet/porto_child/homepage/PLANETA_FUTEBOL-2.jpg"}}" alt="" style="    max-height: 549px;
+            opacity: 0;"/>
+        </div>
     </div>
-</div>
-<div id="half-content-1" class="col-sm-6" style="padding:4% 6% 1.5%;position:relative;text-align:left;">
-    <h3 class="fullwidth-filter-title">Amazing New<br/>Collection</h3>
-    <p class="fullwidth-filter-description">Yes, this is our new collection, check it<br/>out our new arrivals.</p>
-    <div id="men_product" class="hide-addtocart hide-addtolinks no-border" style="margin-top: 25px;">
-        {{block class="Smartwave\Filterproducts\Block\Home\LatestList" name="men_product" product_count="4" aspect_ratio="0" image_width="400" image_height="496" template="owl_list.phtml"}}
-    </div>
-    <script type="text/javascript">
-        require([
-            'jquery',
-            'owl.carousel/owl.carousel.min'
-        ], function ($) {
-            $("#men_product .owl-carousel").owlCarousel({
-                loop: true,
-                margin: 10,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayHoverPause: true,
-                navRewind: true,
-                nav: false,
-                dots: true,
-                responsive: {
-                    0: {
-                        items:1
-                    },
-                    640: {
-                        items:2
-                    }
-                }
-            });
-        });
-    </script>
-</div>
-</div>
-<div class="row" style="margin:0;background-color:#f9f9f9;">
-    <div class="col-sm-6" style="padding:0;">
-        <div id="half-image-2" style="background:url({{media url="wysiwyg/smartwave/porto/homepage/04/slider/women.jpg"}}) center right no-repeat;background-size:cover;width:100%;">
-        <img src="{{media url="wysiwyg/smartwave/porto/homepage/04/slider/women.jpg"}}" style="width:100%;visibility:hidden;" alt="" />
-    </div>
-</div>
-<div id="half-content-2" class="col-sm-6" style="padding:4% 6% 1.5%;position:relative;text-align:left;">
-    <h3 class="fullwidth-filter-title">Amazing New<br/>Collection</h3>
-    <p class="fullwidth-filter-description">Yes, this is our new collection, check it<br/>out our new arrivals.</p>
-    <div id="women_product" class="hide-addtocart hide-addtolinks no-border" style="margin-top: 25px;">
-        {{block class="Smartwave\Filterproducts\Block\Home\LatestList" name="women_product" product_count="4" aspect_ratio="0" image_width="400" image_height="496" template="owl_list.phtml"}}
-    </div>
-    <script type="text/javascript">
-        require([
-            'jquery',
-            'owl.carousel/owl.carousel.min'
-        ], function ($) {
-            $("#women_product .owl-carousel").owlCarousel({
-                loop: true,
-                margin: 10,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayHoverPause: true,
-                navRewind: true,
-                nav: false,
-                dots: true,
-                responsive: {
-                    0: {
-                        items:1
-                    },
-                    640: {
-                        items:2
-                    }
-                }
-            });
-        });
-    </script>
-</div>
-</div>
-<div style="text-align:left; padding: 30px;">
-    <h3 class="fullwidth-filter-title">Amazing New<br/>Collection</h3>
-    <div id="fashion_product" class="hide-addtocart hide-addtolinks no-border" style="margin-top: 25px;">
-        {{block class="Smartwave\Filterproducts\Block\Home\LatestList" name="latest_product" product_count="8" aspect_ratio="0" image_width="400" image_height="496" template="owl_list.phtml"}}
-    </div>
-    <script type="text/javascript">
-        require([
-            'jquery',
-            'owl.carousel/owl.carousel.min'
-        ], function ($) {
-            $("#fashion_product .owl-carousel").owlCarousel({
-                loop: true,
-                margin: 10,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayHoverPause: true,
-                navRewind: true,
-                nav: false,
-                dots: true,
-                responsive: {
-                    0: {
-                        items:2
-                    },
-                    768: {
-                        items:3
-                    },
-                    992: {
-                        items:4
-                    },
-                    1200: {
-                        items:5
-                    }
-                }
-            });
-        });
-    </script>
-</div>
-<div class="row" style="margin:0;background-color:#f9f9f9;">
     <div class="col-sm-6 sm-f-right" style="padding:0;">
-        <div id="half-image-1" style="background:url({{media url="wysiwyg/smartwave/porto/homepage/04/slider/men.jpg"}}) center left no-repeat;background-size:cover;width:100%;">
-        <img src="{{media url="wysiwyg/smartwave/porto/homepage/04/slider/men.jpg"}}" style="width:100%;visibility:hidden;" alt="" />
+        <div class="brand-container center">
+            <div class="top-content">
+                <p class="brand-title">
+                    Camisetas Estampadas
+                </p>
+            </div>
+            <div class="bottom-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at est arcu. Proin sit amet dui id ex viverra dapibus. Sed suscipit erat id enim efficitur, eget suscipit tortor aliquam.</p>
+            </div>
+        </div>
+        <div id="half-image-1" style="background:url({{media url='wysiwyg/planet/porto_child/homepage/II9A0569.jpg'}}) center left no-repeat;background-size:cover;width:100%;">
+            <img src="{{media url="wysiwyg/planet/porto_child/homepage/II9A0569.jpg"}}" alt="" style="    max-height: 549px;
+            opacity: 0;"/>
+        </div>
     </div>
 </div>
-<div id="half-content-1" class="col-sm-6" style="padding:4% 6% 1.5%;position:relative;text-align:left;">
-    <h3 class="fullwidth-filter-title">Amazing New<br/>Collection</h3>
-    <p class="fullwidth-filter-description">Yes, this is our new collection, check it<br/>out our new arrivals.</p>
-    <div id="men_product" class="hide-addtocart hide-addtolinks no-border" style="margin-top: 25px;">
-        {{block class="Smartwave\Filterproducts\Block\Home\LatestList" name="men_product" product_count="4" aspect_ratio="0" image_width="400" image_height="496" template="owl_list.phtml"}}
-    </div>
-    <script type="text/javascript">
-        require([
-            'jquery',
-            'owl.carousel/owl.carousel.min'
-        ], function ($) {
-            $("#men_product .owl-carousel").owlCarousel({
-                loop: true,
-                margin: 10,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayHoverPause: true,
-                navRewind: true,
-                nav: false,
-                dots: true,
-                responsive: {
-                    0: {
-                        items:1
-                    },
-                    640: {
-                        items:2
-                    }
-                }
-            });
-        });
-    </script>
-</div>
-</div>
-<div class="row" style="margin:0;background-color:#f9f9f9;">
-    <div class="col-sm-6" style="padding:0;">
-        <div id="half-image-2" style="background:url({{media url="wysiwyg/smartwave/porto/homepage/04/slider/women.jpg"}}) center right no-repeat;background-size:cover;width:100%;">
-        <img src="{{media url="wysiwyg/smartwave/porto/homepage/04/slider/women.jpg"}}" style="width:100%;visibility:hidden;" alt="" />
+<div class="row row-margin" style="margin:0;background-color:#f9f9f9;">
+    <div class="col-sm-12" style="padding:0;">
+        <div class="brand-container center dark">
+            <div class="top-content">
+                <p class="brand-title">
+                    Bermudas Sarja
+                </p>
+            </div>
+            <div class="bottom-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at est arcu. Proin sit amet dui id ex viverra dapibus. Sed suscipit erat id enim efficitur, eget suscipit tortor aliquam.</p>
+            </div>
+        </div>
+        <div id="half-image-1" style="background:url({{media url='wysiwyg/planet/porto_child/homepage/IMG_1535_2.jpg'}}) center left no-repeat;background-size:cover;width:100%;">
+            <img src="{{media url="wysiwyg/planet/porto_child/homepage/IMG_1535_2.jpg"}}" alt="" style="    max-height: 549px;
+            opacity: 0;"/>
+        </div>
     </div>
 </div>
-<div id="half-content-2" class="col-sm-6" style="padding:4% 6% 1.5%;position:relative;text-align:left;">
-    <h3 class="fullwidth-filter-title">Amazing New<br/>Collection</h3>
-    <p class="fullwidth-filter-description">Yes, this is our new collection, check it<br/>out our new arrivals.</p>
-    <div id="women_product" class="hide-addtocart hide-addtolinks no-border" style="margin-top: 25px;">
-        {{block class="Smartwave\Filterproducts\Block\Home\LatestList" name="women_product" product_count="4" aspect_ratio="0" image_width="400" image_height="496" template="owl_list.phtml"}}
+<div class="row row-margin" style="margin:0;background-color:#f9f9f9;">
+    <div class="col-sm-6 sm-f-right" style="padding:0;">
+        <div class="brand-container center">
+            <div class="top-content">
+                <p class="brand-title">
+                    Camisas Polo
+                </p>
+            </div>
+            <div class="bottom-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at est arcu. Proin sit amet dui id ex viverra dapibus. Sed suscipit erat id enim efficitur, eget suscipit tortor aliquam.</p>
+            </div>
+        </div>
+        <div id="half-image-1" style="background:url({{media url='wysiwyg/planet/porto_child/homepage/Foto_blur.jpg'}}) center left no-repeat;background-size:cover;width:100%;">
+            <img src="{{media url="wysiwyg/planet/porto_child/homepage/Foto_blur.jpg"}}" alt="" style="    max-height: 549px;
+            opacity: 0;"/>
+        </div>
     </div>
-    <script type="text/javascript">
-        require([
-            'jquery',
-            'owl.carousel/owl.carousel.min'
-        ], function ($) {
-            $("#women_product .owl-carousel").owlCarousel({
-                loop: true,
-                margin: 10,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayHoverPause: true,
-                navRewind: true,
-                nav: false,
-                dots: true,
-                responsive: {
-                    0: {
-                        items:1
-                    },
-                    640: {
-                        items:2
-                    }
-                }
-            });
-        });
-    </script>
-</div>
-</div>
-<div style="text-align:left; padding: 30px;">
-    <h3 class="fullwidth-filter-title">Amazing New<br/>Collection</h3>
-    <div id="fashion_product" class="hide-addtocart hide-addtolinks no-border" style="margin-top: 25px;">
-        {{block class="Smartwave\Filterproducts\Block\Home\LatestList" name="latest_product" product_count="8" aspect_ratio="0" image_width="400" image_height="496" template="owl_list.phtml"}}
+    <div class="col-sm-6 sm-f-right" style="padding:0;">
+        <div id="half-image-1" style="background:url({{media url="wysiwyg/planet/porto_child/homepage/Foto.jpg"}}) center left no-repeat;background-size:cover;width:100%;">
+            <img src="{{media url="wysiwyg/planet/porto_child/homepage/Foto.jpg"}}" alt="" style="    max-height: 549px;
+            opacity: 0;"/>
+        </div>
     </div>
-    <script type="text/javascript">
-        require([
-            'jquery',
-            'owl.carousel/owl.carousel.min'
-        ], function ($) {
-            $("#fashion_product .owl-carousel").owlCarousel({
-                loop: true,
-                margin: 10,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayHoverPause: true,
-                navRewind: true,
-                nav: false,
-                dots: true,
-                responsive: {
-                    0: {
-                        items:2
-                    },
-                    768: {
-                        items:3
-                    },
-                    992: {
-                        items:4
-                    },
-                    1200: {
-                        items:5
-                    }
-                }
-            });
-        });
-    </script>
+</div>
+<div class="row row-margin" style="margin:0;background-color:#f9f9f9;">
+    <div class="col-sm-6 sm-f-right" style="padding:0;">
+        <div id="half-image-1" style="background:url({{media url='wysiwyg/planet/porto_child/homepage/Foto2.jpg'}}) center left no-repeat;background-size:cover;width:100%;">
+            <img src="{{media url="wysiwyg/planet/porto_child/homepage/II9A0569.jpg"}}" alt="" style="    max-height: 549px;
+            opacity: 0;"/>
+        </div>
+    </div>
+    <div class="col-sm-6 sm-f-right" style="padding:0;">
+        <div class="brand-container center">
+            <div class="top-content">
+                <p class="brand-title">
+                    Camisas Sociais
+                </p>
+            </div>
+            <div class="bottom-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at est arcu. Proin sit amet dui id ex viverra dapibus. Sed suscipit erat id enim efficitur, eget suscipit tortor aliquam.</p>
+            </div>
+        </div>
+        <div id="half-image-1" style="background:url({{media url="wysiwyg/planet/porto_child/homepage/Foto2_blur.jpg"}}) center left no-repeat;background-size:cover;width:100%;">
+            <img src="{{media url="wysiwyg/planet/porto_child/homepage/PLANETA_FUTEBOL-2.jpg"}}" alt="" style="    max-height: 549px;
+            opacity: 0;"/>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
     require([
@@ -328,9 +186,3 @@
         });
     });
 </script>
-<style type="text/css">
-    .product-item-photo {
-        border-radius: 0;
-        border: 0;
-    }
-</style>
