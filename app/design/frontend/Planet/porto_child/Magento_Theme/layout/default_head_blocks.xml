@@ -18,10 +18,8 @@
         <css src="icon-fonts/css/animation.css" />
         <css src="css/custom.css" />
         <css src="css/planet-style.css" />
-
         <script src="jquery.js" />
         <script src="bootstrap/js/bootstrap.min.js" />
         <script src="fancybox/js/jquery.fancybox.js" />
-
     </head>
 </page>
