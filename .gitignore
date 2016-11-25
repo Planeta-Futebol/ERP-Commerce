@@ -43,6 +43,7 @@ atlassian*
 !/pub/media/tmp/.htaccess
 /pub/media/captcha/*
 /pub/media/xlsx_imported_files/
+/pub/media/porto/*
 /pub/static/*
 !/pub/static/.htaccess
 
