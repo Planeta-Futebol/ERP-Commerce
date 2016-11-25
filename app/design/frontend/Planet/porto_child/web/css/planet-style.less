@@ -1,15 +1,25 @@
-.logo img {
-  display: block;
-  max-height: 50px !important;
-  max-width: 50px !important;
-}
-
 .page-header {
   &.type3{
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.6);
     position: absolute;
     left: 0;
     right: 0;
+    top: 0;
+
+    .top-panel{
+      float: left;
+    }
+
+    .bottom-panel{
+      float: left;
+      margin-left: 15px;
+    }
+
+    .header {
+      &.panel{
+        top: inherit !important;
+      }
+    }
   }
 }
 
@@ -81,4 +91,12 @@
 
 .row-margin{
   margin: 0 20px 20px !important;
+}
+
+.page-wrapper {
+  padding-top: 100px;
+}
+
+.full-screen-slider{
+  margin-top: -100px;
 }
