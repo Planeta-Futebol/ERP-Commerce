@@ -12,12 +12,12 @@ class CustomerFile extends AbstractFile
      */
     private $customer;
 
-    const STREET    = 'A8';
-    const CITY      = 'A9';
+    const STREET    = 'B8';
+    const CITY      = 'B9';
     const COUNTY_ID = 'IN';
-    const REGION    = 'A10';
-    const POSTCODE  = 'D9';
-    const TELEPHONE = 'D10';
+    const REGION    = 'B10';
+    const POSTCODE  = 'H9';
+    const TELEPHONE = 'H10';
 
     public function __construct(
         \Magento\Customer\Model\CustomerFactory $customerFactory,
@@ -69,12 +69,12 @@ class CustomerFile extends AbstractFile
 
     private function getMail()
     {
-        return $this->getCell('A11');
+        return $this->getCell('B11');
     }
 
     private function getName()
     {
-        return $this->getCell('D6');
+        return $this->getCell('B6');
     }
 
     private function getImportedAddress()
