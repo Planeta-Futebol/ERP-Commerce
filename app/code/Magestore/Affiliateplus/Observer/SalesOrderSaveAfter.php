@@ -273,6 +273,17 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                 }
             }
         }
+
+        $coupon = $order->getCouponCode();
+
+        if($this->isAffiliateCoupon($coupon)){
+            $account = $this->loadAccountByCoupon($coupon);
+        }
+
+        if(!$this->isAffiliateCoupon($coupon)){
+            // TODO implement to find a lifitime affiliate
+        }
+
         if (!$account){
             return $this;
         }
@@ -312,7 +323,11 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
         );
         $storeId = $this->_getBackEndQuoteSession()->getStoreId();
         $commissionType = $this->_helperConfig->getCommissionConfig('commission_type', $storeId);
-        $commissionValue = floatval($this->_helperConfig->getCommissionConfig('commission', $storeId));
+//        $commissionValue = floatval($this->_helperConfig->getCommissionConfig('commission', $storeId));
+
+        // TODO Fixed value, need to change after.
+        $commissionValue = 10;
+
         if (($orderId && $this->_helperCookie->getNumberOrdered() > 1) || (!$orderId && $this->_helperCookie->getNumberOrdered())) {
             if ($this->_helperConfig->getCommissionConfig('use_secondary', $storeId)) {
                 $commissionType = $this->_helperConfig->getCommissionConfig('secondary_type', $storeId);
