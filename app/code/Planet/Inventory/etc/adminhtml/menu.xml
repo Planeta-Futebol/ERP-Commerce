@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Planet_Inventory::inventory"
+             resource="Magento_Backend::content"
+             title="Iventory"
+             module="Planet_Inventory"
+             parent="Magento_Reports::report"
+        />
+    </menu>
+    <menu>
+        <add id="Planet_Inventory::stock"
+             resource="Magento_Backend::content"
+             title="Shorts, Shirts and T-Sirts"
+             module="Planet_Inventory"
+             parent="Planet_Inventory::inventory"
+
+             action="inventory/shirt/index"
+        />
+    </menu>
+</config>
