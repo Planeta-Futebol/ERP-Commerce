@@ -12,7 +12,12 @@ class Inventory extends \Magento\Ui\DataProvider\AbstractDataProvider
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->collection = $collectionFactory->create();
+        $this->collection = $collectionFactory->create()
+            ->addAttributeToFilter(
+                'type_id',
+                ['eq' => 'configurable']
+            );
+
     }
 
     /**
