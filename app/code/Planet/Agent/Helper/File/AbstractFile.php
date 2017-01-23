@@ -20,8 +20,7 @@ abstract class AbstractFile
 
     protected function getCell($coordinate)
     {
-        $val = explode(":", $this->worksheet->getCell($coordinate));
-        return trim($val[1]);
+        return trim($this->worksheet->getCell($coordinate));
     }
 
 }
