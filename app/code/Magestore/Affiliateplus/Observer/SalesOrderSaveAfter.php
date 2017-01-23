@@ -729,6 +729,12 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
             }
         }
 
+        $coupon = $order->getCouponCode();
+
+        if ($this->isAffiliateCoupon($coupon)) {
+            $account = $this->loadAccountByCoupon($coupon);
+        }
+
         if($account && $account->getId()){
             /**
              * Log affiliate tracking referal - only when has sales
@@ -1065,8 +1071,8 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                 ]
             );
 
-            $transaction->sendMailNewTransactionToAccount();
-            $transaction->sendMailNewTransactionToSales();
+            //$transaction->sendMailNewTransactionToAccount();
+            //$transaction->sendMailNewTransactionToSales();
         } catch (\Exception $e) {
             var_dump($e->getMessage());die('1');
         }

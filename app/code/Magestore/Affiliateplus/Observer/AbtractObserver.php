@@ -243,4 +243,31 @@ class AbtractObserver {
     public function _getConfigHelper(){
         return $this->_helperConfig;
     }
+
+    /**
+     * Get affiliateplus account by custom coupon code
+     *
+     * @param string $codeCoupon
+     * @return \Magestore\Affiliateplus\Model\Account
+     */
+    public function loadAccountByCoupon( $codeCoupon )
+    {
+        $arrCode = explode('-', $codeCoupon);
+        $account = $this->_accountFactory->create()
+            ->load($arrCode[1], 'account_id');
+
+        return $account;
+    }
+
+
+    /**
+     * Checks if this coupon is a custom affiliate coupon
+     *
+     * @param string $codeCoupon
+     * @return bool
+     */
+    public function isAffiliateCoupon( $codeCoupon )
+    {
+            return (substr_count($codeCoupon, 'AFFILIATE')) > 0;
+    }
 }
