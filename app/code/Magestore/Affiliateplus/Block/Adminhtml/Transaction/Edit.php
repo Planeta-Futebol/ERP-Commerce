@@ -98,17 +98,19 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 
                 if ($account->getBalance() >= $totalCommission || $transaction->getStatus() != '1')  // Transaction Not Completed
                 {
-                    if ($transaction->getStatus() != '3') {
-                        $this->buttonList->add('cancel', array(
-                            'label'     => __('Cancel'),
-                            'onclick'   => 'deleteConfirm(\''
-                                . __('This action cannot be restored. Are you sure?')
-                                . '\', \''
-                                . $this->getUrl('*/*/cancel', array('id' => $transaction->getId()))
-                                . '\')',
-                            'class'     => ''
-                        ), 0);
-                    }
+                    //Gin fix remove button Cancel
+//                    if ($transaction->getStatus() != '3') {
+//                        $this->buttonList->add('cancel', array(
+//                            'label'     => __('Cancel'),
+//                            'onclick'   => 'deleteConfirm(\''
+//                                . __('This action cannot be restored. Are you sure?')
+//                                . '\', \''
+//                                . $this->getUrl('*/*/cancel', array('id' => $transaction->getId()))
+//                                . '\')',
+//                            'class'     => ''
+//                        ), 0);
+//                    }
+                    //End
                     $transaction->setData('transaction_is_can_delete', true);
                 }
             }

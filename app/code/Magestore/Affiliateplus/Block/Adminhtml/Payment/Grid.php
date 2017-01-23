@@ -60,13 +60,12 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Framework\ObjectManagerInterface $objectManager,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magestore\Affiliateplus\Helper\Payment $helperPayment,
         array $data = array()
     )
     {
         parent::__construct($context, $backendHelper, $data);
-        $this->_eventManager = $eventManager;
+        $this->_eventManager = $context->getEventManager();
         $this->_objectManager = $objectManager;
         $this->_helperPayment = $helperPayment;
     }

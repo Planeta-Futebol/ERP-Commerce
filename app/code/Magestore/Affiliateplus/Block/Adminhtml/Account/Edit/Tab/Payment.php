@@ -54,16 +54,14 @@ class Payment extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magestore\Affiliateplus\Model\ResourceModel\Payment\CollectionFactory $paymentCollectionFactory,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         array $data = array()
     )
     {
         parent::__construct($context, $backendHelper, $data);
         $this->_objectManager = $objectManager;
         $this->_paymentCollectionFactory = $paymentCollectionFactory;
-        $this->_eventManager = $eventManager;
-        $this->_storeManager = $storeManager;
+        $this->_eventManager = $context->getEventManager();
+        $this->_storeManager = $context->getStoreManager();
     }
 
     /**
@@ -103,10 +101,9 @@ class Payment extends \Magento\Backend\Block\Widget\Grid\Extended
     {
         $accountId = $this->getRequest()->getParam('account_id');
         $collection = $this->_paymentCollectionFactory->create();
-        $collection->addFieldToFilter('account_id', $accountId);
 
         $this->_eventManager->dispatch('affiliateplus_adminhtml_join_payment_other_table', ['collection' => $collection]);
-
+        $collection->addFieldToFilter('account_id', $accountId);
         if($storeId = $this->getRequest()->getParam('store'))
             $collection->addFieldToFilter('store_ids', $storeId);
 
@@ -146,7 +143,6 @@ class Payment extends \Magento\Backend\Block\Widget\Grid\Extended
             [
                 'header'           => __('Amount'),
                 'index'            => 'amount',
-                'filter_index' => 'if (main_table.order_number="", "N/A", main_table.order_number)',
                 'type'  => 'price',
                 'currency_code' => $store->getBaseCurrency()->getCode(),
             ]

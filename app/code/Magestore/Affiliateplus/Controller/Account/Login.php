@@ -35,7 +35,6 @@ class Login extends \Magestore\Affiliateplus\Controller\AbstractAction
         if (!$this->_dataHelper->isAffiliateModuleEnabled()) {
             return $this->_redirect($this->getBaseUrl());
         }
-
         $isLogin =  $this->_accountHelper->isLoggedIn();
         $isRegiter = $this->_accountHelper->isRegistered();
         if ($isLogin==true) {
@@ -45,10 +44,9 @@ class Login extends \Magestore\Affiliateplus\Controller\AbstractAction
             $this->messageManager->addError(__('Your affiliate account is currently disabled. Please contact us to resolve this issue.'));
             return $this->_redirect('affiliateplus/index/index');
         }
-
-        if ($this->getRequest()->getServer('HTTP_REFERER'))
+        if ($this->getRequest()->getServer('HTTP_REFERER')){
             $this->_getSession->setDirectUrl($this->getRequest()->getServer('HTTP_REFERER'));
-
+        }
         $resultPage = $this->_pageFactory->create();
         $resultPage->getConfig()->getTitle()->set(__('Affiliate login'));
         return $resultPage;

@@ -27,7 +27,7 @@ use Magento\Framework\Controller\ResultFactory;
 /**
  * Action ExportCsv
  */
-class ExportCsv extends \Magestore\Affiliateplus\Controller\Adminhtml\Affiliateplus
+class ExportXml extends \Magestore\Affiliateplus\Controller\Adminhtml\Affiliateplus
 {
     /**
      * Execute action
@@ -38,7 +38,7 @@ class ExportCsv extends \Magestore\Affiliateplus\Controller\Adminhtml\Affiliatep
 
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
-        $content = $resultPage->getLayout()->createBlock('Magestore\Affiliateplus\Block\Adminhtml\Transaction\Grid')->getCsv();
+        $content = $resultPage->getLayout()->createBlock('Magestore\Affiliateplus\Block\Adminhtml\Transaction\Grid')->getXml();
 
         /** @var \Magento\Framework\App\Response\Http\FileFactory $fileFactory */
         $fileFactory = $this->_objectManager->get('Magento\Framework\App\Response\Http\FileFactory');

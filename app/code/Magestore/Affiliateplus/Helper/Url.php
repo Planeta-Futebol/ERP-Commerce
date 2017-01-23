@@ -38,7 +38,7 @@ class Url extends HelperAbstract
     }
 
     /**
-     * Get Banner Url
+     * Get banner Url
      * @param $banner
      * @param null $store
      * @return string

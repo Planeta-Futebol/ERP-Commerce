@@ -108,10 +108,17 @@ class SalesOrderPlaceAfter extends AbtractObserver implements ObserverInterface
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $order = $observer->getEvent()->getOrder();
+        $this->saveDiscountToOrder($order);
+    }
 
+    /**
+     * save affiliate plus discount to order
+     * @param $order
+     */
+    public function saveDiscountToOrder($order){
         $affiliateplusDiscount = $this->getCheckoutSession()->getData('affiliateplus_discount');
         $baseAffiliateplusDiscount = $this->getCheckoutSession()->getData('base_affiliateplus_discount');
-
+        $accountIds =  $this->getCheckoutSession()->getData('account_id');
         $affiliateCredit = $this->getCheckoutSession()->getData('affiliateplus_credit');
         $baseAffiliateCredit = $this->getCheckoutSession()->getData('base_affiliateplus_credit');
 
@@ -122,12 +129,13 @@ class SalesOrderPlaceAfter extends AbtractObserver implements ObserverInterface
         if($affiliateCredit && $baseAffiliateCredit){
             $order->setAffiliateCredit($affiliateCredit);
             $order->setBaseAffiliateCredit($baseAffiliateCredit);
+            $order->setData('account_ids',$accountIds);
         }
         $this->getCheckoutSession()->setData('affiliateplus_discount', null);
         $this->getCheckoutSession()->setData('base_affiliateplus_discount', null);
         $this->getCheckoutSession()->setData('affiliateplus_credit', null);
         $this->getCheckoutSession()->setData('base_affiliateplus_credit', null);
-
+        $this->getCheckoutSession()->setData('account_id', null);
 
     }
 

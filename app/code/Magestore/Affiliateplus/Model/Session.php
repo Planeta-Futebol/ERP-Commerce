@@ -117,10 +117,11 @@ class Session extends \Magento\Framework\Session\SessionManager
      */
     public function getAccount(){
 
+        $storeId = $this->_objectManager->get('Magento\Framework\App\RequestInterface')->getParams('store');
         if (!$this->_accountModel){
             $customerId = $this->_sessionCustomer->getCustomerId();
             $account =  $this->_accountFactory->create()
-                ->setStoreId($this->_storeManager->getStore()->getId());
+                ->setStoreViewId($storeId);
             if ($this->_getConfigHelper()->getSharingConfig('balance') == 'global')
             {
                 $account->setBalanceIsGlobal(true);

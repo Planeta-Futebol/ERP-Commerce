@@ -386,4 +386,9 @@ class Referrer extends AbstractTemplate
     {
         return $this->_storeManager->getStore()->getId();
     }
+    
+    public function setPrice($stringPrice){
+        $price = (float) filter_var( $stringPrice, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+        return $this->formatPrice($price);
+    }
 }

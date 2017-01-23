@@ -61,6 +61,19 @@ class Account extends HelperAbstract
         return !$this->isLoggedIn();
     }
 
+    public function isNotAvailableAccount(){
+        if($this->accountNotLogin()){
+            return true;
+        } else {
+            $account = $this->getAccount();
+            if($account && $account->getId() && ($account->getApproved() == \Magestore\Affiliateplus\Model\Status::STATUS_DISABLED || $account->getStatus() == \Magestore\Affiliateplus\Model\Status::STATUS_DISABLED)){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
     /**
      * check account logged in
      *
@@ -115,7 +128,7 @@ class Account extends HelperAbstract
      * @return bool
      */
     public function disableMaterials(){
-        return ($this->accountNotLogin() || !$this->getMaterialConfig('enable'));
+        return ($this->isNotAvailableAccount() || !$this->getMaterialConfig('enable'));
     }
 
     /**
@@ -139,7 +152,7 @@ class Account extends HelperAbstract
      * @return bool
      */
     public function disableStoreCredit() {
-        if ($this->accountNotLogin()) {
+        if ($this->isNotAvailableAccount()) {
             return true;
         }
         if ($this->getPaymentConfig('store_credit')) {
@@ -152,7 +165,7 @@ class Account extends HelperAbstract
      * @return bool
      */
     public function disableWithdrawal() {
-        if ($this->accountNotLogin()) {
+        if ($this->isNotAvailableAccount()) {
             return true;
         }
         if ($this->getPaymentConfig('withdrawals')) {

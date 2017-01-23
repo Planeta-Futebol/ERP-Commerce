@@ -116,7 +116,11 @@ class Payment extends AbtractModel
             $storeId = $this->getStoreViewId();
             try {
                 $paymentMethod = $this->_helperPayment->getPaymentMethod($paymentMethodCode, $storeId);
-                $paymentMethod->setPayment($this)->loadPaymentMethodInfo();
+
+                $paymentMethod->setPayment($this);
+
+                $paymentMethod->loadPaymentMethodInfo();
+
                 $this->_payment = $paymentMethod;
                 $payment_method = ['payment' => $paymentMethod];
                 $params = array_merge($this->_getEventData(), $payment_method);
@@ -125,6 +129,7 @@ class Payment extends AbtractModel
 
             }
         }
+
         return $this->_payment;
     }
 
@@ -175,9 +180,8 @@ class Payment extends AbtractModel
         if ($this->getId() && $this->getOrigData('status') < 3 && $this->getStatus() == 3) {
             $this->addComment(__('Complete Withdrawal'));
         }
-
-        // change the account Balance
-        if (!$this->getData('is_reduced_balance') && $this->getStatus() && $this->getStatus() < 4 && ($this->getStatus() == 3 || $this->_helperConfig->getPaymentConfig('reduce_balance'))){
+        if (!$this->getData('is_reduced_balance') && $this->getStatus() && $this->getStatus() < 4 &&
+            ($this->getStatus() == 3 || $this->_helperConfig->getPaymentConfig('reduce_balance')) ) {
             // reduce balance when create payment
             $account = $this->getAffiliateplusAccount();
             if ($account && $account->getId()) {
@@ -264,6 +268,7 @@ class Payment extends AbtractModel
             $account = $this->_getAffiliateAccountModel()
                 ->setStoreViewId($this->_getStore()->getId())
                 ->load($this->getAccountId());
+//            $account = $this->getModel('Magestore\Affiliateplus\Model\Session')->getAccount();
             $this->_affiliateplus_account = $account;
         }
         return $this->_affiliateplus_account;
@@ -321,8 +326,8 @@ class Payment extends AbtractModel
 
         $this->setAccountName($account->getName())
             ->setAccountEmail($account->getEmail())
-            ->setBalanceFormated($this->_helper->formatPrice($account->getBalance()))
-            ->setRequestPayment($this->_helper->formatPrice($this->getAmount()))
+            ->setBalanceFormated($this->_helper->convertCurrency($account->getBalance()))
+            ->setRequestPayment($this->_helper->convertCurrency($this->getAmount()))
             ->setRequestDateFormated($this->_helper->formatDate($this->getRequestDate(), \IntlDateFormatter::MEDIUM))
             ->setSalesName($sales['name'])
             ->setBackendUrl($this->_helper->getBackendUrl())
@@ -363,10 +368,10 @@ class Payment extends AbtractModel
         $this->addPaymentInfo()->setAccountName($account->getName())
             ->setAccountEmail($account->getEmail())
             ->setAccountPaypalEmail($account->getPaypalEmail())
-            ->setBalanceFormated($this->_helper->formatPrice($account->getBalance() - $this->getAmount()))
-            ->setRequestPayment($this->_helper->formatPrice($this->getAmount()))
-            ->setPayPayment($this->_helper->formatPrice($payAmount))
-            ->setFeeFormated($this->_helper->formatPrice($this->getFrontendFee()))
+            ->setBalanceFormated($this->_helper->convertCurrency($account->getBalance() - $this->getAmount()))
+            ->setRequestPayment($this->_helper->convertCurrency($this->getAmount()))
+            ->setPayPayment($this->_helper->convertCurrency($payAmount))
+            ->setFeeFormated($this->_helper->convertCurrency($this->getFrontendFee()))
             ->setCreatedTimeFormated($this->_helper->formatDate($now, \IntlDateFormatter::MEDIUM))
             ->setRequestDateFormated($this->_helper->formatDate($this->getRequestDate(), \IntlDateFormatter::MEDIUM))
         ;

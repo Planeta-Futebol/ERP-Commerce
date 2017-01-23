@@ -151,6 +151,9 @@ class HelperAbstract extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Magento\Framework\Filesystem
      */
     protected $_filesystem;
+
+    protected $_storeFactory;
+
     /**
      * Block constructor
      *
@@ -161,15 +164,12 @@ class HelperAbstract extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Catalog\Model\ProductFactory $productFactory,
-        \Magento\Framework\Module\Manager $moduleManager,
         \Magestore\Affiliateplus\Model\Session $sessionModel,
-        \Magento\Framework\CurrencyInterface $currencyInterface,
         \Magento\Framework\Stdlib\CookieManagerInterface $cookieManagerInterface,
         \Magento\Framework\Stdlib\Cookie\PublicCookieMetadata $publicCookieMetadata,
         \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
         \Magestore\Affiliateplus\Model\AccountFactory $accountFactory,
         \Magestore\Affiliateplus\Model\ResourceModel\Account\CollectionFactory $accountCollectionFactory,
-        \Magento\Framework\App\RequestInterface $request,
         \Magento\Framework\Session\SessionManagerInterface $sessionManagerInterface,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Backend\Model\Session\Quote $backendQuoteSession,
@@ -180,22 +180,25 @@ class HelperAbstract extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\View\Asset\Repository $assetRepo,
         \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory,
         \Magento\MediaStorage\Model\File\UploaderFactory $fileUploaderFactory,
-        \Magento\Framework\Filesystem $filesystem
+        \Magento\Framework\Filesystem $filesystem,
+        \Magento\Framework\Locale\CurrencyInterface $localeCurrency,
+        \Magento\Directory\Helper\Data $directoryHelper
+
+
     ) {
         parent::__construct($context);
         $this->_scopeConfig = $context->getScopeConfig();
         $this->_productFactory = $productFactory;
-        $this->_moduleManager = $moduleManager;
+        $this->_moduleManager = $context->getModuleManager();
         $this->_sessionModel = $sessionModel;
         $this->_objectManager = $objectManager;
         $this->_storeManager = $storeManager;
-        $this->_currencyInterface = $currencyInterface;
         $this->_cookieManager = $cookieManagerInterface;
         $this->_publicCookieMetadata = $publicCookieMetadata;
         $this->_cookieMetadataFactory = $cookieMetadataFactory;
         $this->_accountFactory = $accountFactory;
         $this->_accountCollectionFactory = $accountCollectionFactory;
-        $this->_request = $request;
+        $this->_request = $context->getRequest();
         $this->_sessionManagerInterface = $sessionManagerInterface;
         $this->_checkoutSession = $checkoutSession;
         $this->_backendQuoteSession = $backendQuoteSession;
@@ -209,6 +212,12 @@ class HelperAbstract extends \Magento\Framework\App\Helper\AbstractHelper
         $this->_curlFactory = $curlFactory;
         $this->_fileUploaderFactory = $fileUploaderFactory;
         $this->_filesystem = $filesystem;
+        try {
+            $this->_currencyInterface = $this->_objectManager->get('\Magento\Framework\CurrencyInterface');
+        } catch (\Zend_Currency_Exception $e) {
+            $this->_currencyInterface = $localeCurrency->getCurrency($directoryHelper->getBaseCurrencyCode());
+        }
+
     }
 
     /**
@@ -398,7 +407,7 @@ class HelperAbstract extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * Get Affiliate Session
-     * @return mixed
+     * @var \Magestore\Affiliateplus\Model\Session
      */
     public function getAffiliateSession(){
         return $this->_objectManager->create('Magestore\Affiliateplus\Model\Session');
@@ -409,6 +418,13 @@ class HelperAbstract extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getCheckoutSession(){
         return $this->_checkoutSession;
+    }
+
+    /**
+     * @return \Magento\Backend\Model\Session\Quote
+     */
+    public function getBackendSessionQuote(){
+        return $this->_backendQuoteSession;
     }
 
     /**
@@ -435,5 +451,20 @@ class HelperAbstract extends \Magento\Framework\App\Helper\AbstractHelper
             $publicCookie->setPath($path);
         }
         return $publicCookie;
+    }
+
+    /**
+     * render price to order currency
+     * @param type $value
+     * @param type $store
+     * @return string
+     */
+    public function renderCurrency($value, $store) {
+        $baseCurrencyCode = $this->_storeManager->getStore()->getBaseCurrencyCode();
+        $currentCurrencyCode = $this->_storeManager->getStore()->getCurrentCurrencyCode();
+        if ($baseCurrencyCode == $currentCurrencyCode)
+            return '';
+        else
+            return '<br/>[' . $this->formatPrice($value) . ']';
     }
 }

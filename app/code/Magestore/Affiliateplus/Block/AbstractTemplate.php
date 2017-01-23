@@ -171,12 +171,13 @@ class AbstractTemplate extends \Magento\Framework\View\Element\Template
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\App\RequestInterface $requestInterface,
         \Magestore\Affiliateplus\Helper\Config $configHelper,
         \Magestore\Affiliateplus\Helper\Data $dataHelper,
         \Magestore\Affiliateplus\Helper\Account $accountHelper,
         \Magento\Cms\Model\Page $pageModel,
-        \Magento\Framework\CurrencyInterface $currencyInterface,
+//        \Magento\Framework\CurrencyInterface $currencyInterface,
+        \Magento\Framework\Locale\CurrencyInterface $localeCurrency,
+        \Magento\Directory\Helper\Data $directoryHelper,
         \Magestore\Affiliateplus\Model\Session $sessionModel,
         \Magento\Customer\Model\Session $sessionCustomer,
         \Magento\Customer\Model\AddressFactory $addressFactory,
@@ -204,13 +205,13 @@ class AbstractTemplate extends \Magento\Framework\View\Element\Template
 
         $this->_session = $context->getSession();
         $this->_eventManager = $context->getEventManager();
-        $this->_requestInterface = $requestInterface;
+        $this->_requestInterface = $context->getRequest();
         $this->_configHelper = $configHelper;
         $this->_dataHelper = $dataHelper;
         $this->_accountHelper = $accountHelper;
         $this->_pageModel = $pageModel;
         $this->_storeManager = $context->getStoreManager();
-        $this->_currencyInterface = $currencyInterface;
+//        $this->_currencyInterface = $currencyInterface;
         $this->_sessionModel = $sessionModel;
         $this->_sessionCustomer = $sessionCustomer;
         $this->_addressFactory = $addressFactory;
@@ -233,6 +234,13 @@ class AbstractTemplate extends \Magento\Framework\View\Element\Template
         $this->_configCacheType = $configCacheType;
         $this->_filterProvider =  $filterProvider;
         $this->_resultPageFactory = $resultPageFactory;
+
+        try {
+            $this->_currencyInterface = $this->_objectManager->get('\Magento\Framework\CurrencyInterface');
+        } catch (\Zend_Currency_Exception $e) {
+            $this->_currencyInterface = $localeCurrency->getCurrency($directoryHelper->getBaseCurrencyCode());
+        }
+
         parent::__construct($context, $data);
     }
     /**
@@ -268,6 +276,28 @@ class AbstractTemplate extends \Magento\Framework\View\Element\Template
      * @return mixed
      */
     public function formatPrice($value)
+    {
+        $value = $this->convertPrice($value,true);
+        return $this->_priceCurrency->format(
+            $value,
+            true,
+            PriceCurrencyInterface::DEFAULT_PRECISION,
+            $this->getStore()
+        );
+    }
+    //Gin add bug request amount dont convert price
+    public function formatPriceNoConvertPrice($value)
+    {
+
+        return $this->_priceCurrency->format(
+            $value,
+            true,
+            PriceCurrencyInterface::DEFAULT_PRECISION,
+            $this->getStore()
+        );
+    }
+
+    public function formatPriceAmount($value)
     {
         return $this->_priceCurrency->format(
             $value,

@@ -114,7 +114,7 @@ class CreatePost extends \Magestore\Affiliateplus\Controller\AbstractAction
             $captchaCode = $coreSession->getData('register_account_captcha_code');
             if ($captchaCode != $data['account_captcha']) {
                 $session->setAffiliateFormData($this->getRequest()->getPost());
-                $coreSession->addError(__('The verification code entered is incorrect. Please try again.'));
+                $this->messageManager->addError(__('The verification code entered is incorrect. Please try again.'));
                 return $this->_redirect('affiliateplus/account/register');
             }
             //Customer not register affiliate account

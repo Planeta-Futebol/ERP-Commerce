@@ -672,7 +672,7 @@
             <!-- End Refer Friend Configuration -->
 
             <!-- Create Style Config Configuration -->
-            <group id="style_config" translate="label" type="text" sortOrder="18" showInDefault="1"
+            <group id="style_config" translate="label" type="text" sortOrder="200" showInDefault="1"
                    showInWebsite="1" showInStore="1">
                 <label>Style Configuration</label>
 

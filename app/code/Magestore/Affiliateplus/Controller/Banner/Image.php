@@ -64,7 +64,7 @@ class Image extends \Magestore\Affiliateplus\Controller\AbstractAction
                     $actionModel->setData('created_date',date("Y-m-d"));
                     $actionModel->setData('domain',$domain);
                     if ($domain = $actionModel->getDomain()) {
-                        $actionModel->setReferer($this->refineDomain($domain));
+                        $actionModel->setReferer($actionModel->refineDomain($domain));
                     }
                     $actionModel->setData('updated_time',date("Y-m-d H:i:s"));
                     $actionModel->setData('totals',1);

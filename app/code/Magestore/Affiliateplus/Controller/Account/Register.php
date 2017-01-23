@@ -44,6 +44,9 @@ class Register extends \Magestore\Affiliateplus\Controller\AbstractAction
             } else {
                 return $this->_redirect('affiliateplus/account/login');
             }
+            if ($this->_accountHelper->isNotAvailableAccount()){
+                return $this->_redirect('affiliateplus/index/index');
+            }
         }
         if ($this->_sessionCustomer->isLoggedIn()) {
             $formData = ['account_name' => $this->_sessionCustomer->getCustomer()->getName()];

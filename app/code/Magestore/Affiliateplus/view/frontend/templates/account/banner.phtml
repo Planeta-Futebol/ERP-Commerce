@@ -25,12 +25,12 @@
 ?>
 <?php
 echo $block->getLayout()->getMessagesBlock()->getGroupedHtml() ;
- $bannerCollection = $block->getBannerCollection() ;
- $typesLabel = $block->getTypesLabel() ;
- $account = $block->getAccount() ;
- $store_id = $block->getStoreId();
- $referParam = $block->getPersonalUrlParameter();
- $identifyCode = $account->getIdentifyCode(); ?>
+$bannerCollection = $block->getBannerCollection() ;
+$typesLabel = $block->getTypesLabel() ;
+$account = $block->getAccount() ;
+$store_id = $block->getStoreId();
+$referParam = $block->getPersonalUrlParameter();
+$identifyCode = $account->getIdentifyCode(); ?>
 
 <?php if ($this->getStoreConfig('affiliateplus/general/url_param_value') == 2):  ?>
     <?php $identifyCode = $account->getAccountId(); ?>
@@ -168,7 +168,7 @@ else
                             <?php if ($banner->getRelNofollow()): ?>
                                 <?php $bannerHtml .= ' rel="nofollow"'; ?>
                             <?php endif; ?>
-                            <?php $bannerHtml .= ' target="_blank"><img src="' . $block->getImageUrl(['id' => $banner->getId(), 'account_id' => $account->getId(), 'store_id' => $store_id]) . '" title="' . $banner->getTitle() . '" width="' . $banner->getWidth() . '" height="' . $banner->getHeight() . '" /></a>' ?>
+                            <?php $bannerHtml .= ' target="_blank"><img src="' . $block->getImageUrl(['id' => $banner->getId(), 'account_id' => $account->getId(), 'store_id' => $store_id]) . '" title="' . $banner->getTitle() . '" style ="'.'width:' . $banner->getWidth() .'px; height:'.$banner->getHeight().'px;' . '" /></a>' ?>
                             <?php echo $bannerHtml ?>
                         </div>
                         <br />
@@ -186,7 +186,11 @@ else
                             <?php if ($banner->getRelNofollow()): ?>
                                 <?php $bannerHtml .= ' rel="nofollow"'; ?>
                             <?php endif; ?>
-                            <?php $bannerHtml .= 'target="_blank"><embed src="' . $this->getImageUrl(['id' => $banner->getId(), 'account_id' => $account->getId(), 'store_id' => $store_id]) . '" title="' . $banner->getTitle() . '" width="' . $banner->getWidth() . '" height="' . $banner->getHeight() . '" type="application/x-shockwave-flash" wmode="transparent" quality="high" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" /></a>' ?>
+                            <?php $bannerHtml .= 'target="_blank">
+                                <embed src="' . $this->getImageUrl(['id' => $banner->getId(),
+                                    'account_id' => $account->getId(), 'store_id' => $store_id]) . '"
+                                    style="height:' . $banner->getHeight() . 'px; width:' . $banner->getWidth() . 'px;" 
+                                    type="application/x-shockwave-flash" wmode="transparent" quality="high" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" /></a>' ?>
                             <?php echo $bannerHtml ?>
                         </div>
                         <br />
@@ -217,7 +221,7 @@ else
                             <?php echo __('Copy and paste this source code into your website or forum.') ?>
                             <span class="share share_twitter"><a data-url="<?php echo $this->escapeHtml($this->getBannerUrl($banner)) ?>" class="twitter-share-button" data-count="horizontal"><?php echo __('Tweet') ?></a></span>
                             <span class="share share_google"><g:plusone size="medium" href="<?php echo $this->escapeHtml($this->getBannerUrl($banner)) ?>"></g:plusone></span>
-                        <span style="background: url('<?php echo $this->getViewFileUrl('Magestore_Affiliateplus::css/magestore/images/facebook-color.png'); ?>') no-repeat;padding-left: 20px;float:right;" class="share share_facebook">
+                            <span style="background: url('<?php echo $this->getViewFileUrl('Magestore_Affiliateplus::css/magestore/images/facebook-color.png'); ?>') no-repeat;padding-left: 20px;float:right;" class="share share_facebook">
                             <a onclick="postOnFacebook('<?php echo $banner->getTitle()?>','<?php echo $this->getBannerUrl($banner)?>', '<?php echo $this->getBannerSrc($banner) ?>')" title="<?php echo __('Share on Facebook') ?>">
                                 <?php echo __('Share') ?>
                             </a>

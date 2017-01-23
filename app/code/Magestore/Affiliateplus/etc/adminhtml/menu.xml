@@ -25,10 +25,10 @@
     <add id="Magestore_Affiliateplus::magestoreaffiliateplus" title="AFFILIATEPLUS" resource="Magestore_Affiliateplus::magestoreaffiliateplus" module="Magestore_Affiliateplus" sortOrder="20"/>
 
     <add id="Magestore_Affiliateplus::manageaccount" title="Manage Account" resource="Magestore_Affiliateplus::manageaccount" parent="Magestore_Affiliateplus::magestoreaffiliateplus" action="affiliateplusadmin/account" module="Magestore_Affiliateplus" sortOrder="20"/>
-    <add id="Magestore_Affiliateplus::managebanners" title="Manage Banner" resource="Magestore_Affiliateplus::managebanners" parent="Magestore_Affiliateplus::magestoreaffiliateplus" action="affiliateplusadmin/banner" module="Magestore_Affiliateplus" sortOrder="20"/>
-    <add id="Magestore_Affiliateplus::managetransactions" title="Manage Transactions" resource="Magestore_Affiliateplus::managetransactions" parent="Magestore_Affiliateplus::magestoreaffiliateplus" action="affiliateplusadmin/transaction" module="Magestore_Affiliateplus" sortOrder="20"/>
-    <add id="Magestore_Affiliateplus::managewithdrawals" title="Manage Withdrawals" resource="Magestore_Affiliateplus::managewithdrawals" parent="Magestore_Affiliateplus::magestoreaffiliateplus" action="affiliateplusadmin/payment" module="Magestore_Affiliateplus" sortOrder="20"/>
-    <add id="Magestore_Affiliateplus::settings" title="Settings" module="Magestore_Affiliateplus" parent="Magestore_Affiliateplus::magestoreaffiliateplus" action="adminhtml/system_config/edit/section/affiliateplus" resource="Magestore_Affiliateplus::settings" sortOrder="20"/>
+    <add id="Magestore_Affiliateplus::managebanners" title="Manage Banner" resource="Magestore_Affiliateplus::managebanners" parent="Magestore_Affiliateplus::magestoreaffiliateplus" action="affiliateplusadmin/banner" module="Magestore_Affiliateplus" sortOrder="60"/>
+    <add id="Magestore_Affiliateplus::managetransactions" title="Manage Transactions" resource="Magestore_Affiliateplus::managetransactions" parent="Magestore_Affiliateplus::magestoreaffiliateplus" action="affiliateplusadmin/transaction" module="Magestore_Affiliateplus" sortOrder="80"/>
+    <add id="Magestore_Affiliateplus::managewithdrawals" title="Manage Withdrawals" resource="Magestore_Affiliateplus::managewithdrawals" parent="Magestore_Affiliateplus::magestoreaffiliateplus" action="affiliateplusadmin/payment" module="Magestore_Affiliateplus" sortOrder="100"/>
+    <add id="Magestore_Affiliateplus::settings" title="Settings" module="Magestore_Affiliateplus" parent="Magestore_Affiliateplus::magestoreaffiliateplus" action="adminhtml/system_config/edit/section/affiliateplus" resource="Magestore_Affiliateplus::settings" sortOrder="120"/>
 
   </menu>
 </config>

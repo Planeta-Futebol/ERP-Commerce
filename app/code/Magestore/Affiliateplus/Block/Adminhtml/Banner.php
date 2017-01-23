@@ -34,7 +34,7 @@ class Banner extends \Magento\Backend\Block\Widget\Grid\Container
         $this->_controller = 'adminhtml_banner';
         $this->_blockGroup = 'Magestore_Affiliateplus';
         $this->_headerText = __('Account banner grid');
-        $this->_addButtonLabel = __('Add New Banner');
+        $this->_addButtonLabel = __('Add New banner');
 
         parent::_construct();
     }

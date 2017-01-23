@@ -53,16 +53,14 @@ class Transaction extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magestore\Affiliateplus\Model\ResourceModel\Transaction\CollectionFactory $transactionCollectionFactory,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         array $data = array()
     )
     {
         parent::__construct($context, $backendHelper, $data);
         $this->_objectManager = $objectManager;
         $this->_transactionCollectionFactory = $transactionCollectionFactory;
-        $this->_eventManager = $eventManager;
-        $this->_storeManager = $storeManager;
+        $this->_eventManager = $context->getEventManager();
+        $this->_storeManager = $context->getStoreManager();
     }
 
     /**

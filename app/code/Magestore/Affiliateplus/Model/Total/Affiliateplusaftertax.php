@@ -71,7 +71,7 @@ class Affiliateplusaftertax extends \Magestore\Affiliateplus\Model\Total\Abstrac
                 return $this;
             }
         }
-        $items = $quote->getAllItems();
+        $items = $address->getAllItems();
         if (!count($items)){
             return $this;
         }
@@ -133,24 +133,30 @@ class Affiliateplusaftertax extends \Magestore\Affiliateplus\Model\Total\Abstrac
 //        }
 
         /** add new event to calculate commission when edit order */
-        if ($this->_helper->isAdmin()) {
-
-            $this->_eventManager->dispatch('affiliateplus_address_collect_total_edit',
-                [
-                    'address' => $address,
-                    'discount_obj' => $discountObj,
-                ]
-            );
-        }
-        /** end add new event  */
-        else {
+//        if ($this->_helper->isAdmin()) {
+//
+//            $this->_eventManager->dispatch('affiliateplus_address_collect_total_edit',
+//                [
+//                    'address' => $address,
+//                    'quote' => $quote,
+//                    'shipping_assignment' => $shippingAssignment,
+//                    'total' => $total,
+//                    'discount_obj' => $discountObj,
+//                ]
+//            );
+//        }
+//        /** end add new event  */
+//        else {
             $this->_eventManager->dispatch('affiliateplus_address_collect_total',
                 [
                     'address' => $address,
+                    'quote' => $quote,
+                    'shipping_assignment' => $shippingAssignment,
+                    'total' => $total,
                     'discount_obj' => $discountObj,
                 ]
             );
-        }
+//        }
         $baseDiscount = $discountObj->getBaseDiscount();
         $storeId = $quote->getStoreId();
         if ($discountObj->getDefaultDiscount()) {
@@ -164,8 +170,8 @@ class Affiliateplusaftertax extends \Magestore\Affiliateplus\Model\Total\Abstrac
 
             if (
                 (isset($defaultDiscount) && $defaultDiscount && !$couponCodeBySession && $this->_helper->isAdmin())
-                || (isset($dataProcessing['program_name']) && $dataProcessing['program_name'] == 'Affiliate Program'
-                    && $this->_helper->isAdmin())
+//                || (isset($dataProcessing['program_name']) && $dataProcessing['program_name'] == 'Affiliate Program'
+//                    && $this->_helper->isAdmin())
                 || ($discountObj->getProgram() == 'Affiliate Program')
                 || ($account && $account->getId())
                 || (isset($baseAffiliateDiscount) && $baseAffiliateDiscount)
@@ -368,7 +374,7 @@ class Affiliateplusaftertax extends \Magestore\Affiliateplus\Model\Total\Abstrac
                 }
             }
         }
-        if ($baseDiscount !=0) {
+        if ($baseDiscount >=0) {
 
             $discount = $this->_abstractTemplate->convertPrice($baseDiscount);
             $total->setBaseAffiliateplusDiscount(-$baseDiscount);
@@ -399,6 +405,10 @@ class Affiliateplusaftertax extends \Magestore\Affiliateplus\Model\Total\Abstrac
             $total->addBaseTotalAmount('affiliateplus', -$baseDiscount);
             $total->setBaseGrandTotal($total->getBaseGrandTotal() - $baseDiscount);
             $total->setGrandTotal($total->getGrandTotal() - $discount);
+            if ($this->_helperConfig->getDiscountConfig('allow_discount') == 'affiliate') {
+                $total->setDiscountAmount(0);
+                $total->setBaseDiscountAmount(0);
+            }
 //            var_dump($total->getGrandTotal());
             /**
              * buy product via paypal by quote

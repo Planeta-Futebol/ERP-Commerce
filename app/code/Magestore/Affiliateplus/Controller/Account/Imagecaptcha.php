@@ -46,7 +46,6 @@ class Imagecaptcha extends \Magestore\Affiliateplus\Controller\AbstractAction
         $config['Transparency'] = 80;
         $captcha = new \SimpleCaptcha($config);
         $this->_getSession->setData('register_account_captcha_code', $captcha->Code);
-
     }
 
 

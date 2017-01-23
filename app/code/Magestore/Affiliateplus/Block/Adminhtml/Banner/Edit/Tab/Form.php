@@ -38,7 +38,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
      */
     protected $_banner;
     /**
-     * @var \Magestore\Affiliateplus\Model\ResourceModel\Banner\value\CollectionFactory
+     * @var \Magestore\Affiliateplus\Model\ResourceModel\Banner\Value\CollectionFactory
      */
     protected $_valueCollectionFactory;
 
@@ -81,9 +81,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
         \Magestore\Affiliateplus\Model\Banner $banner,
         \Magento\Framework\DataObjectFactory $objectFactory,
         \Magestore\Affiliateplus\Model\ResourceModel\Banner\Value\CollectionFactory $bannerValueCollection,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\ObjectManagerInterface $objectManager,
-        \Magento\Framework\View\LayoutInterface $layout,
         array $data = array()
     )
     {
@@ -91,10 +89,10 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
         $this->_banner = $banner;
         $this->_valueCollectionFactory = $bannerValueCollection;
         $this->_objectFactory = $objectFactory;
-        $this->_storeManager = $storeManager;
+        $this->_storeManager = $context->getStoreManager();
         $this->_session = $context->getSession();
         $this->_objectManager = $objectManager;
-        $this->_layout = $layout;
+        $this->_layout = $context->getLayout();
     }
 
     /**
@@ -214,8 +212,8 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
             'select',
             [
                 'name' => 'type_id',
-                'label' => __('Banner Type'),
-                'title' => __('Banner Type'),
+                'label' => __('banner Type'),
+                'title' => __('banner Type'),
                 'options' => \Magestore\Affiliateplus\Model\Banner::getAvailableTypes(),
                 'onchange' => 'showFileField()',
             ]
@@ -243,7 +241,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
         if ($data && $data['banner_id'] && $data['type_id'] != 3 && $data['source_file']) {
             $html = $this->createElementHtmlOutputBlock();
             $elements['banner_view'] = $fieldset->addField('banner_view', 'note', array(
-                'label' => __('Banner View'),
+                'label' => __('banner View'),
                 'text' => $html,
             ));
         }
@@ -333,7 +331,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
     public function getPageTitle()
     {
         return $this->getRegistryModel()->getId()
-            ? __("Edit Banner '%1'", $this->escapeHtml($this->getRegistryModel()->getTitle())) : __('Add New Banner');
+            ? __("Edit banner '%1'", $this->escapeHtml($this->getRegistryModel()->getTitle())) : __('Add New banner');
     }
 
     /**

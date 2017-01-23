@@ -37,9 +37,9 @@
                 <strong class = "title-spending" style="">
                     <!-- ko text: $t('You are spending')--><!-- /ko -->
                     <span class = "style-form">
-                        <span class="using_credit" data-bind="attr:{title:$t('Edit')}, event:{click:showAffiliateCreditInput[this]}">
+                        <span style="width: 10%;" using_credit" data-bind="attr:{title:$t('Edit')}, event:{click:showAffiliateCreditInput[this]}">
                             <a href="#" onclick="return false;"><!-- ko $t(affiliateCreditInfo()['usingAmount'])--><!-- /ko --></a>
-                            <img class = "img-edit ajax-loader v-middle" data-bind="attr:{src: affiliateCreditInfo()['editButtonImage'], alt:$t('Edit')}" />
+                            <img style="width: 21%;" = "img-edit ajax-loader v-middle" data-bind="attr:{src: affiliateCreditInfo()['editButtonImage'], alt:$t('Edit')}" />
                         </span>
                         <span class="credit_input" style="display: none;">
                             <input data-bind="attr:{value:affiliateCreditInfo()['affiliateCredit'], title:$t('Affiliate Credit')}, event:{keypress:isNotEnterKeyPressed[event], keyup: enterUpdateAffiliateCreditInput[this, event]}" class="input-text" type="text" style="width: 68px;" />

@@ -47,12 +47,11 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
         \Magento\Backend\Model\Auth\Session $authSession,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Framework\View\Element\BlockFactory $blockFactory,
         array $data = []
     ) {
         parent::__construct($context, $jsonEncoder, $authSession, $data);
-        $this->_eventManager = $eventManager;
+        $this->_eventManager = $context->getEventManager();
         $this->_blockFactory = $blockFactory;
     }
     /**

@@ -122,7 +122,7 @@ class Save extends \Magestore\Affiliateplus\Controller\Adminhtml\Affiliateplus
                 if ($email && strpos($email, '@'))
                     $customer->setEmail($email);
                 $customer->save();
-                $storeId = $storeId ? $storeId : $customer->getStoreId();
+//                $storeId = $storeId ? $storeId : $customer->getStoreId();
 
                 $model->setId($id)
                     ->setStoreViewId($storeId)

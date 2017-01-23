@@ -261,7 +261,7 @@
                             <strong><?php echo __('From Date') ?></strong>
                         </td>
                         <td colspan="2">
-                            <?php echo $this->formatDate($program->getValidFrom(), 'medium', false) ?>
+                            <?php echo $this->formatDate($program->getValidFrom(), \IntlDateFormatter::MEDIUM, false) ?>
                         </td>
                     </tr>
                 <?php endif ?>
@@ -271,7 +271,7 @@
                             <strong><?php echo __('To Date') ?></strong>
                         </td>
                         <td colspan="2">
-                            <?php echo $this->formatDate($program->getValidTo(), 'medium', false) ?>
+                            <?php echo $this->formatDate($program->getValidTo(), \IntlDateFormatter::MEDIUM, false) ?>
                         </td>
                     </tr>
                 <?php endif ?>

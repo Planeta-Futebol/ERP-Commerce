@@ -51,12 +51,13 @@ else
             <tbody>
             <?php foreach ($this->getTraffics() as $traffic): ?>
                 <tr>
-                    <td><?php echo $traffic['title']; ?></td>
-                    <td><?php echo $traffic['today']; ?></td>
-                    <td><?php echo $traffic['week']; ?></td>
-                    <td><?php echo $traffic['month']; ?></td>
-                    <td><?php echo $traffic['year']; ?></td>
-                    <td><?php echo $traffic['all']; ?></td>
+                    <!--  Gin fix bug              -->
+                    <td><?php echo $block->setPrice($traffic['title']); ?></td>
+                    <td><?php echo $block->setPrice($traffic['today']); ?></td>
+                    <td><?php echo $block->setPrice($traffic['week']); ?></td>
+                    <td><?php echo $block->setPrice($traffic['month']); ?></td>
+                    <td><?php echo $block->setPrice($traffic['year']); ?></td>
+                    <td><?php echo $block->setPrice($traffic['all']); ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

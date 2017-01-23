@@ -95,7 +95,6 @@ abstract class Affiliateplus extends \Magento\Backend\App\Action
         \Magestore\Affiliateplus\Model\ResourceModel\Account\CollectionFactory $accountCollectionFactory,
         \Magestore\Affiliateplus\Model\BannerFactory $bannerFactory,
         \Magestore\Affiliateplus\Model\PaymentFactory $paymentFactory,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magestore\Affiliateplus\Helper\Data $helper,
         \Magestore\Affiliateplus\Helper\Config $helperConfig,
@@ -107,7 +106,7 @@ abstract class Affiliateplus extends \Magento\Backend\App\Action
         $this->_customerFactory = $customerFactory;
         $this->_accountFactory =  $accountFactory;
         $this->_accountCollectionFactory = $accountCollectionFactory;
-        $this->_eventManager = $eventManager;
+        $this->_eventManager = $context->getEventManager();
         $this->_storeManager = $storeManager;
         $this->_bannerFactory = $bannerFactory;
         $this->_paymentFactory = $paymentFactory;

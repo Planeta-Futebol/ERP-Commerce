@@ -68,6 +68,7 @@ class Cart extends \Magestore\Affiliateplus\Block\AbstractTemplate
                 $balance -= $this->getAffiliateCredit();
             }
         }
+//        var_dump($balance);die;
         $balance = $this->_getHelper()->formatPrice($balance);
         return $balance;
     }
@@ -92,6 +93,11 @@ class Cart extends \Magestore\Affiliateplus\Block\AbstractTemplate
      * @return mixed
      */
     public function getBalance(){
-        return $this->_getAccountHelper()->getAccount()->getBalance();
+        $balance = round($this->_getAccountHelper()->getAccount()->getBalance(), 2);
+        return $balance;
     }
+
+//    public function ConvertPrice($balance){
+//        return $this->_getHelper()->ConvertPrice($balance);
+//    }
 }

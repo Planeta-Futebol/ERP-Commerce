@@ -53,16 +53,14 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magestore\Affiliateplus\Model\ResourceModel\Account\CollectionFactory $accountCollectionFactory,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         array $data = array()
     )
     {
         parent::__construct($context, $backendHelper, $data);
         $this->_objectManager = $objectManager;
         $this->_accountCollectionFactory = $accountCollectionFactory;
-        $this->_eventManager = $eventManager;
-        $this->_storeManager = $storeManager;
+        $this->_eventManager = $context->getEventManager();
+        $this->_storeManager = $context->getStoreManager();
     }
 
     /**
@@ -146,12 +144,13 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
             'balance',
             [
                 'header'           => __('Balance'),
-                'index'            => 'balance',
+//                'index'            => 'balance',
                 'header_css_class' => 'col-balance',
                 'column_css_class' => 'col-balance',
                 'type'             => 'price',
                 'currency_code'    => $currencyCode,
-                'filter_index'	=> 'main_table.balance'
+                'filter_index'	=> 'main_table.balance',
+                'renderer'          => 'Magestore\Affiliateplus\Block\Adminhtml\Account\Renderer\Balance',
             ]
         );
 
@@ -177,7 +176,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                 'column_css_class' => 'col-total_paid',
                 'type'             => 'price',
                 'currency_code'    => $currencyCode,
-                'filter_index'	=> 'main_table.total_paid'
+                'filter_index'	=> 'main_table.total_paid',
             ]
         );
 

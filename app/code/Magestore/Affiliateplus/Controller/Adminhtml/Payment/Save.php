@@ -76,11 +76,11 @@ class Save extends \Magestore\Affiliateplus\Controller\Adminhtml\Affiliateplus
                 ->load($payment->getAccountId());
 
             $amount = $this->getRequest()->getParam('amount');
-            if (!$paymentId && $amount < $this->_helperConfig->getPaymentConfig('payment_release')) {
-                $this->messageManager->addError(__('The minimum balance allowing withdrawal request is %1', $this->formatPrice($this->_helperConfig->getPaymentConfig('payment_release'))));
-                $this->_session->setFormData($data);
-                return $resultRedirect->setPath('*/*/new', ['account_id' => $account->getId()]);
-            }
+//            if (!$paymentId && $amount < $this->_helperConfig->getPaymentConfig('payment_release')) {
+//                $this->messageManager->addError(__('The minimum balance allowing withdrawal request is %1', $this->formatPrice($this->_helperConfig->getPaymentConfig('payment_release'))));
+//                $this->_session->setFormData($data);
+//                return $resultRedirect->setPath('*/*/new', ['account_id' => $account->getId()]);
+//            }
             if (!$paymentId && $amount > $account->getBalance()) {
                 $this->messageManager->addError(__('The withdrawal amount cannot exceed the account balance: %1.',$this->formatPrice($this->_helperConfig->getPaymentConfig('payment_release'))));
                 $this->_session->setFormData($data);
@@ -104,12 +104,14 @@ class Save extends \Magestore\Affiliateplus\Controller\Adminhtml\Affiliateplus
                 }
 
                 $payment->save();
-                $dataEmail = isset($data['paypal_email']) ? $data['paypal_email'] : '';
-                $paypalPayment = $payment->getPayment()->addData($data)
-                    ->setEmail($dataEmail)
-                    ->savePaymentMethodInfo();
-                if(isset($data['transaction_id']) && $data['transaction_id']){
-                    $paypalPayment->setTransactionId($data['transaction_id']);
+                if(isset($data['paypal_email']) && $data['paypal_email'] != '') {
+                    $dataEmail = $data['paypal_email'];
+                    $paypalPayment = $payment->getPayment()->addData($data)
+                        ->setEmail($dataEmail)
+                        ->savePaymentMethodInfo();
+                    if (isset($data['transaction_id']) && $data['transaction_id']) {
+                        $paypalPayment->setTransactionId($data['transaction_id']);
+                    }
                 }
                 $this->messageManager->addSuccess(__('Your withdrawal request has been saved.'));
                 $this->_session->setFormData(false);

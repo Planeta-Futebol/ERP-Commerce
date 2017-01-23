@@ -38,6 +38,9 @@ class CancelPayment extends \Magestore\Affiliateplus\Controller\AbstractAction
         if ($this->_accountHelper->accountNotLogin()) {
             return $this->_redirect('affiliateplus/account/login');
         }
+        if ($this->_accountHelper->isNotAvailableAccount()){
+            return $this->_redirect('affiliateplus/index/index');
+        }
 
         $id = $this->getRequest()->getParam('id');
         $payment = $this->getModelPayment()->load($id);

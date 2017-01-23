@@ -250,7 +250,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
         $js = '';
         if (isset($data['account_balance'])) {
             $js .='<script type="text/javascript">
-                var request_amount_max =' . $data['account_balance'] . ';
+                var request_amount_max =' . round($data['account_balance'], 2) . ';
                   if(request_amount_max == "1e-12"){
                     request_amount_max=0;
                 }
@@ -304,7 +304,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
                 $taxParams['note'] = __('Including %1 tax', round($rate, 2) . '%');
                 $taxParams['after_element_html'] = '
                     <script type="text/javascript">
-                        var request_amount_max =' . $data['account_balance'] . ';
+                        var request_amount_max =' . round($data['account_balance'], 2) . ';
                         function checkAmountBalance(el){
                             el.value = parseFloat(el.value);
                             if (el.value < 0) el.value = 0;

@@ -57,9 +57,9 @@ class Edit extends \Magestore\Affiliateplus\Controller\Adminhtml\Affiliateplus
 
         $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
         if($id){
-            $resultPage->getConfig()->getTitle()->prepend(__('Edit Banner "%1"', $model->getTitle()));
+            $resultPage->getConfig()->getTitle()->prepend(__('Edit banner "%1"', $model->getTitle()));
         }else {
-            $resultPage->getConfig()->getTitle()->prepend(__('Add New Banner'));
+            $resultPage->getConfig()->getTitle()->prepend(__('Add New banner'));
         }
         $resultPage->setActiveMenu('Magestore_Affiliateplus::magestoreaffiliateplus');
         return $resultPage;
