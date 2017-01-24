@@ -91,7 +91,7 @@ class Request extends \Magestore\Affiliateplus\Block\AbstractTemplate
             $balance = $this->getAccount()->getBalance();
         }
         $balance = $this->convertPrice($balance);
-        return floor($balance * 100) / 100;
+//        return floor($balance * 100) / 100; Gin fix
         return round($this->convertPrice($this->getAccount()->getBalance()),2);
     }
 
@@ -113,10 +113,10 @@ class Request extends \Magestore\Affiliateplus\Block\AbstractTemplate
                 $account = $this->_accountFactory->create()->setStoreId($store->getId())->load($this->getAccount()->getId());
                 $balance += $account->getBalance();
             }
-
             return $this->formatPrice($balance);
         } else {
-            return $this->formatPrice($this->getAccount()->getBalance());
+            $balance = $this->getAccount()->getBalance();
+            return $this->formatPrice($balance);
         }
     }
 

@@ -40,6 +40,9 @@ class RefineCustomUrl extends \Magestore\Affiliateplus\Controller\AbstractAction
         if ($this->_accountHelper->accountNotLogin()) {
             return $this->_redirect('affiliateplus/account/login');
         }
+        if ($this->_accountHelper->isNotAvailableAccount()){
+            return $this->_redirect('affiliateplus/index/index');
+        }
 
         $customerUrl = $this->getRequest()->getParam('custom_url');
         $requestPath = $this->_objectManager->create('Magento\Catalog\Model\Product\Url')->formatUrlKey($customerUrl);

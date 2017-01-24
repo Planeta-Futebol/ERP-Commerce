@@ -108,7 +108,6 @@ class AbtractModel extends \Magento\Framework\Model\AbstractModel
         \Magento\Framework\Registry $registry,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\ObjectManagerInterface $objectManager,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Directory\Model\CurrencyFactory $currencyFactory,
         \Magento\Framework\UrlInterface $urlBuilder,
         \Magento\Framework\Message\ManagerInterface $messageManager,
@@ -124,7 +123,7 @@ class AbtractModel extends \Magento\Framework\Model\AbstractModel
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
         $this->_storeManager = $storeManager;
         $this->_objectManager = $objectManager;
-        $this->_eventManager = $eventManager;
+        $this->_eventManager = $context->getEventDispatcher();
         $this->_helper = $helper;
         $this->_helperConfig = $helperConfig;
         $this->_helperPayment = $helperPayment;

@@ -66,29 +66,55 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             10
         );
 
-        $this->_formScripts[] = "
+        $this->_formScripts[] = '   
             function toggleEditor() {
-                if (tinyMCE.getInstanceById('block_content') == null) {
-                    tinyMCE.execCommand('mceAddControl', false, 'block_content');
+                if (tinyMCE.getInstanceById(\'block_content\') == null) {
+                    tinyMCE.execCommand(\'mceAddControl\', false, \'block_content\');
                 } else {
-                    tinyMCE.execCommand('mceRemoveControl', false, 'block_content');
+                    tinyMCE.execCommand(\'mceRemoveControl\', false, \'block_content\');
                 }
             }
-            function showFileField() {
-                require(['jquery'], function($){
-					var file = $('#banner_source_file').parent().parent();
-                    var width = $('#banner_width').parent().parent();
-                    var height = $('#banner_height').parent().parent();
-                    var view = $('#banner_banner_view');
 
-                    if($('#banner_type_id').val() == 1 || $('#banner_type_id').val() == 2){
-                        $('#banner_source_file').addClass('required-entry');
-                        $('#banner_width').addClass('required-entry');
-                        $('#banner_height').addClass('required-entry');
+          
+                     
+                        
+                    require([
+                            "jquery",
+                            "underscore",
+                            "mage/mage",
+                            "mage/backend/tabs",
+                            "domReady!"
+                        ], function($) {
+                       
+                            var $form = $(\'#edit_form\');
+                            $form.mage(\'form\', {
+                                handlersData: {
+                                    save: {},
+                                    saveAndNew: {
+                                        action: {
+                                            args: {back: \'new\'}
+                                        }
+                                    },
+                                }
+                            });
+
+                        });
+                    
+            function showFileField() {
+                require([\'jquery\'], function($){
+					var file = $(\'#banner_source_file\').parent().parent();
+                    var width = $(\'#banner_width\').parent().parent();
+                    var height = $(\'#banner_height\').parent().parent();
+                    var view = $(\'#banner_banner_view\');
+
+                    if($(\'#banner_type_id\').val() == 1 || $(\'#banner_type_id\').val() == 2){
+                        $(\'#banner_source_file\').addClass(\'required-entry\');
+                        $(\'#banner_width\').addClass(\'required-entry\');
+                        $(\'#banner_height\').addClass(\'required-entry\');
 
                         if(view != null || view != undefined){
                             view.parent().parent().show();
-                            $('#banner_source_file').removeClass('required-entry');
+                            $(\'#banner_source_file\').removeClass(\'required-entry\');
                         }
 
                         file.show();
@@ -99,9 +125,9 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
                             view.parent().parent().hide();
                         }
 
-                        $('#banner_source_file').removeClass('required-entry');
-                        $('#banner_width').removeClass('required-entry');
-                        $('#banner_height').removeClass('required-entry');
+                        $(\'#banner_source_file\').removeClass(\'required-entry\');
+                        $(\'#banner_width\').removeClass(\'required-entry\');
+                        $(\'#banner_height\').removeClass(\'required-entry\');
 
                         file.hide();
                         width.hide();
@@ -110,6 +136,6 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 				});
             }
             showFileField();
-        ";
+        ';
     }
 }

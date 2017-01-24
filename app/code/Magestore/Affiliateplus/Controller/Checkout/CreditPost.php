@@ -65,7 +65,7 @@ class CreditPost extends \Magestore\Affiliateplus\Controller\AbstractAction
     protected function getAffiliateBalance(){
         $account = $this->_affiliateSession->getAccount();
         if($account && $account->getId()){
-            return $account->getBalance();
+            return $this->getConfigHelper()->convertPrice($account->getBalance());
         }
         return 0;
     }

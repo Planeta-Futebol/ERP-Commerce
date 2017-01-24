@@ -37,6 +37,9 @@ class RequestPayment extends \Magestore\Affiliateplus\Controller\AbstractAction
         if ($this->_accountHelper->accountNotLogin()) {
             return $this->_redirect('affiliateplus/account/login');
         }
+        if ($this->_accountHelper->isNotAvailableAccount()){
+            return $this->_redirect('affiliateplus/index/index');
+        }
         if ($this->_accountHelper->disableWithdrawal()) {
             $this->messageManager->addError(__('Request withdrawal not allowed at this time.'));
             if (!$this->_accountHelper->disableStoreCredit()) {
@@ -70,20 +73,21 @@ class RequestPayment extends \Magestore\Affiliateplus\Controller\AbstractAction
         $store = $this->_storeManager->getStore();
         $amount = $this->getRequest()->getParam('amount');
         $amount = $amount / $this->getAbtracTemplate()->convertPrice(1);
-        if ($amount < $this->getConfigHelper()->getPaymentConfig('payment_release')) {
-            $this->messageManager->addNotice(__('The minimum balance required to request withdrawal is %1'
-                , $this->getAbtracTemplate()->formatPrice($this->getConfigHelper()->getPaymentConfig('payment_release'))));
-            return $this->_redirect('affiliateplus/index/paymentForm');
-        }
+//        if ($amount < $this->getConfigHelper()->getPaymentConfig('payment_release')) {
+//            $this->messageManager->addNotice(__('The minimum balance required to request withdrawal is %1'
+//                , $this->getAbtracTemplate()->formatPrice($this->getConfigHelper()->getPaymentConfig('payment_release'))));
+//            return $this->_redirect('affiliateplus/index/paymentForm');
+//        }
         $amountInclTax = $this->getRequest()->getParam('amount_incl_tax');
+        $accountBalance = $this->getAbtracTemplate()->convertPrice($account->getBalance());
         if ($amountInclTax) {
-            if ($amountInclTax > $amount && $amountInclTax > $account->getBalance()) {
+            if ($amountInclTax > $amount && $amountInclTax > $accountBalance) {
                 $this->messageManager->addError(__('The withdrawal requested cannot exceed your current balance (%1).'
                     , $this->getAbtracTemplate()->formatPrice($account->getBalance())));
                 return $this->_redirect('affiliateplus/index/paymentForm');
             }
         }
-        if ($amount > $account->getBalance()) {
+        if ($amount > $accountBalance) {
             $this->messageManager->addError(__('The withdrawal requested cannot exceed your current balance (%1).'
                 , $this->getAbtracTemplate()->formatPrice($account->getBalance())));
 
@@ -147,9 +151,11 @@ class RequestPayment extends \Magestore\Affiliateplus\Controller\AbstractAction
                 $paymentObj->setRequired(false);
             }
         }
-        if ($paymentObj->getRequired()) {
-            $this->messageManager->addError(__('Please fill out all required fields in the form below.'));
-            return $this->_redirect('affiliateplus/index/paymentForm', $this->getRequest()->getPostValue());
+        if ($paymentCode != 'bank') {
+            if ($paymentObj->getRequired()) {
+                $this->messageManager->addError(__('Please fill out all required fields in the form below.'));
+                return $this->_redirect('affiliateplus/index/paymentForm', $this->getRequest()->getPostValue());
+            }
         }
 
         try {

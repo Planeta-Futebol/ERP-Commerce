@@ -22,6 +22,7 @@
 namespace Magestore\Affiliateplus\Controller;
 
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
 /**
  * Class AbstractAction
  * @package Magestore\Affiliateplus\Controller
@@ -102,6 +103,10 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action
     protected $_resultPageFactory;
 
     /**
+     * @var PriceCurrencyInterface
+     */
+    protected $_priceCurrency;
+    /**
      * Action constructor
      *
      * @param \Magento\Framework\App\Action\Context $context
@@ -111,7 +116,6 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action
         \Magento\Framework\View\Result\PageFactory $pageFactory,
         \Magestore\Affiliateplus\Helper\Data $dataHelper,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Framework\Session\SessionManagerInterface $session,
         \Magestore\Affiliateplus\Helper\Account $accountHelper,
         \Magento\Customer\Model\Session $sessionCustomer,
@@ -123,7 +127,8 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action
         \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter,
         \Magento\Framework\View\Element\BlockFactory $blockFactory,
         PageFactory $resultPageFactory,
-        \Magento\Customer\Model\Url $customerHelperData
+        \Magento\Customer\Model\Url $customerHelperData,
+        PriceCurrencyInterface $priceCurrency
 
     ) {
         parent::__construct($context);
@@ -131,7 +136,7 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action
         $this->_dataHelper = $dataHelper;
         $this->_storeManager = $storeManager;
         $this->_objectManager = $context->getObjectManager();
-        $this->_eventManager = $eventManager;
+        $this->_eventManager = $context->getEventManager();
         $this->_getSession = $session;
         $this->_accountHelper = $accountHelper;
         $this->_sessionCustomer = $sessionCustomer;
@@ -145,6 +150,7 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action
         $this->_blockFactory = $blockFactory;
         $this->_resultPageFactory = $resultPageFactory;
         $this->_customerHelperData = $customerHelperData;
+        $this->_priceCurrency = $priceCurrency;
 
     }
 
@@ -268,5 +274,13 @@ abstract class AbstractAction extends \Magento\Framework\App\Action\Action
     public function getConfigHelper()
     {
         return $this->_objectManager->get('Magestore\Affiliateplus\Helper\Config');
+    }
+    /**
+     * @param $value
+     * @return float
+     */
+    public function convertPrice($value, $format = true)
+    {
+        return $this->_priceCurrency->convert($value, $format);
     }
 }

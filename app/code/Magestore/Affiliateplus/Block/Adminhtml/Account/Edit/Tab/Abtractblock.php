@@ -88,9 +88,7 @@ class Abtractblock extends \Magento\Backend\Block\Widget\Form\Generic implements
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Data\FormFactory $formFactory,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Config\Model\Config\Source\Yesno $yesno,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\Customer\Attribute\Source\Website $websiteCustomer,
         \Magento\Store\Model\StoreFactory $storeModel,
         \Magestore\Affiliateplus\Helper\Config $configHelper,
@@ -103,9 +101,9 @@ class Abtractblock extends \Magento\Backend\Block\Widget\Form\Generic implements
         array $data = array()
     ) {
         parent::__construct($context, $registry, $formFactory, $data);
-        $this->_eventManager = $eventManager;
+        $this->_eventManager = $context->getEventManager();
         $this->_yesno = $yesno;
-        $this->_storeManager = $storeManager;
+        $this->_storeManager = $context->getStoreManager();
         $this->_websiteCustomer = $websiteCustomer;
         $this->_storeModel = $storeModel;
         $this->_configHelper = $configHelper;

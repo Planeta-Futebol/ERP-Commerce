@@ -72,7 +72,11 @@ class Tax extends \Magestore\Affiliateplus\Helper\HelperAbstract
                 $calculator->setCustomer($customer);
             }
         }
-        $request = $calculator->getRateRequest(null, null, null, $store);
+        if ($customer){
+            $request = $calculator->getRateRequest(null, null, null, $store,$customer->getId());
+        }else{
+            $request = $calculator->getRateRequest(null, null, null, $store);
+        }
         $percent = $calculator->getRate($request->setProductClassId($taxClassId));
         return (float)$percent;
     }

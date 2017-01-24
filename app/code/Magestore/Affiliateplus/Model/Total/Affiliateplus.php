@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magestore.
  *
@@ -20,11 +19,8 @@
  * @license     http://www.magestore.com/license-agreement.html
  */
 namespace Magestore\Affiliateplus\Model\Total;
-
-
 class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
 {
-
     /**
      * @param \Magento\Quote\Model\Quote $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
@@ -35,27 +31,24 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
         \Magento\Quote\Model\Quote $quote,
         \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
         \Magento\Quote\Model\Quote\Address\Total $total
-    ) {
+    )
+    {
         parent::collect($quote, $shippingAssignment, $total);
-        if (!$this->_helper->isAffiliateModuleEnabled()){
+        if (!$this->_helper->isAffiliateModuleEnabled()) {
             return $this;
         }
-        $address= $shippingAssignment->getShipping()->getAddress();
-        $items = $shippingAssignment->getItems();
-        if (!count($items)){
+        $address = $shippingAssignment->getShipping()->getAddress();
+        $items   = $shippingAssignment->getItems();
+        if (!count($items)) {
             return $this;
         }
-        $applyTaxAfterDiscount = (bool) $this->_helperConfig
+        $applyTaxAfterDiscount = (bool)$this->_helperConfig
             ->getConfig(\Magento\Tax\Model\Config::CONFIG_XML_PATH_APPLY_AFTER_DISCOUNT, $quote->getStoreId());
-
-
-        if(!$applyTaxAfterDiscount){
+        if (!$applyTaxAfterDiscount) {
             return $this;
         }
-
         $discount_include_tax = false;
-
-        if ((int) ($this->_helper->getConfig('tax/calculation/discount_tax', $quote->getStore())) == 1){
+        if ((int)($this->_helper->getConfig('tax/calculation/discount_tax', $quote->getStore())) == 1) {
             $discount_include_tax = true;
         }
         if ($this->_helperConfig->getDiscountConfig('type_discount') == 'product') {
@@ -73,19 +66,17 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                 return $this;
             }
         }
-
-        $session = $this->_checkoutSession;
-        $orderId = 0;
+        $session       = $this->_checkoutSession;
+        $orderId       = 0;
         $affiliateInfo = '';
         if ($this->_helper->isAdmin()) {
             $orderId = $this->_backendQuoteSession->getOrder()->getId();
-            if($orderId){
+            if ($orderId) {
                 $affiliateInfo = $this->_helper->getAffiliateInfoByOrderId($orderId);
             }
         } else {
             $affiliateInfo = $this->_helperCookie->getAffiliateInfo();
         }
-
 //        $dataProcessing = $this->_helper->processDataWhenEditOrder();
 //        if (isset($dataProcessing['current_couponcode'])) {
 //            $currentCouponCode = $dataProcessing['current_couponcode'];
@@ -104,88 +95,89 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
 //        }
         /* */
         $couponCodeBySession = $session->getAffiliateCouponCode();
-        $isAllowUseCoupon = $this->_helper->isAllowUseCoupon($couponCodeBySession);
+        $isAllowUseCoupon    = $this->_helper->isAllowUseCoupon($couponCodeBySession);
         if (!$isAllowUseCoupon || !$this->_helper->isAffiliateModuleEnabled()) {
             $session->unsAffiliateCouponCode();
         }
-
         $isEnableLiftime = $this->_helperConfig->getCommissionConfig('life_time_sales');
         if ($this->_helperCookie->getNumberOrdered() == 1 && !$session->getData('affiliate_coupon_code') && isset($currentCouponCode) && $currentCouponCode != '') {
             return $this;
         } else if ($isEnableLiftime == 0 && $this->_helperCookie->getNumberOrdered() > 1 && !$session->getData('affiliate_coupon_code') && isset($currentCouponCode) && $currentCouponCode != '') {
             return $this;
         }
-
         $baseDiscount = 0;
 //        $affiliateInfo = $this->_helperCookie->getAffiliateInfo();
         $discountObj = new \Magento\Framework\DataObject(
             [
-                'affiliate_info' => $affiliateInfo,
-                'base_discount' => $baseDiscount,
-                'default_discount' => true,
+                'affiliate_info'      => $affiliateInfo,
+                'base_discount'       => $baseDiscount,
+                'default_discount'    => true,
                 'discounted_products' => [],
-                'discounted_items' => [],
-                'program' => '',
+                'discounted_items'    => [],
+                'program'             => '',
             ]
         );
 //        if (!isset($customerId)) {
 //            $customerId = '';
 //        }
-
         /** add new event to calculate discount in multiple program plugin when edit order */
-        if ($this->_helper->isAdmin()) {
-
-            $this->_eventManager->dispatch('affiliateplus_address_collect_total_edit',
-                [
-                    'address' => $address,
-                    'discount_obj' => $discountObj,
-                ]
-            );
-        }
-        /** end add new event  */
-        else {
-            $this->_eventManager->dispatch('affiliateplus_address_collect_total',
-                [
-                    'address' => $address,
-                    'discount_obj' => $discountObj,
-                ]
-            );
-        }
+//        if ($this->_helper->isAdmin()) {
+//
+//            $this->_eventManager->dispatch('affiliateplus_address_collect_total_edit',
+//                [
+//                    'address' => $address,
+//                    'quote' => $quote,
+//                    'shipping_assignment' => $shippingAssignment,
+//                    'total' => $total,
+//                    'discount_obj' => $discountObj,
+//                ]
+//            );
+//        }
+//        /** end add new event  */
+//        else {
+        $this->_eventManager->dispatch('affiliateplus_address_collect_total',
+            [
+                'address'             => $address,
+                'quote'               => $quote,
+                'shipping_assignment' => $shippingAssignment,
+                'total'               => $total,
+                'discount_obj'        => $discountObj,
+            ]
+        );
+//        }
         $baseDiscount = $discountObj->getBaseDiscount();
-        $storeId = $quote->getStoreId();
+        $storeId      = $quote->getStoreId();
         if ($discountObj->getDefaultDiscount()) {
             $account = '';
-            if($affiliateInfo){
+            if ($affiliateInfo) {
                 foreach ($affiliateInfo as $info) {
                     if ((isset($info['account']) && $info['account'])) {
                         $account = $info['account'];
                     }
                 }
             }
-
             if (
                 (isset($defaultDiscount) && $defaultDiscount && !$couponCodeBySession && $this->_helper->isAdmin())
-                || (isset($dataProcessing['program_name']) && $dataProcessing['program_name'] == 'Affiliate Program' && $this->_helper->isAdmin())
+//                || (isset($dataProcessing['program_name']) && $dataProcessing['program_name'] == 'Affiliate Program' && $this->_helper->isAdmin())
                 || ($discountObj->getProgram() == 'Affiliate Program')
                 || ($account && $account->getId())
                 || (isset($baseAffiliateDiscount) && $baseAffiliateDiscount)
             ) {
-                $discountType = $this->_helperConfig
+                $discountType  = $this->_helperConfig
                     ->getDiscountConfig('discount_type', $storeId);
                 $discountValue = floatval($this->_helperConfig
                     ->getDiscountConfig('discount', $storeId));
-
                 if (($orderId && $this->_helperCookie->getNumberOrdered() > 1)
                     || (!$orderId && $this->_helperCookie->getNumberOrdered())
                 ) {
                     if ($this->_helperConfig->getDiscountConfig('use_secondary', $storeId)) {
-                        $discountType = $this->_helperConfig
+                        $discountType  = $this->_helperConfig
                             ->getDiscountConfig('secondary_type', $storeId);
                         $discountValue = floatval($this->_helperConfig
                             ->getDiscountConfig('secondary_discount', $storeId));
                     }
                 }
-                $discountedItems = $discountObj->getDiscountedItems();
+                $discountedItems    = $discountObj->getDiscountedItems();
                 $discountedProducts = $discountObj->getDiscountedProducts();
                 if ($discountValue <= 0) {
                     return $this;
@@ -209,7 +201,6 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                                 } else {
                                     $baseItemsPrice += $item->getQty() * ($child->getQty() * $child->getBasePriceInclTax() - $child->getBaseDiscountAmount());
                                 }
-
                             }
                         } elseif ($item->getProduct()) {
                             if (!$discount_include_tax) {
@@ -217,7 +208,6 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                             } else {
                                 $baseItemsPrice += $item->getQty() * $item->getBasePriceInclTax() - $item->getBaseDiscountAmount();
                             }
-
                         }
                     }
                     if ($baseItemsPrice) {
@@ -239,18 +229,14 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                                     } else {
                                         $price = $item->getQty() * ($child->getQty() * $child->getBasePriceInclTax() - $child->getBaseDiscountAmount());
                                     }
-
                                     $childBaseDiscount = $totalBaseDiscount * $price / $baseItemsPrice;
                                     $child->setBaseAffiliateplusAmount($childBaseDiscount)
                                         ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($childBaseDiscount));
-
                                     /** Caculate discount for hidden tax */
                                     $baseTaxableAmount = $child->getBaseTaxableAmount();
-                                    $taxableAmount = $child->getTaxableAmount();
-
+                                    $taxableAmount     = $child->getTaxableAmount();
                                     $child->setBaseTaxableAmount(max(0, $baseTaxableAmount - $child->getBaseAffiliateplusAmount()));
                                     $child->setTaxableAmount(max(0, $taxableAmount - $child->getAffiliateplusAmount()));
-
                                     $store = $this->_storeManager->getStore()->getId();
                                     if ($this->_objectManager->create('Magento\Tax\Helper\Data')->priceIncludesTax()) {
                                         $rate = $this->getItemRateOnQuote($address, $child->getProduct(), $store);
@@ -268,14 +254,12 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                                 }
                                 $itemBaseDiscount = $totalBaseDiscount * $price / $baseItemsPrice;
                                 $item->setBaseAffiliateplusAmount($itemBaseDiscount)
-                                    ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($itemBaseDiscount))
-                                ;
+                                    ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($itemBaseDiscount));
                                 /** Caculate discount for hidden tax */
                                 $baseTaxableAmount = $item->getBaseTaxableAmount();
-                                $taxableAmount = $item->getTaxableAmount();
+                                $taxableAmount     = $item->getTaxableAmount();
                                 $item->setBaseTaxableAmount(max(0, $baseTaxableAmount - $item->getBaseAffiliateplusAmount()));
                                 $item->setTaxableAmount(max(0, $taxableAmount - $item->getAffiliateplusAmount()));
-
                                 if ($this->_objectManager->create('Magento\Tax\Helper\Data')->priceIncludesTax()) {
                                     $rate = $this->getItemRateOnQuote($address, $item->getProduct(), $store);
                                     if ($rate > 0) {
@@ -299,7 +283,6 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                             continue;
                         }
                         $itemBaseDiscount = 0;
-
                         if ($item->getHasChildren() && $item->isChildrenCalculated()) {
                             foreach ($item->getChildren() as $child) {
                                 $childBaseDiscount = $item->getQty() * $child->getQty() * $discountValue;
@@ -308,18 +291,15 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                                 } else {
                                     $price = $item->getQty() * ($child->getQty() * $child->getBasePriceInclTax() - $child->getBaseDiscountAmount());
                                 }
-
                                 $childBaseDiscount = ($childBaseDiscount < $price) ? $childBaseDiscount : $price;
                                 $itemBaseDiscount += $childBaseDiscount;
                                 $child->setBaseAffiliateplusAmount($childBaseDiscount)
-                                    ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($childBaseDiscount))
-                                ;
+                                    ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($childBaseDiscount));
                                 /** Caculate discount for hidden tax */
                                 $baseTaxableAmount = $child->getBaseTaxableAmount();
-                                $taxableAmount = $child->getTaxableAmount();
+                                $taxableAmount     = $child->getTaxableAmount();
                                 $child->setBaseTaxableAmount(max(0, $baseTaxableAmount - $child->getBaseAffiliateplusAmount()));
                                 $child->setTaxableAmount(max(0, $taxableAmount - $child->getAffiliateplusAmount()));
-
                                 $store = $this->_storeManager->getStore()->getId();
                                 if ($this->_objectManager->create('Magento\Tax\Helper\Data')->priceIncludesTax()) {
                                     $rate = $this->getItemRateOnQuote($address, $child->getProduct(), $store);
@@ -336,17 +316,14 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                             } else {
                                 $price = $item->getQty() * $item->getBasePriceInclTax() - $item->getBaseDiscountAmount();
                             }
-
                             $itemBaseDiscount = ($itemBaseDiscount < $price) ? $itemBaseDiscount : $price;
                             $item->setBaseAffiliateplusAmount($itemBaseDiscount)
-                                ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($itemBaseDiscount))
-                            ;
+                                ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($itemBaseDiscount));
                             /** Caculate discount for hidden tax */
                             $baseTaxableAmount = $item->getBaseTaxableAmount();
-                            $taxableAmount = $item->getTaxableAmount();
+                            $taxableAmount     = $item->getTaxableAmount();
                             $item->setBaseTaxableAmount(max(0, $baseTaxableAmount - $item->getBaseAffiliateplusAmount()));
                             $item->setTaxableAmount(max(0, $taxableAmount - $item->getAffiliateplusAmount()));
-
                             $store = $this->_storeManager->getStore()->getId();
                             if ($this->_objectManager->create('Magento\Tax\Helper\Data')->priceIncludesTax()) {
                                 $rate = $this->getItemRateOnQuote($address, $item->getProduct(), $store);
@@ -362,7 +339,6 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                     if ($discountValue > 100) {
                         $discountValue = 100;
                     }
-
                     if ($discountValue < 0) {
                         $discountValue = 0;
                     }
@@ -388,21 +364,18 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                                 $childBaseDiscount = $price * $discountValue / 100;
                                 $itemBaseDiscount += $childBaseDiscount;
                                 $child->setBaseAffiliateplusAmount($childBaseDiscount)
-                                    ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($childBaseDiscount))
-                                ;
+                                    ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($childBaseDiscount));
                                 /** Caculate discount for hidden tax */
                                 $baseTaxableAmount = $child->getBaseTaxableAmount();
-                                $taxableAmount = $child->getTaxableAmount();
+                                $taxableAmount     = $child->getTaxableAmount();
                                 $child->setBaseTaxableAmount(max(0, $baseTaxableAmount - $child->getBaseAffiliateplusAmount()));
                                 $child->setTaxableAmount(max(0, $taxableAmount - $child->getAffiliateplusAmount()));
-
                                 $store = $this->_storeManager->getStore()->getId();
                                 if ($this->_objectManager->create('Magento\Tax\Helper\Data')->priceIncludesTax()) {
                                     $rate = $this->getItemRateOnQuote($address, $child->getProduct(), $store);
                                     if ($rate > 0) {
                                         $child->setAffiliateplusBaseHiddenTaxAmount($this->calTax($baseTaxableAmount - $child->getBaseTaxableAmount(), $rate));
                                         $child->setAffiliateplusHiddenTaxAmount($this->calTax($taxableAmount - $child->getTaxableAmount(), $rate));
-
                                     }
                                 }
                             }
@@ -415,14 +388,12 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                             }
                             $itemBaseDiscount = $price * $discountValue / 100;
                             $item->setBaseAffiliateplusAmount($itemBaseDiscount)
-                                ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($itemBaseDiscount))
-                            ;
+                                ->setAffiliateplusAmount($this->_abstractTemplate->convertPrice($itemBaseDiscount));
                             /** Caculate discount for hidden tax */
                             $baseTaxableAmount = $item->getBaseTaxableAmount();
-                            $taxableAmount = $item->getTaxableAmount();
+                            $taxableAmount     = $item->getTaxableAmount();
                             $item->setBaseTaxableAmount(max(0, $baseTaxableAmount - $item->getBaseAffiliateplusAmount()));
                             $item->setTaxableAmount(max(0, $taxableAmount - $item->getAffiliateplusAmount()));
-
                             $store = $this->_storeManager->getStore()->getId();
                             if ($this->_objectManager->create('Magento\Tax\Helper\Data')->priceIncludesTax()) {
                                 $rate = $this->getItemRateOnQuote($address, $item->getProduct(), $store);
@@ -437,14 +408,11 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                 }
             }
         }
-
-        if ($baseDiscount !=0) {
-
+        if ($baseDiscount >= 0) {
             $discount = $this->_abstractTemplate->convertPrice($baseDiscount);
             $total->setBaseAffiliateplusDiscount(-$baseDiscount);
             $total->setAffiliateplusDiscount(-$discount);
             $total->setMagestoreBaseDiscount($baseDiscount);
-
             $session = $this->getCheckoutSession();
             $session->setData('affiliateplus_discount', -$discount);
             $session->setData('base_affiliateplus_discount', -$baseDiscount);
@@ -468,27 +436,30 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
             $total->addBaseTotalAmount('affiliateplus', -$baseDiscount);
             $total->setBaseGrandTotal($total->getBaseGrandTotal() - $baseDiscount);
             $total->setGrandTotal($total->getGrandTotal() - $discount);
+            if ($this->_helperConfig->getDiscountConfig('allow_discount') == 'affiliate') {
+                $total->setDiscountAmount(0);
+                $total->setBaseDiscountAmount(0);
+            }
             /**
              * buy product via paypal by quote
              */
             $quote->setBaseAffiliateplusDiscount($total->getBaseAffiliateplusDiscount());
             $quote->setAffiliateplusDiscount($total->getAffiliateplusDiscount());
-
         }
-
         return $this;
     }
+
     /**
      * @param \Magento\Quote\Model\Quote $quote
      * @param \Magento\Quote\Model\Quote\Address\Total $total
      * @return array
      */
-    public function fetch(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total)
+    public function fetch(\Magento\Quote\Model\Quote $quote,
+                          \Magento\Quote\Model\Quote\Address\Total $total)
     {
-        $result = null;
-        $applyTaxAfterDiscount = (bool) $this->_helperConfig
+        $result                = null;
+        $applyTaxAfterDiscount = (bool)$this->_helperConfig
             ->getConfig(\Magento\Tax\Model\Config::CONFIG_XML_PATH_APPLY_AFTER_DISCOUNT, $quote->getStoreId());
-
         if (!$applyTaxAfterDiscount) {
             return $result;
         }
@@ -497,35 +468,27 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
         if (!$orderId) {
             $orderId = '';
         }
-
         /** show affiliate discount  */
         if (isset($orderId) && $this->_helper->isAdmin()) {
             $this->_helper->showAffiliateDiscount($orderId);
         }
         $amount = $quote->getAffiliateplusDiscount();
-
-        $title = __('Affiliate Discount');
-        if ($amount !=0) {
+        $title  = __('Affiliate Discount');
+        if ($amount != 0) {
             if ($total->getAffiliateplusCoupon()) {
                 $title .= ' (' . $total->getAffiliateplusCoupon() . ')';
-            }
-            /** show coupon code when edit Order  */
+            } /** show coupon code when edit Order  */
             else if ($session->getData('affiliate_coupon_code')) {
                 $title .= ' (' . $session->getData('affiliate_coupon_code') . ')';
-            }
-            /** end show coupon code   */
-            ;
-            $result =  [
-                'code' => 'affiliateplus',
+            }/** end show coupon code   */;
+            $result = [
+                'code'  => 'affiliateplus',
                 'title' => $title,
                 'value' => $amount,
             ];
         }
-
         return $result;
     }
-
-
 
     /**
      * @param $address
@@ -533,7 +496,10 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
      * @param $store
      * @return int
      */
-    public function getItemRateOnQuote($address, $product, $store) {
+    public function getItemRateOnQuote($address,
+                                       $product,
+                                       $store)
+    {
         $taxClassId = $product->getTaxClassId();
         if ($taxClassId) {
             $request = $this->getCaculationTaxModel()->getRateRequest(
@@ -542,7 +508,7 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                 $address->getQuote()->getCustomerTaxClassId(),
                 $store
             );
-            $rate = $this->getCaculationTaxModel()
+            $rate    = $this->getCaculationTaxModel()
                 ->getRate($request->setProductClassId($taxClassId));
             return $rate;
         }
@@ -554,7 +520,9 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
      * @param $store
      * @return mixed
      */
-    public function getShipingTaxRate($address, $store) {
+    public function getShipingTaxRate($address,
+                                      $store)
+    {
         $request = $this->getCaculationTaxModel()->getRateRequest(
             $address,
             $address->getQuote()->getBillingAddress(),
@@ -571,7 +539,9 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
      * @param $rate
      * @return mixed
      */
-    public function calTax($price, $rate) {
+    public function calTax($price,
+                           $rate)
+    {
         return $this->round($this->getCaculationTaxModel()->calcTaxAmount($price, $rate, true, false));
     }
 
@@ -579,7 +549,8 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
      * @param $price
      * @return mixed
      */
-    public function round($price) {
+    public function round($price)
+    {
         return $this->getCaculationTaxModel()->round($price);
     }
 
@@ -603,12 +574,12 @@ class Affiliateplus extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
     /**
      * Clear session before calculating discount
      */
-    protected function _clearSession(){
+    protected function _clearSession()
+    {
         $session = $this->getCheckoutSession();
         $session->setData('affiliateplus_discount', 0);
         $session->setData('base_affiliateplus_discount', 0);
         $session->setProgramData(null);
-
         if ($this->_helper->isAdmin()) {
             $this->_backendQuoteSession->setData('affiliateplus_discount', 0);
             $this->_backendQuoteSession->setData('base_affiliateplus_discount', 0);

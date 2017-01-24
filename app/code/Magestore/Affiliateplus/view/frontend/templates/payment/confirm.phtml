@@ -56,7 +56,7 @@ else
                         <strong><?php echo __('Amount') ?></strong>
                     </div>
                     <div class="field">
-                        <?php echo $block->formatPrice($payment->getAmountInclTax()) ?>
+                        <?php echo $block->formatPriceAmount($payment->getAmountInclTax()) ?>
                     </div>
                 </li>
                 <li class="fields">
@@ -64,7 +64,7 @@ else
                         <strong><?php echo __('Tax') ?></strong>
                     </div>
                     <div class="field">
-                        <?php echo $block->formatPrice($payment->getTaxAmount()) ?>
+                        <?php echo $block->formatPriceAmount($payment->getTaxAmount()) ?>
                     </div>
                 </li>
                 <li class="fields">
@@ -72,7 +72,7 @@ else
                         <strong><?php echo __('Amount (Excl. Tax)') ?></strong>
                     </div>
                     <div class="field">
-                        <?php echo $block->formatPrice($payment->getAmount()) ?>
+                        <?php echo $block->formatPriceAmount($payment->getAmount()) ?>
                     </div>
                 </li>
             <?php else: ?>
@@ -81,7 +81,7 @@ else
                         <strong><?php echo __('Amount') ?></strong>
                     </div>
                     <div class="field">
-                        <?php echo $block->formatPrice($payment->getAmount()) ?>
+                        <?php echo $block->formatPriceAmount($payment->getAmount()) ?>
                     </div>
                 </li>
             <?php endif ?>

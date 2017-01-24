@@ -21,7 +21,7 @@
  */
 namespace Magestore\Affiliateplus\Block\Account;
 /**
- * Class Banner
+ * Class banner
  * @package Magestore\Affiliateplus\Block\Account
  */
 class Banner extends \Magestore\Affiliateplus\Block\AbstractTemplate

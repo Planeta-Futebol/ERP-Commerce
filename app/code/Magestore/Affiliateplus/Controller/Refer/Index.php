@@ -40,6 +40,9 @@ class Index extends \Magestore\Affiliateplus\Controller\AbstractAction
         if ($this->_accountHelper->accountNotLogin()) {
             return $this->_redirect('affiliateplus/account/login');
         }
+        if ($this->_accountHelper->isNotAvailableAccount()){
+            return $this->_redirect('affiliateplus/index/index');
+        }
 
         $resultPage = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_PAGE);
         $resultPage->getConfig()->getTitle()->set(__('Refer Friends and Earn Money'));

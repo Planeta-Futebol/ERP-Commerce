@@ -53,6 +53,10 @@ class Credit extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
         $discount = 0;
         $session = $this->getCheckoutSession();
         $helper = $this->_helperAccount;
+        /**
+         * @var \Magestore\Affiliateplus\Model\Session
+         */
+        $account = $this->_objectManager->create('Magestore\Affiliateplus\Model\Session')->getAccount();
 
         if ($session->getUseAffiliateCredit() && $helper->isLoggedIn() && !$helper->disableStoreCredit() && $helper->isEnoughBalance()) {
             $balance = $this->_abstractTemplate->convertPrice($helper->getAccount()->getBalance());
@@ -60,15 +64,20 @@ class Credit extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
             if ($discount > $balance) {
                 $discount = $balance;
             }
-            if ($discount > $address->getGrandTotal()) {
-                $discount = $address->getGrandTotal();
+//            +$address->getShippingAmount()
+            if ($discount > ($address->getSubtotal())) {
+                $discount = ($address->getSubtotal());
             }
+            if($discount > ($address->getSubtotal() + $address->getShippingAmount())){
+                $discount = $address->getSubtotal()+ $address->getShippingAmount();
+            }
+
             if ($discount < 0) {
                 $discount = 0;
             }
             $session->setAffiliateCredit($discount);
         } else {
-            $session->setUseAffiliateCredit('');
+            $session->setUseAffiliateCredit(null);
         }
         $discount_include_tax = false;
         if ((int) ($this->_helper->getConfig('tax/calculation/discount_tax', $quote->getStore())) == 1)
@@ -132,10 +141,12 @@ class Credit extends \Magestore\Affiliateplus\Model\Total\AbstractTotal
                     }
                 }
             }
+
             $baseDiscount = $discount / $this->_abstractTemplate->convertPrice(1);
+
             $session->setData('affiliateplus_credit', -$discount);
             $session->setData('base_affiliateplus_credit', -$baseDiscount);
-
+            $session->setData('account_id', $account->getId());
             $total->setBaseAffiliateCredit(-$baseDiscount);
             $total->setAffiliateCredit(-$discount);
             $total->setBaseGrandTotal($total->getBaseGrandTotal() - $baseDiscount);

@@ -39,6 +39,9 @@ class Edit extends \Magestore\Affiliateplus\Controller\AbstractAction
             $this->messageManager->addNotice(__('You have to logged in before editing information'));
             return $this->_redirect('affiliateplus/account/login');
         }
+        if ($this->_accountHelper->isNotAvailableAccount()){
+            return $this->_redirect('affiliateplus/index/index');
+        }
         $session = $this->_affiliateSession;
         $customer = $session->getCustomer();
         $account = $session->getAccount();

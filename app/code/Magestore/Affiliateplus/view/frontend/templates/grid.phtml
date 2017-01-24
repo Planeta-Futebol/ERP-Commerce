@@ -20,11 +20,16 @@
  * @license     http://www.magestore.com/license-agreement.html
  */
 ?>
+<?php
+/**
+ * @var \Magestore\Affiliateplus\Block\Grid $block
+ */
+?>
 <?php if ($this->getData('add_calendar_js_to_grid')): ?>
     <?php echo $this->getLayout()->createBlock('Magento\Framework\View\Element\Html\Calendar')->setTemplate('Magento_Theme::js/calendar.phtml')->toHtml() ?>
 <?php endif ?>
 
-<?php $collection = $this->getCollection() ?>
+<?php $collection = $block->getCollection() ?>
 <?php $columns = $this->getColumns() ?>
 
 <?php if ($this->getData('add_searchable_row')): ?>
@@ -222,7 +227,7 @@
         <?php endif ?>
         </thead>
         <tbody>
-        <?php if ($collection->count()): ?>
+        <?php if (isset($collection) && $collection->count()): ?>
             <?php foreach ($collection as $row): ?>
                 <?php if ($row->getIsContinueNextRow()) continue; ?>
                 <tr>

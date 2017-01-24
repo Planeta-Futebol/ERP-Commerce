@@ -43,6 +43,9 @@ class Materials extends \Magestore\Affiliateplus\Controller\AbstractAction
             $this->messageManager()->addError(__('You need to login before access this page'));
             return $this->_redirect('*/*/');
         }
+        if ($this->_accountHelper->isNotAvailableAccount()){
+            return $this->_redirect('affiliateplus/index/index');
+        }
 
         $resultPage = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_PAGE);
 

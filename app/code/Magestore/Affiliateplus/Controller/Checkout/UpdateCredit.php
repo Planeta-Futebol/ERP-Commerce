@@ -44,10 +44,11 @@ class UpdateCredit extends \Magestore\Affiliateplus\Controller\AbstractAction
 
         $session = $this->_objectManager->create('Magento\Checkout\Model\Session');
         $amount = floatval($this->getRequest()->getParam('affiliateCredit'));
-        if ($amount < 0) $amount = 0;
+        if ($amount < 0)
+            $amount = 0;
         $account  = $this->_affiliateSession->getAccount();
-        if($amount > $account->getBalance()){
-            $amount = $account->getBalance();
+        if($amount > $this->convertPrice($account->getBalance())){
+            $amount = $this->convertPrice($account->getBalance());
         }
         $session->setAffiliateCredit($amount);
         $result = array();

@@ -65,7 +65,8 @@ else
                         <strong><?php echo __('Amount') ?></strong>
                     </div>
                     <div class="field-drawal">
-                        <?php echo $block->formatPrice($payment->getAmountInclTax()) ?>
+                        <!--Gin fix bug show amount --><?php //echo $block->formatPrice($payment->getAmountInclTax()) ?>
+                        <?php echo $block->formatPrice($payment->getTaxAmount() + $payment->getAmount()) ?>
                     </div>
                 </li>
                 <li class="form-group">
@@ -101,7 +102,7 @@ else
                     </div>
                     <div class="field-drawal">
                         <?php if ($payment->getStatus() == 1): ?>
-                            <?php echo __('N/A') ?>
+                            <?php echo $block->formatPrice(0) ?>
                         <?php elseif ($payment->getIsPayerFee()): ?>
                             <?php echo $block->formatPrice(0) ?>
                         <?php else: ?>

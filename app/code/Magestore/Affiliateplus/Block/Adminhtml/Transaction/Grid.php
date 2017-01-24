@@ -53,16 +53,14 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magestore\Affiliateplus\Model\ResourceModel\Transaction\CollectionFactory $transactionCollectionFactory,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         array $data = array()
     )
     {
         parent::__construct($context, $backendHelper, $data);
         $this->_objectManager = $objectManager;
         $this->_transactionCollectionFactory = $transactionCollectionFactory;
-        $this->_eventManager = $eventManager;
-        $this->_storeManager = $storeManager;
+        $this->_eventManager = $context->getEventManager();
+        $this->_storeManager = $context->getStoreManager();
         $this->_objectManager = $objectManager;
     }
 
@@ -279,14 +277,14 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         $this->setMassactionIdField('transaction_id');
         $this->getMassactionBlock()->setFormFieldName('transaction');
 
-        $this->getMassactionBlock()->addItem(
-            'cancel',
-            [
-                'label'   => __('Cancel'),
-                'url'     => $this->getUrl('*/*/massCancel'),
-                'confirm' => __('This action cannot be restored. Are you sure?'),
-            ]
-        );
+//        $this->getMassactionBlock()->addItem(
+//            'cancel',
+//            [
+//                'label'   => __('Cancel'),
+//                'url'     => $this->getUrl('*/*/massCancel'),
+//                'confirm' => __('This action cannot be restored. Are you sure?'),
+//            ]
+//        );
 
         $this->getMassactionBlock()->addItem(
             'complete',

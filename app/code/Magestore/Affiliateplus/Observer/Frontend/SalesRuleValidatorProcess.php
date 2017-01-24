@@ -56,8 +56,8 @@ class SalesRuleValidatorProcess extends AbtractObserver implements ObserverInter
             return $this;
         }
         $result = $observer['result'];
-        $result->setDiscountAmount(0)
-            ->setBaseDiscountAmount(0);
+        $result->setAmount(0)
+            ->setBaseAmount(0);
         $rule = $observer['rule'];
         $rule->setRuleId('')->setStopRulesProcessing(true);
     }

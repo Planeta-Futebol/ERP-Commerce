@@ -93,6 +93,10 @@ class AbtractObserver {
      * @var \Magento\Framework\Message\ManagerInterface
      */
     protected $messageManager;
+    /**
+     * @var \Magento\Backend\Model\Session\Quote
+     */
+    protected $_backendQuoteSession;
 
 
     /**
@@ -124,6 +128,7 @@ class AbtractObserver {
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\App\Request\Http $requestHttp,
         \Magento\Checkout\Model\Session $sessionManager,
+        \Magento\Backend\Model\Session\Quote $backendSessionQuote,
          \Magento\Framework\Message\ManagerInterface $managerInterface
     )
     {
@@ -141,6 +146,7 @@ class AbtractObserver {
         $this->_sessionManager = $sessionManager;
         $this->_requestHttp = $requestHttp;
         $this->messageManager = $managerInterface;
+        $this->_backendQuoteSession = $backendSessionQuote;
     }
 
     /**
@@ -238,14 +244,13 @@ class AbtractObserver {
         return $this->_helperConfig;
     }
 
-
     /**
      * Get affiliateplus account by custom coupon code
      *
      * @param string $codeCoupon
      * @return \Magestore\Affiliateplus\Model\Account
      */
-    public function loadAccountByCoupon($codeCoupon )
+    public function loadAccountByCoupon( $codeCoupon )
     {
         $arrCode = explode('-', $codeCoupon);
         $account = $this->_accountFactory->create()
@@ -261,8 +266,8 @@ class AbtractObserver {
      * @param string $codeCoupon
      * @return bool
      */
-    public function isAffiliateCoupon($codeCoupon )
+    public function isAffiliateCoupon( $codeCoupon )
     {
-        return (substr_count($codeCoupon, 'AFFILIATE')) > 0;
+            return (substr_count($codeCoupon, 'AFFILIATE')) > 0;
     }
 }

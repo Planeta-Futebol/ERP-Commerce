@@ -56,8 +56,6 @@ class ControllerPredispatch extends AbtractObserver implements ObserverInterface
             $accountCode = $account->getIdentifyCode();
             $this->_helperCookie->saveCookie($accountCode, $expiredTime, false, $controller);
         }
-
-
     }
 
     /**

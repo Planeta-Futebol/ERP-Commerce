@@ -66,13 +66,12 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Data\FormFactory $formFactory,
         \Magento\Framework\DataObjectFactory $objectFactory,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magestore\Affiliateplus\Helper\Data $helper,
         array $data = array()
     )
     {
         $this->_objectFactory = $objectFactory;
-        $this->_storeManager = $storeManager;
+        $this->_storeManager = $context->getStoreManager();
         $this->_session = $context->getSession();
         $this->_helper = $helper;
         parent::__construct($context, $registry, $formFactory, $data);
@@ -135,7 +134,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
     public function getPageTitle()
     {
         return $this->getRegistryModel()->getId()
-            ? __("Edit Transaction '%1'", $this->escapeHtml($this->getRegistryModel()->getAccountName())) : __('Add New Transaction');
+            ? __("View Transaction '%1'", $this->escapeHtml($this->getRegistryModel()->getAccountName())) : __('Add New Transaction');
     }
 
     /**
@@ -235,6 +234,13 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
                     'text'	=> '<strong>'.sprintf("%.2f",$data['percent_plus']).'%'.'</strong>',
                 ]
             );
+        
+        if ($data['commission_plus'] > 0)
+            $fieldset->addField('commission_plus', 'note', array(
+                'label' => __('Additional Commission'),
+                'text'	=> '<strong>'.$this->_helper->formatPrice($data['commission_plus']).'</strong>',
+                'after_element_html'    =>  $this->_helper->renderCurrency($data['commission_plus'], $store)
+            ));
 
         $fieldset->addField('discount', 'note',
             [

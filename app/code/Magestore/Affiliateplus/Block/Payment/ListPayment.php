@@ -69,7 +69,7 @@ class ListPayment extends \Magestore\Affiliateplus\Block\AbstractTemplate
                 'header' => __('Date Requested'),
                 'index' => 'request_time',
                 'type' => 'date',
-                'format' => 'medium',
+                'format' => \IntlDateFormatter::MEDIUM,
                 'align' => 'left',
                 'width' => '150px',
                 'render' => 'getDate',

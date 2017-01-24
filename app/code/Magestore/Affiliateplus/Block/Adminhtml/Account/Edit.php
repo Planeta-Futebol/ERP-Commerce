@@ -79,16 +79,42 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             10
         );
 
-        $this->_formScripts[] = "
+        $this->_formScripts[] = '   
             function toggleEditor() {
-                if (tinyMCE.getInstanceById('block_content') == null) {
-                    tinyMCE.execCommand('mceAddControl', false, 'block_content');
+                if (tinyMCE.getInstanceById(\'block_content\') == null) {
+                    tinyMCE.execCommand(\'mceAddControl\', false, \'block_content\');
                 } else {
-                    tinyMCE.execCommand('mceRemoveControl', false, 'block_content');
+                    tinyMCE.execCommand(\'mceRemoveControl\', false, \'block_content\');
                 }
             }
 
-        ";
+           
+                     
+                        
+                    require([
+                            "jquery",
+                            "underscore",
+                            "mage/mage",
+                            "mage/backend/tabs",
+                            "domReady!"
+                        ], function($) {
+                       
+                            var $form = $(\'#edit_form\');
+                            $form.mage(\'form\', {
+                                handlersData: {
+                                    save: {},
+                                    saveAndNew: {
+                                        action: {
+                                            args: {back: \'new\'}
+                                        }
+                                    },
+                                }
+                            });
+
+                        });
+                    
+
+        ';
     }
 
     /**

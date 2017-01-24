@@ -43,6 +43,10 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
         $storeId = $order->getStoreId();
         // Create transaction for the order
         if(!$this->_isExistedTransactionByOrder($order)){
+            if ($this->_helper->isAdmin()) {
+                $this->_objectManager->create('Magestore\Affiliateplus\Observer\Frontend\SalesOrderPlaceAfter')
+                    ->saveDiscountToOrder($order);
+            }
             $this->_salesOrderPlaceAfter($order);
         }
 
@@ -79,9 +83,9 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                 return $this;
             }
 
-            $this->_createTransactionInBackend($order);
+//            Create new order in back-end using coupon code
+//            $this->_createTransactionInBackend($order);
         }
-        /* end call back function */
     }
 
     /**
@@ -105,7 +109,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                         ->save();
                     $payment->setStatus(4)->save();
                 } catch (\Exception $e) {
-
+                    var_dump($e->getMessage());die('4');
                 }
             }
         }
@@ -120,11 +124,10 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
     }
 
     /**
-     * Get Payment Model
      * @return mixed
      */
     protected function _getPaymentModel(){
-        return $this->_objectManager->create('Magestore\Affiliateplus\Model\payment');
+        return $this->_objectManager->create('Magestore\Affiliateplus\Model\Payment');
     }
 
     /**
@@ -273,17 +276,6 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                 }
             }
         }
-
-        $coupon = $order->getCouponCode();
-
-        if($this->isAffiliateCoupon($coupon)){
-            $account = $this->loadAccountByCoupon($coupon);
-        }
-
-        if(!$this->isAffiliateCoupon($coupon)){
-            // TODO implement to find a lifitime affiliate
-        }
-
         if (!$account){
             return $this;
         }
@@ -309,7 +301,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                             ))
                         ->save();
                 } catch (\Exception $e) {
-
+                    var_dump($e->getMessage());die('2');
                 }
             }
         }
@@ -323,11 +315,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
         );
         $storeId = $this->_getBackEndQuoteSession()->getStoreId();
         $commissionType = $this->_helperConfig->getCommissionConfig('commission_type', $storeId);
-//        $commissionValue = floatval($this->_helperConfig->getCommissionConfig('commission', $storeId));
-
-        // TODO Fixed value, need to change after.
-        $commissionValue = 10;
-
+        $commissionValue = floatval($this->_helperConfig->getCommissionConfig('commission', $storeId));
         if (($orderId && $this->_helperCookie->getNumberOrdered() > 1) || (!$orderId && $this->_helperCookie->getNumberOrdered())) {
             if ($this->_helperConfig->getCommissionConfig('use_secondary', $storeId)) {
                 $commissionType = $this->_helperConfig->getCommissionConfig('secondary_type', $storeId);
@@ -352,7 +340,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
             if ($item->getParentItemId()) {
                 continue;
             }
-            if (in_array($item->getId(), $commissionItems)) {
+            if (in_array($item->getProductId(), $commissionItems)) {
                 continue;
             }
             if ($item->getHasChildren() && $item->isChildrenCalculated()) {
@@ -378,7 +366,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                 if ($item->getParentItemId()) {
                     continue;
                 }
-                if (in_array($item->getId(), $commissionItems)) {
+                if (in_array($item->getProductId(), $commissionItems)) {
                     continue;
                 }
 
@@ -480,7 +468,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                     ));
 
                     if ($commissionObj->getTierCommission()){
-                        $tierCommissions[$item->getId()] = $commissionObj->getTierCommission();
+                        $tierCommissions[$item->getProductId()] = $commissionObj->getTierCommission();
                     }
                     $commission += $commissionObj->getCommission();
                     $item->setAffiliateplusCommission($commissionObj->getCommission());
@@ -563,7 +551,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                 $transaction->sendMailNewTransactionToSales();
             }
         } catch (\Exception $e) {
-            // Exception
+           var_dump($e->getMessage());die('3');
         }
     }
 
@@ -572,45 +560,51 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
      * @param $order
      */
     protected function _saveStoreCreditPayment($order){
-        $now = new \DateTime();
+//        var_dump($order->getStatus());die;
         $baseAmount = $order->getBaseAffiliateCredit();
-        if ($baseAmount) {
-            $session = $this->_getCheckoutSession();
-            $session->setUseAffiliateCredit('');
-            $session->setAffiliateCredit(0);
-            $now = new \DateTime();
-            $account = $this->_affiliateSession->getAccount();
-            $payment = $this->_getPaymentModel()
-                ->setPaymentMethod('credit')
-                ->setAmount(-$baseAmount)
-                ->setAccountId($account->getId())
-                ->setAccountName($account->getName())
-                ->setAccountEmail($account->getEmail())
-                ->setRequestTime($now)
-                ->setStatus(3)
-                ->setIsRequest(1)
-                ->setIsPayerFee(0)
-                ->setData('is_created_by_recurring', 1)
-                ->setData('is_refund_balance', 1);
-            if ($this->_helperConfig->getSharingConfig('balance') == 'store') {
-                $payment->setStoreIds($order->getStoreId());
-            }
-            $paymentMethod = $payment->getPayment();
-            $paymentMethod->addData(
-                [
-                'order_id' => $order->getId(),
-                'order_increment_id' => $order->getIncrementId(),
-                'base_paid_amount' => -$baseAmount,
-                'paid_amount' => -$order->getAffiliateCredit(),
-               ]
-            );
-            try {
-                $payment->save();
-                $paymentMethod->savePaymentMethodInfo();
-            } catch (\Exception $e) {
+        if($order->getStatus()== 'pending'){
+            if ($baseAmount) {
+                $session = $this->_getCheckoutSession();
+                $session->setUseAffiliateCredit('');
+                $session->setAffiliateCredit(0);
+                $now = new \DateTime();
+//            $account = $this->_affiliateSession->getAccount();
 
+                $account = $this->_objectManager->create('Magestore\Affiliateplus\Model\Account')->load($order->getData('account_ids'));
+                $payment = $this->_getPaymentModel()
+                    ->setAccountId($account->getId())
+                    ->setAccountName($account->getName())
+                    ->setAccountEmail($account->getEmail())
+                    ->setPaymentMethod('credit')
+                    ->setAmount(-$baseAmount)
+                    ->setRequestTime($now)
+                    ->setStatus(3)
+                    ->setIsRequest(1)
+                    ->setIsPayerFee(0)
+                    ->setData('is_created_by_recurring', 1)
+                    ->setData('is_refund_balance', 1);
+                if ($this->_helperConfig->getSharingConfig('balance') == 'store') {
+                    $payment->setStoreIds($order->getStoreId());
+                }
+                $paymentMethod = $payment->getPayment();
+                $paymentMethod->addData(
+                    [
+                        'order_id' => $order->getId(),
+                        'order_increment_id' => $order->getIncrementId(),
+                        'base_paid_amount' => -$baseAmount,
+                        'paid_amount' => -$order->getAffiliateCredit(),
+                    ]
+                );
+                try {
+                    $payment->save();
+                    $paymentMethod->savePaymentMethodInfo();
+
+                } catch (\Exception $e) {
+                    var_dump($e->getMessage());die('6');
+                }
             }
         }
+
     }
 
     /**
@@ -646,7 +640,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                         ))
                         ->save();
                 } catch (\Exception $e) {
-
+                    var_dump($e->getMessage());die('5');
                 }
             }
         }
@@ -668,7 +662,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
             /**
              * Check if the items were calculated in program, it not, they will be calculated in default program
              */
-            if (in_array($item->getId(), $commissionItems)) {
+            if (in_array($item->getProductId(), $commissionItems)) {
                 continue;
             }
             if ($item->getHasChildren() && $item->isChildrenCalculated()) {
@@ -719,12 +713,26 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
         }
 
         $affiliateInfo = $this->_helperCookie->getAffiliateInfo();
+        if ($this->_helper->isAdmin()) {
+            $orderId = $this->_backendQuoteSession->getOrder()->getId();
+            if($orderId){
+                $affiliateInfo = $this->_helper->getAffiliateInfoByOrderId($orderId);
+            }
+        } else {
+            $affiliateInfo = $this->_helperCookie->getAffiliateInfo();
+        }
         $account = '';
         foreach ($affiliateInfo as $info){
             if ($info['account']) {
                 $account = $info['account'];
                 break;
             }
+        }
+
+        $coupon = $order->getCouponCode();
+
+        if ($this->isAffiliateCoupon($coupon)) {
+            $account = $this->loadAccountByCoupon($coupon);
         }
 
         if($account && $account->getId()){
@@ -791,7 +799,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                     if ($item->getParentItemId()) {
                         continue;
                     }
-                    if (in_array($item->getId(), $commissionItems)) {
+                    if (in_array($item->getProductId(), $commissionItems)) {
                         continue;
                     }
 
@@ -911,10 +919,11 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                         );
 
                         if ($commissionObj->getTierCommission()){
-                            $tierCommissions[$item->getId()] = $commissionObj->getTierCommission();
+                            $tierCommissions[$item->getProductId()] = $commissionObj->getTierCommission();
                         }
 
                         $commission += $commissionObj->getCommission();
+
                         $item->setAffiliateplusCommission($commissionObj->getCommission());
 
                         /**
@@ -927,6 +936,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                     }
                 }
             }
+
             if (!$baseDiscount && !$commission){
                 return $this;
             }
@@ -946,7 +956,7 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                     $affiliateInfo
                 );
             } catch(\Exception $e) {
-                print_r($e->getMessage());die('x');
+                die('x');
             }
         }
     }
@@ -1061,10 +1071,10 @@ class SalesOrderSaveAfter extends AbtractObserver implements ObserverInterface
                 ]
             );
 
-            $transaction->sendMailNewTransactionToAccount();
-            $transaction->sendMailNewTransactionToSales();
+            //$transaction->sendMailNewTransactionToAccount();
+            //$transaction->sendMailNewTransactionToSales();
         } catch (\Exception $e) {
-            // Exception
+            var_dump($e->getMessage());die('1');
         }
     }
 

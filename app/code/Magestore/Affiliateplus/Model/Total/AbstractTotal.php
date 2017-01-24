@@ -73,6 +73,10 @@ class AbstractTotal extends \Magento\Quote\Model\Quote\Address\Total\AbstractTot
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     protected $_storeManager;
+    /**
+     * @var \Magestore\Affiliateplusprogram\Model\Program
+     */
+    protected $_program;
 
 
     /**
@@ -134,5 +138,16 @@ class AbstractTotal extends \Magento\Quote\Model\Quote\Address\Total\AbstractTot
         return $this->_backendQuoteSession;
     }
 
-
+    /**
+     * Get Program by program Id
+     * @param $programId
+     * @return \Magestore\Affiliateplusprogram\Model\Program
+     */
+    public function getProgramById($programId){
+        if(!$this->_program){
+            $this->_program = $this->_objectManager->create('Magestore\Affiliateplusprogram\Model\Program')
+                    ->load($programId);
+        }
+        return $this->_program;
+    }
 }

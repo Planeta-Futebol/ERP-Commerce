@@ -34,8 +34,6 @@ class SelectAccountGrid extends \Magestore\Affiliateplus\Controller\Adminhtml\Af
     public function execute()
     {
         $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
-        $resultPage->setActiveMenu('Magestore_Affiliateplus::magestoreaffiliateplus');
-
         return $resultPage;
     }
 }

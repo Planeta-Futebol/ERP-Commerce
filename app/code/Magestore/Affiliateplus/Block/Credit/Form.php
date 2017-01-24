@@ -130,7 +130,7 @@ class Form extends \Magento\Payment\Block\Form
         $result['usedAffiliateCredit'] = $this->_getUseAffiliateCredit();
         $result['formatedBalance'] = $this->getFormatedBalance();
         $result['opcAjaxLoader'] = $this->getViewFileUrl('Magestore_Affiliateplus::images/opc-ajax-loader.gif');
-        $result['editButtonImage'] = $this->getViewFileUrl('Magestore_Affiliateplus::images/btn_edit.gif');
+        $result['editButtonImage'] = $this->getViewFileUrl('Magestore_Affiliateplus::images/btn_edit.png');
         $result['seccessMsgImage'] = $this->getViewFileUrl('Magestore_Affiliateplus::images/i_msg-success.gif');
         $result['usingAmount'] = $this->getUsingAmount();
         $result['affiliateCredit'] = $this->getAffiliateCredit();

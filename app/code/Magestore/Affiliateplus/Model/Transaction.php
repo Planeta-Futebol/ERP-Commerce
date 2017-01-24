@@ -630,7 +630,7 @@ class Transaction extends AbtractModel
 
                 }
             } catch (\Exception $e) {
-                print_r($e->getMessage()); die('error');
+
             }
         }
         return $this;
@@ -705,10 +705,10 @@ class Transaction extends AbtractModel
         $this->_eventManager->dispatch('affiliateplus_reset_transaction_commission', array('transaction' => $this));
 
         $this->setProducts($this->_helper->getFrontendProductHtmls($this->getOrderItemIds()))
-            ->setTotalAmountFormated($this->_helper->formatPrice($this->getTotalAmount()))
-            ->setCommissionFormated($this->_helper->formatPrice($this->getCommission()))
+            ->setTotalAmountFormated($this->_helper->convertCurrency($this->getTotalAmount()))
+            ->setCommissionFormated($this->_helper->convertCurrency($this->getCommission()))
             ->setPlusCommission($this->getCommissionPlus() + $this->getCommission() * $this->getPercentPlus() / 100)
-            ->setPlusCommissionFormated($this->_helper->formatPrice($this->getPlusCommission()))
+            ->setPlusCommissionFormated($this->_helper->convertCurrency($this->getPlusCommission()))
             ->setAccountName($account->getName())
             ->setAccountEmail($account->getEmail())
             ->setCreatedAtFormated($this->_helper->formatDate($this->getCreatedTime(), \IntlDateFormatter::MEDIUM))
@@ -757,11 +757,11 @@ class Transaction extends AbtractModel
             ->setAccountName($account->getName())
             ->setAccountEmail($account->getEmail())
             ->setProducts($this->_helper->getBackendProductHtml($this->getOrderItemIds()))
-            ->setTotalAmountFormated($this->_helper->formatPrice($this->getTotalAmount()))
-            ->setCommissionFormated($this->_helper->formatPrice($this->getCommission()))
+            ->setTotalAmountFormated($this->_helper->convertCurrency($this->getTotalAmount()))
+            ->setCommissionFormated($this->_helper->convertCurrency($this->getCommission()))
             ->setPlusCommission($this->getCommissionPlus() + $this->getCommission() * $this->getPercentPlus() / 100)
-            ->setPlusCommissionFormated($this->_helper->formatPrice($this->getPlusCommission()))
-            ->setDiscountFormated($this->_helper->formatPrice($this->getDiscount()))
+            ->setPlusCommissionFormated($this->_helper->convertCurrency($this->getPlusCommission()))
+            ->setDiscountFormated($this->_helper->convertCurrency($this->getDiscount()))
             ->setCreatedAtFormated($this->_helper->formatDate($this->getCreatedTime(), \IntlDateFormatter::MEDIUM))
             ->setSalesName($sales['name']);
 
@@ -806,10 +806,10 @@ class Transaction extends AbtractModel
         $this->_eventManager->dispatch('affiliateplus_reset_transaction_commission', array('transaction' => $this));
 
         $this->setProducts($this->_helper->getFrontendProductHtmls($this->getOrderItemIds()))
-            ->setTotalAmountFormated($this->_helper->formatPrice($this->getTotalAmount()))
-            ->setCommissionFormated($this->_helper->formatPrice($this->getCommission()))
+            ->setTotalAmountFormated($this->_helper->convertCurrency($this->getTotalAmount()))
+            ->setCommissionFormated($this->_helper->convertCurrency($this->getCommission()))
             ->setPlusCommission($this->getCommissionPlus() + $this->getCommission() * $this->getPercentPlus() / 100)
-            ->setPlusCommissionFormated($this->_helper->formatPrice($this->getPlusCommission()))
+            ->setPlusCommissionFormated($this->_helper->convertCurrency($this->getPlusCommission()))
             ->setAccountName($account->getName())
             ->setAccountEmail($account->getEmail())
             ->setCreatedAtFormated($this->_helper->formatDate($this->getCreatedTime(), \IntlDateFormatter::MEDIUM))
@@ -856,15 +856,15 @@ class Transaction extends AbtractModel
 
         $this->_eventManager->dispatch('affiliateplus_reset_transaction_commission', array('transaction' => $this));
         $this->setProducts($this->_helper->getFrontendProductHtmls($this->getOrderItemIds()))
-            ->setTotalAmountFormated($this->_helper->formatPrice($this->getTotalAmount()))
-            ->setCommissionFormated($this->_helper->formatPrice($this->getCommission()))
+            ->setTotalAmountFormated($this->_helper->convertCurrency($this->getTotalAmount()))
+            ->setCommissionFormated($this->_helper->convertCurrency($this->getCommission()))
             ->setPlusCommission($this->getCommissionPlus() + $this->getCommission() * $this->getPercentPlus() / 100)
-            ->setPlusCommissionFormated($this->_helper->formatPrice($this->getPlusCommission()))
+            ->setPlusCommissionFormated($this->_helper->convertCurrency($this->getPlusCommission()))
             ->setAccountName($account->getName())
             ->setAccountEmail($account->getEmail())
             ->setCreatedAtFormated($this->_helper->formatDate($this->getCreatedTime(), \IntlDateFormatter::MEDIUM))
-            ->setReducedCommission($this->_helper->formatPrice($reduceCommission))
-            ->setTotalReduced($this->_helper->formatPrice($totalReduce))
+            ->setReducedCommission($this->_helper->convertCurrency($reduceCommission))
+            ->setTotalReduced($this->_helper->convertCurrency($totalReduce))
             ->setAffiliateTransactionUrl($this->_urlBuilder->getUrl('affiliateplus/index/listTransaction'))
         ;
         $template = $this->_helper->getConfig(self::XML_PATH_REDUCE_TRANSACTION_ACOUNT_EMAIL, $store->getId());

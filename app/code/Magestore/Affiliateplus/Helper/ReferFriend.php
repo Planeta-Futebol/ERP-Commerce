@@ -33,7 +33,7 @@ class ReferFriend extends HelperAbstract
         if (!$this->getConfig('affiliateplus/refer/enable')) {
             return true;
         }
-        if ($this->_objectManager->create('Magestore\Affiliateplus\Helper\Account')->accountNotLogin()) {
+        if ($this->_objectManager->create('Magestore\Affiliateplus\Helper\Account')->isNotAvailableAccount()) {
             return true;
         }
         return false;

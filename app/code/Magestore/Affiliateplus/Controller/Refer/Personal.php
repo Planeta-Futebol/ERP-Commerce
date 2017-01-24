@@ -44,6 +44,9 @@ class Personal extends \Magestore\Affiliateplus\Controller\AbstractAction
         if ($this->_accountHelper->accountNotLogin()) {
             return $this->_redirect('affiliateplus/account/login');
         }
+        if ($this->_accountHelper->isNotAvailableAccount()){
+            return $this->_redirect('affiliateplus/index/index');
+        }
 
         if ($data = $this->getRequest()->getPost()) {
             $session = $this->_affiliateSession;

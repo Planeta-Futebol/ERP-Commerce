@@ -22,6 +22,7 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="1column"/>
+    <update handle="magestore_affiliateplus_message"/>
     <body>
         <referenceContainer name="after.body.start">
             <block class="Magestore\Affiliateplus\Block\Account\Navigation"  name="account_navigatorxx" template="Magestore_Affiliateplus::m-navigation.phtml">
@@ -32,7 +33,7 @@
                     <argument name="name" xsi:type="string">balance</argument>
                     <argument name="path" xsi:type="string">affiliateplus/index/paymentForm</argument>
                     <argument name="label" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::getBalanceLabel"></argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">6</argument>
                 </action>
                 <action method="addLink"  module="affiliateplus">
@@ -60,7 +61,7 @@
                     <argument name="name" xsi:type="string">banners</argument>
                     <argument name="path" xsi:type="string">affiliateplus/banner/listbanner</argument>
                     <argument name="label" xsi:type="string" ><![CDATA[Banners & Links]]></argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">40</argument>
                 </action>
                 <action method="addLink"  module="affiliateplus">
@@ -74,7 +75,7 @@
                     <argument name="name" xsi:type="string">sales</argument>
                     <argument name="path" xsi:type="string">affiliateplus/index/listTransaction</argument>
                     <argument name="label" xsi:type="string" >Commissions</argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">110</argument>
                 </action>
                 <action method="addLink"  module="affiliateplus">
@@ -88,21 +89,21 @@
                     <argument name="name" xsi:type="string">referrers</argument>
                     <argument name="path" xsi:type="string">affiliateplus/index/referrers</argument>
                     <argument name="label" xsi:type="string" >Traffics</argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">180</argument>
                 </action>
                 <action method="addLink"  module="affiliateplus">
                     <argument name="name" xsi:type="string">edit</argument>
                     <argument name="path" xsi:type="string">affiliateplus/account/edit</argument>
                     <argument name="label" xsi:type="string" >Settings</argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">190</argument>
                 </action>
                 <action method="addLink"   module="affiliateplus">
                     <argument name="name" xsi:type="string">logout</argument>
                     <argument name="path" xsi:type="string">affiliateplus/account/logout</argument>
                     <argument name="label" xsi:type="string" >Logout</argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">200</argument>
                 </action>
                 <action method="addLink" module="affiliateplus">
@@ -125,7 +126,7 @@
                     <argument name="name" xsi:type="string">balance</argument>
                     <argument name="path" xsi:type="string">affiliateplus/index/paymentForm</argument>
                     <argument name="label" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::getBalanceLabel"></argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">6</argument>
                 </action>
                 <action method="addLink"  module="affiliateplus">
@@ -153,7 +154,7 @@
                     <argument name="name" xsi:type="string">banners</argument>
                     <argument name="path" xsi:type="string">affiliateplus/banner/listbanner</argument>
                     <argument name="label" xsi:type="string" ><![CDATA[Banners & Links]]></argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">40</argument>
                 </action>
                 <action method="addLink"  module="affiliateplus">
@@ -167,7 +168,7 @@
                     <argument name="name" xsi:type="string">sales</argument>
                     <argument name="path" xsi:type="string">affiliateplus/index/listTransaction</argument>
                     <argument name="label" xsi:type="string" >Commissions</argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">110</argument>
                 </action>
                 <action method="addLink"  module="affiliateplus">
@@ -181,21 +182,21 @@
                     <argument name="name" xsi:type="string">referrers</argument>
                     <argument name="path" xsi:type="string">affiliateplus/index/referrers</argument>
                     <argument name="label" xsi:type="string" >Traffics</argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">180</argument>
                 </action>
                 <action method="addLink"  module="affiliateplus">
                     <argument name="name" xsi:type="string">edit</argument>
                     <argument name="path" xsi:type="string">affiliateplus/account/edit</argument>
                     <argument name="label" xsi:type="string" >Settings</argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">190</argument>
                 </action>
                 <action method="addLink"  module="affiliateplus">
                     <argument name="name" xsi:type="string">logout</argument>
                     <argument name="path" xsi:type="string">affiliateplus/account/logout</argument>
                     <argument name="label" xsi:type="string" >Logout</argument>
-                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::accountNotLogin"></argument>
+                    <argument name="disabled" xsi:type="helper" helper="Magestore\Affiliateplus\Helper\Account::isNotAvailableAccount"></argument>
                     <argument name="order" xsi:type="string">200</argument>
                 </action>
                 <action method="addLink" module="affiliateplus">

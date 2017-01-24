@@ -49,6 +49,7 @@ class Grid extends AbstractTemplate
      */
     public function setCollection($collection){
         $this->_collection = $collection;
+
         if (!$this->getData('add_searchable_row')) {
             return $this;
         }
@@ -71,6 +72,7 @@ class Grid extends AbstractTemplate
                         }
                         $this->_collection->addFieldToFilter($field, ['gteq' => $filterValue]);
                     }
+
                     if ($filterValue = $this->getFilterValue($columnId, '-to')) {
                         if ($column['type'] == 'price') {
                             $store = $this->_storeManager->getStore();
@@ -80,8 +82,10 @@ class Grid extends AbstractTemplate
                         }
                         $this->_collection->addFieldToFilter($field, ['lteq' => $filterValue]);
                     }
+
                 }
             }
+
         }
         return $this;
     }
@@ -99,6 +103,7 @@ class Grid extends AbstractTemplate
         } else {
             return $this->getData('filter_value/' . $columnId . $offset);
         }
+
     }
 
     /**

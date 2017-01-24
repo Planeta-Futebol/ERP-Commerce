@@ -61,7 +61,7 @@ class Miniform extends \Magestore\Affiliateplus\Block\AbstractTemplate
             $balance = $this->getAccount()->getBalance();
         }
         $balance = $this->convertPrice($balance);
-        return floor($balance * 100) / 100;
+//        return floor($balance * 100) / 100; Gin fix
         return round($this->convertPrice($this->getAccount()->getBalance()),2);
     }
 

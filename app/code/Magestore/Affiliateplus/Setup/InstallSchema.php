@@ -1499,6 +1499,12 @@ class InstallSchema implements InstallSchemaInterface
 				'DECIMAL(12,4)'
 		);
 
+        $installer->getConnection()->addColumn(
+			$tableSalesOrder,
+			'account_ids',
+            'INT(10)'
+		);
+
 		/**
 		 * add sample data for cms page
 		 */

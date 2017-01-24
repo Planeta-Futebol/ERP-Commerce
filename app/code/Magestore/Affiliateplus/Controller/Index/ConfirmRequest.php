@@ -43,6 +43,7 @@ class ConfirmRequest extends \Magestore\Affiliateplus\Controller\AbstractAction
         $session = $this->getSession();
         $account = $session->getAccount();
         $params = $this->getRequest()->getPostValue();
+
         if (!count($params)) {
             $params = $this->getRequest()->getParams();
         }
@@ -52,6 +53,9 @@ class ConfirmRequest extends \Magestore\Affiliateplus\Controller\AbstractAction
         }
         if ($this->accountNotLogin()) {
             return $this->_redirect('affiliateplus/account/login');
+        }
+        if ($this->_accountHelper->isNotAvailableAccount()){
+            return $this->_redirect('affiliateplus/index/index');
         }
         if (!isset($params['payment_method'])) {
             $storeId = $this->getStoreManager()->getStore()->getId();
@@ -96,6 +100,15 @@ class ConfirmRequest extends \Magestore\Affiliateplus\Controller\AbstractAction
                     $params['email'] = $account->getMoneybookerEmail();
                 }
 
+            } else if ($params['payment_method'] == 'bank') {
+                // check select bank account avaiable.
+                if (isset($params['payment_bankaccount_id']) && $params['payment_bankaccount_id']) {
+                    // selected bank account
+                    $model = $this->_objectManager->create('Magestore\Affiliateplus\Model\Payment\Bankaccount')->load($params['payment_bankaccount_id']);
+                    if ($model->getData()) {
+                        $params['bank'] = $model->getData();
+                    }
+                }
             }
         }
         /** check email verify */
@@ -111,6 +124,8 @@ class ConfirmRequest extends \Magestore\Affiliateplus\Controller\AbstractAction
                 }
             }
         }
+
+
         /** end */
         $paramObject = new \Magento\Framework\DataObject(
             [
@@ -122,6 +137,7 @@ class ConfirmRequest extends \Magestore\Affiliateplus\Controller\AbstractAction
             'file' => $this->getRequest()->getFiles(),
         ]
     );
+
         $params = $paramObject->getParams();
         $payment = $this->getModelPayment();
         $payment->setData($params);

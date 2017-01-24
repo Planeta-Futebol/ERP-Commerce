@@ -20,24 +20,29 @@
  * @license     http://www.magestore.com/license-agreement.html
  */
 -->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-  <head>
-    <css src="Magestore_Affiliateplus::css/magestore/affiliateplus.css"/>
-    <css src="Magestore_Affiliateplus::css/bootstrap/bootstrap.min.css"/>
-    <css src="Magestore_Affiliateplus::css/bootstrap/custome-bootstrap.css"/>
-    <block class="Magestore\Affiliateplus\Block\CheckIframe" name="affiliateplus_checkiframe" template="Magestore_Affiliateplus::checkiframe.phtml"/>
-  </head>
-  <body>
-    <referenceBlock name="footer_links">
-      <block class="Magestore\Affiliateplus\Block\Affiliateplus" name="affiliateplus-link">
-        <arguments>
-          <argument name="label" xsi:type="string">Affiliates</argument>
-          <argument name="path" xsi:type="string">affiliateplus</argument>
-        </arguments>
-      </block>
-    </referenceBlock>
-    <referenceContainer name="before.body.end">
-      <block class="Magento\Framework\View\Element\Template" name="popup_affiliate" template="Magestore_Affiliateplus::html/popup.phtml"/>
-    </referenceContainer>
-  </body>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magestore_Affiliateplus::css/magestore/affiliateplus.css"/>
+        <css src="Magestore_Affiliateplus::css/bootstrap/bootstrap.min.css"/>
+        <css src="Magestore_Affiliateplus::css/bootstrap/custome-bootstrap.css"/>
+        <block class="Magestore\Affiliateplus\Block\CheckIframe" name="affiliateplus_checkiframe"
+               template="Magestore_Affiliateplus::checkiframe.phtml"/>
+    </head>
+    <body>
+        <referenceBlock name="footer_links">
+            <block class="Magestore\Affiliateplus\Block\Affiliateplus" name="affiliateplus-link">
+                <arguments>
+                    <argument name="label" xsi:type="string">Affiliates</argument>
+                    <argument name="path" xsi:type="string">affiliateplus</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="popup_affiliate"
+                   template="Magestore_Affiliateplus::html/popup.phtml"/>
+            <block class="Magestore\Affiliateplus\Block\Html\Cookie" name="cookie_affiliate"
+                   template="Magestore_Affiliateplus::html/cookie.phtml" cacheable="false"/>
+        </referenceContainer>
+    </body>
 </page>

@@ -110,13 +110,14 @@ class ProductValue
 
         $this->_eventManager->dispatch('affiliateplus_product_get_final_price',
             [
-                'product' => $object,
+                'product' => $object->getProduct(),
                 'discounted_obj' => $discountedObj,
             ]
         );
 
-        if ($discountedObj->getDiscounted())
+        if ($discountedObj->getDiscounted()){
             return $discountedObj->getPrice();
+        }
         $price = $discountedObj->getPrice();
         $discountType = $this->_configHelper->getDiscountConfig('discount_type');
         $discountValue = $this->_configHelper->getDiscountConfig('discount');

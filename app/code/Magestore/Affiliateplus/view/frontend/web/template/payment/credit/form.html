@@ -39,9 +39,9 @@
                 <strong>
                     <!-- ko text: $t('You are spending' )--><!-- /ko -->
 					<span>
-						<span class="using_credit style-form" style="cursor: pointer;" title="Edit" data-bind="ifnot: showCreditInput, click: showCreditInput">
+						<span style="width: 10%;" class="using_credit style-form" style="cursor: pointer;" title="Edit" data-bind="ifnot: showCreditInput, click: showCreditInput">
 							<a href="#" onclick="return false;"><span data-bind="text: affiliateCreditInfo()['usingAmount']"></span></a>
-							<img class="ajax-loader v-middle"
+							<img style="width: 21%;" class="ajax-loader v-middle"
                                  data-bind="attr:{alt: $t('Edit'), src: $t(affiliateCreditInfo()['editButtonImage'])} " />
 						</span>
 						<span class="credit_input" data-bind="if: showCreditInput">
