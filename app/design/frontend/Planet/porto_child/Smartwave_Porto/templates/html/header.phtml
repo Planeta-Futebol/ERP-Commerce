@@ -7,18 +7,23 @@
     <?php echo $this->getChildHtml("logo"); ?>
     <?php echo $this->getChildHtml("navigation.sections"); ?>
         <div class="panel header">
-            <div class="top-panel">
-                <?php echo $this->getChildHtml("skip_to_content"); ?>
-                <?php echo $this->getChildHtml("header.links"); ?>
-                <div class="search-area">
-                    <a href="javascript:void(0)" class="search-toggle-icon"><i class="porto-icon-search"></i></a>
-                    <?php echo $this->getChildHtml("top.search"); ?>
+            <div class="panel-content">
+                <div class="top-panel">
+                    <?php echo $this->getChildHtml("skip_to_content"); ?>
+                    <?php echo $this->getChildHtml("header.links"); ?>
+                    <div class="search-area">
+                        <a href="javascript:void(0)" class="search-toggle-icon"><i class="porto-icon-search"></i></a>
+                        <?php echo $this->getChildHtml("top.search"); ?>
+                    </div>
+                </div>
+                <div class="bottom-panel">
+                    <?php echo $this->getChildHtml("currency"); ?>
+                    <?php echo $this->getChildHtml("store_language"); ?>
+                    <?php echo $this->getChildHtml("minicart"); ?>
                 </div>
             </div>
-            <div class="bottom-panel">
-                <?php echo $this->getChildHtml("currency"); ?>
-                <?php echo $this->getChildHtml("store_language"); ?>
-                <?php echo $this->getChildHtml("minicart"); ?>
+            <div class="panel-locale-store">
+                <h3>Encontre uma de nossas lojas <a href="<?= $this->getBaseUrl() . 'stockists'; ?>">aqui!</a></h3>
             </div>
         </div>
     </div>
