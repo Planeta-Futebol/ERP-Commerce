@@ -1526,8 +1526,8 @@ class InstallSchema implements InstallSchemaInterface
             'page_layout' => 'two_columns_left'
         ];
 
-        $this->_pageModel->create()->setData($cmsPage)->save();
-        $installer->getConnection()->resetDdlCache($installer->getTable(self::SCHEMA_TRANSACTION));
+        // $this->_pageModel->create()->setData($cmsPage)->save();
+        // $installer->getConnection()->resetDdlCache($installer->getTable(self::SCHEMA_TRANSACTION));
 
 		/**
 		 * check if table exist
