@@ -20,3 +20,16 @@ function __()
 
     return new \Magento\Framework\Phrase($text, $argc);
 }
+
+function __debug()
+{
+    $argc = func_get_args();
+    if(is_array($argc[0])){
+        echo (json_encode($argc[0], JSON_PRETTY_PRINT));
+        header('Content-Type: application/json');
+        exit;
+    }
+
+    print_r($argc[0]);
+    exit;
+}
