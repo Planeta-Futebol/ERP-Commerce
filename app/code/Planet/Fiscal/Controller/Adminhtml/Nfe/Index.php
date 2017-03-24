@@ -1,14 +1,19 @@
 <?php
-
+/**
+ * Copyright © 2017 Planeta Core Team. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace Planet\Fiscal\Controller\Adminhtml\Nfe;
 
-
 use Magento\Framework\App\ResponseInterface;
-use Planet\Fiscal\Controller\Adminhtml\Nfe;
 
-class Index extends Nfe
+/**
+ * Generic backend controller
+ *
+ * @author Planeta Core Team - Ronildo dos Santos
+ */
+class Index extends \Planet\Fiscal\Controller\Adminhtml\Nfe
 {
-
 
     /**
      * Dispatch request

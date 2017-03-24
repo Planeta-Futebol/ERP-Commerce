@@ -1,11 +1,20 @@
 <?php
-
+/**
+ * Copyright © 2017 Planeta Core Team. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace Planet\Fiscal\Block\Adminhtml\Nfe\Edit;
 
-
+/**
+ * Backend form block
+ *
+ * @author Planeta Core Team - Ronildo dos Santos
+ */
 class Form extends \Magento\Backend\Block\Widget\Form\Generic
 {
     /**
+     * Prepare form before rendering HTML
+     *
      * @return $this
      */
     protected function _prepareForm()

@@ -1,8 +1,15 @@
 <?php
-
+/**
+ * Copyright © 2017 Planeta Core Team. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace Planet\Fiscal\Block\Adminhtml\Nfe\Edit\Tab;
 
-
+/**
+ * Backend form to complementary order info info block
+ *
+ * @author Planeta Core Team - Ronildo dos Santos
+ */
 class ComplementaryOrderInfo extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
     /**
@@ -23,47 +30,6 @@ class ComplementaryOrderInfo extends \Magento\Backend\Block\Widget\Form\Generic 
             'base_fieldset',
             ['legend' => __('Complementary Order Information')]
         );
-
-//        $fieldset->addField(
-//            'pagamento',
-//            'select',
-//            [
-//                'label'     => __('Forma de pagamento'),
-//                'required'  => true,
-//                'name'      => 'pagamento',
-//                'value'     => '1',
-//                'values'    =>
-//                    [
-//                        '0' => __('Pagamento à vista'),
-//                        '1' => __('Pagamento a prazo'),
-//                        '2' => __('Outros'),
-//                    ],
-//                'tabindex' => 1,
-//
-//            ]
-//        );
-
-//        $fieldset->addField(
-//            'presenca',
-//            'select',
-//            [
-//                'label'     => __('Indicador de presença do comprador'),
-//                'required'  => true,
-//                'name'      => 'presenca',
-//                'value'     => '1',
-//                'values'    =>
-//                    [
-//                        '0' => __('Não se aplica'),
-//                        '1' => __('Operação presencial'),
-//                        '2' => __('Operação não presencial, pela Internet'),
-//                        '3' => __('Operação não presencial, Teleatendimento'),
-//                        '4' => __('NFC-e em operação com entrega a domicílio'),
-//                        '9' => __('Operação não presencial, outros'),
-//                    ],
-//                'tabindex' => 1,
-//
-//            ]
-//        );
 
         $fieldset->addField(
             'frete_por_conta',
@@ -131,6 +97,7 @@ class ComplementaryOrderInfo extends \Magento\Backend\Block\Widget\Form\Generic 
             'valor_frete'    => $model->getShippingAmount(),
             'valor_desconto' => $model->getDiscountAmount(),
         ]);
+
         $this->setForm($form);
 
         return parent::_prepareForm();

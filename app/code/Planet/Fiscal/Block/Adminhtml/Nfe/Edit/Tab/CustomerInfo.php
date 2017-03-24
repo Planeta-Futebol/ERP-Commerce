@@ -1,15 +1,37 @@
 <?php
-
+/**
+ * Copyright © 2017 Planeta Core Team. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace Planet\Fiscal\Block\Adminhtml\Nfe\Edit\Tab;
 
-
-use Magento\Sales\Model\Order\AddressRepository;
-
+/**
+ * Backend form to Customer info block
+ *
+ * @author Planeta Core Team - Ronildo dos Santos
+ */
 class CustomerInfo extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
+    /**
+     * @var \Magento\Customer\Model\ResourceModel\CustomerRepository
+     *
+     */
     protected $_customerRepository;
+
+    /**
+     * @var \Magento\Sales\Model\Order\AddressRepository
+     *
+     */
     protected $_addressRepository;
 
+    /**
+     * @param \Magento\Backend\Block\Template\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\Data\FormFactory $formFactory
+     * @param \Magento\Customer\Model\ResourceModel\CustomerRepository $customerRepository
+     * @param \Magento\Sales\Model\Order\AddressRepository $addressRepository
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Registry $registry,
@@ -20,7 +42,7 @@ class CustomerInfo extends \Magento\Backend\Block\Widget\Form\Generic implements
     )
     {
         $this->_customerRepository = $customerRepository;
-        $this->_addressRepository = $addressRepository;
+        $this->_addressRepository  = $addressRepository;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -32,9 +54,10 @@ class CustomerInfo extends \Magento\Backend\Block\Widget\Form\Generic implements
     protected function _prepareForm()
     {
         $model = $this->_coreRegistry->registry('sales_order');
-        $customer = $this->_customerRepository->getById($model->getCustomerId());
-        $address = $this->_addressRepository->get($model->getShippingAddressId());
 
+        //TODO look at this unused actually 24/03/2017
+        $customer = $this->_customerRepository->getById($model->getCustomerId());
+        $address  = $this->_addressRepository->get($model->getShippingAddressId());
 
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();

@@ -1,8 +1,15 @@
 <?php
-
+/**
+ * Copyright © 2017 Planeta Core Team. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace Planet\Fiscal\Block\Adminhtml\Nfe\Edit\Tab;
 
-
+/**
+ * Backend form to transport info block
+ *
+ * @author Planeta Core Team - Ronildo dos Santos
+ */
 class TransportInfo extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
     /**

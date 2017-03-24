@@ -1,8 +1,15 @@
 <?php
-
+/**
+ * Copyright © 2017 Planeta Core Team. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace Planet\Fiscal\Block\Adminhtml\Nfe;
 
-
+/**
+ * Backend form container block
+ *
+ * @author Planeta Core Team - Ronildo dos Santos
+ */
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
 
@@ -13,6 +20,11 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      */
     protected $_coreRegistry = null;
 
+    /**
+     * @param \Magento\Backend\Block\Widget\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Widget\Context $context,
         \Magento\Framework\Registry $registry,
@@ -22,16 +34,18 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         parent::__construct($context, $data);
     }
 
+    /**
+     * @return void
+     */
     protected function _construct()
     {
-        $this->_objectId = 'id';
+        $this->_objectId   = 'id';
         $this->_controller = 'adminhtml_nfe';
         $this->_blockGroup = 'Planet_Fiscal';
 
         parent::_construct();
 
         $this->buttonList->update('save', 'label', __('Save'));
-        $this->buttonList->update('delete', 'label', __('Delete'));
     }
 
     /**

@@ -1,13 +1,18 @@
 <?php
-
+/**
+ * Copyright © 2017 Planeta Core Team. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace Planet\Fiscal\Block\Adminhtml\Nfe\Edit;
 
-
+/**
+ * Backend tabs block
+ *
+ * @author Planeta Core Team - Ronildo dos Santos
+ */
 class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
     /**
-     * Class constructor
-     *
      * @return void
      */
     protected function _construct()
@@ -19,6 +24,8 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
     }
 
     /**
+     * Adds the tabs of form
+     *
      * @return $this
      */
     protected function _beforeToHtml()
@@ -31,6 +38,7 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                 'content' => $this->getLayout()->createBlock(
                     'Planet\Fiscal\Block\Adminhtml\Nfe\Edit\Tab\NfeInfo'
                 )->toHtml(),
+                //sets current tab active
                 'active' => true
             ]
         );
