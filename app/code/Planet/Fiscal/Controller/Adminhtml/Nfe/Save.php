@@ -45,23 +45,28 @@ class Save extends Nfe
         33	=> 'Registro localizado em duplicidade',
         99	=> 'Sistema em manutenção',
     ];
+
     protected $_orderFacorty;
 
     protected $_client;
+
+    protected $_nfeFactory;
 
 
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Sales\Model\OrderFactory $orderFactory
+        \Magento\Sales\Model\OrderFactory $orderFactory,
+        \Planet\Fiscal\Model\NFeFactory $NFeFactory
 
     )
     {
         $this->_client =  new Client([
             'base_uri' => self::BASE_URI
         ]);
-        $this->_orderFacorty = $orderFactory;
 
+        $this->_orderFacorty = $orderFactory;
+        $this->_nfeFactory   = $NFeFactory;
         parent::__construct($context, $resultPageFactory);
     }
 
@@ -110,8 +115,8 @@ class Save extends Nfe
                     return;
                 }
             }
-            $nfeData['itens'] = null;
 
+            $nfeData['itens'] = null;
 
             foreach ($model->getAllItems() as $item ) {
                 $nfeData['itens'][]['item'] = [
@@ -179,6 +184,30 @@ class Save extends Nfe
             }
 
             if($ress->retorno->status_processamento == self::SUCCESS) {
+
+                $registros = $ress->retorno->registros;
+                $registro = $registros->registro;
+                try {
+                    $nfeModel = $this->_nfeFactory->create();
+
+                    $nfeModel->addData([
+                        'order_id'      => $model->getId(),
+                        'nfe_id'        => $registro->id,
+                        'nfe_serie'     => $registro->serie,
+                        'nfe_number'    => $registro->numero,
+                        'customer_name' => $params['nome_razao_social'],
+                        'nfe_value'     => $model->getGrandTotal()
+                    ]);
+
+                    $nfeModel->save();
+
+                } catch (\Exception $e){
+                    $message = $e->getMessage();
+                    $exceptionMessage = <<< "EXP_MESSAGE"
+                        "A nota fical foi incluida com sucesso, mas ocorreu o seguinto erro: {$message}"
+EXP_MESSAGE;
+                    $this->messageManager->addErrorMessage($e->getMessage());
+                }
 
                 // Display success message
                 $this->messageManager->addSuccessMessage(__('A nota fiscal foi incluida no Tiny com sucesso!'));
