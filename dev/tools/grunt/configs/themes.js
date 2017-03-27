@@ -50,14 +50,5 @@ module.exports = {
             'css/styles'
         ],
         dsl: 'less'
-    },
-    Porto_Child: {
-        area: 'frontend',
-        name: 'Planet/porto_child',
-        locale: 'en_US',
-        files: [
-            'css/planet-style'
-        ],
-        dsl: 'less'
     }
 };
