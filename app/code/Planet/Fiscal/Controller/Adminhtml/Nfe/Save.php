@@ -213,7 +213,7 @@ class Save extends \Planet\Fiscal\Controller\Adminhtml\Nfe
             $response = $this->_client->post(
                 self::INCLUIR_NOTA,
                 [
-                    'query' => [
+                    'form_params' => [
                         'token' => self::TOKEN,
                         //need json_encode or it will get same errors
                         'nota' => json_encode(['nota_fiscal' => $nfeData]),
@@ -285,8 +285,6 @@ EXP_MESSAGE;
 
             $this->_redirect('*/*/edit', ['order_id' => $model->getId()]);
         }
-
-        $this->messageManager->addErrorMessage(__('This isn\'t a POST request.'));
 
         $this->_redirect('*/*/edit');
         return;
